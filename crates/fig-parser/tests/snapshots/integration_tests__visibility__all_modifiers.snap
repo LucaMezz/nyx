@@ -11,11 +11,16 @@ items:
         is_effect: false
         receiver: ~
         name: public_fn
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params: []
         return_types:
-          - Ok
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
       body:
         statements:
           - Pass
@@ -27,11 +32,16 @@ items:
         is_effect: false
         receiver: ~
         name: export_fn
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params: []
         return_types:
-          - Ok
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
       body:
         statements:
           - Pass
@@ -43,11 +53,16 @@ items:
         is_effect: false
         receiver: ~
         name: private_fn
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params: []
         return_types:
-          - Ok
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
       body:
         statements:
           - Pass
@@ -55,36 +70,50 @@ items:
       visibility: Public
       annotations: []
       is_packed: false
-      name: PublicS
+      name:
+        segments:
+          - PublicS
       generic_params: []
       requires: []
       fields:
         - name: x
           ty: I32
+          visibility: Default
+          annotations: []
   - Struct:
       visibility: Export
       annotations: []
       is_packed: false
-      name: ExportS
+      name:
+        segments:
+          - ExportS
       generic_params: []
       requires: []
       fields:
         - name: x
           ty: I32
+          visibility: Default
+          annotations: []
   - Struct:
       visibility: Private
       annotations: []
       is_packed: false
-      name: PrivateS
+      name:
+        segments:
+          - PrivateS
       generic_params: []
       requires: []
       fields:
         - name: x
           ty: I32
+          visibility: Default
+          annotations: []
   - Enum:
       visibility: Public
       annotations: []
-      name: PubEnum
+      name:
+        segments:
+          - PubEnum
       representation: ~
       generic_params: []
       requires: []
@@ -96,7 +125,9 @@ items:
   - Enum:
       visibility: Export
       annotations: []
-      name: ExportEnum
+      name:
+        segments:
+          - ExportEnum
       representation: ~
       generic_params: []
       requires: []

@@ -10,7 +10,7 @@ expression: tokens
 - Newline
 - Export
 - Using
-- Core
+- Ident: core
 - ColonColon
 - Ident: primitives
 - Newline

@@ -38,7 +38,7 @@ expression: tokens
 - U8
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Func
 - Bang

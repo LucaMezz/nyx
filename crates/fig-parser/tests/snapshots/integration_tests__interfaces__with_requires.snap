@@ -6,7 +6,9 @@ items:
   - Interface:
       visibility: Default
       annotations: []
-      name: Numeric
+      name:
+        segments:
+          - Numeric
       generic_params:
         - Type:
             name: T
@@ -15,20 +17,24 @@ items:
       extends: []
       requires:
         - Path:
-            segments:
-              - Add
+            path:
+              segments:
+                - Add
             generic_args: []
         - Path:
-            segments:
-              - Sub
+            path:
+              segments:
+                - Sub
             generic_args: []
         - Path:
-            segments:
-              - Mul
+            path:
+              segments:
+                - Mul
             generic_args: []
         - Path:
-            segments:
-              - Div
+            path:
+              segments:
+                - Div
             generic_args: []
       methods:
         - visibility: Default
@@ -37,13 +43,15 @@ items:
           is_effect: false
           receiver: ~
           name: zero
-          generic_params: []
+          outer_generic_params: []
+          func_generic_params: []
           self_param: ~
           params: []
           return_types:
             - Path:
-                segments:
-                  - T
+                path:
+                  segments:
+                    - T
                 generic_args: []
         - visibility: Default
           annotations: []
@@ -51,11 +59,13 @@ items:
           is_effect: false
           receiver: ~
           name: one
-          generic_params: []
+          outer_generic_params: []
+          func_generic_params: []
           self_param: ~
           params: []
           return_types:
             - Path:
-                segments:
-                  - T
+                path:
+                  segments:
+                    - T
                 generic_args: []

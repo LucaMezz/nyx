@@ -11,7 +11,8 @@ items:
         is_effect: false
         receiver: ~
         name: unary_ops
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params:
           - name: a
@@ -25,7 +26,11 @@ items:
                 mutable: false
                 element_type: I32
         return_types:
-          - Ok
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
       body:
         statements:
           - Let:
@@ -39,7 +44,6 @@ items:
                     Path:
                       segments:
                         - a
-                      generic_args: []
           - Let:
               annotations: []
               name: pos
@@ -51,7 +55,6 @@ items:
                     Path:
                       segments:
                         - a
-                      generic_args: []
           - Let:
               annotations: []
               name: bne
@@ -63,7 +66,6 @@ items:
                     Path:
                       segments:
                         - a
-                      generic_args: []
           - Let:
               annotations: []
               name: not
@@ -75,7 +77,6 @@ items:
                     Path:
                       segments:
                         - b
-                      generic_args: []
           - Let:
               annotations: []
               name: deref
@@ -87,7 +88,6 @@ items:
                     Path:
                       segments:
                         - p
-                      generic_args: []
           - Let:
               annotations: []
               name: addr
@@ -99,5 +99,4 @@ items:
                     Path:
                       segments:
                         - a
-                      generic_args: []
           - Pass

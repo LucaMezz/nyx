@@ -1,0 +1,258 @@
+---
+source: crates/fig-parser/tests/integration_tests.rs
+expression: ast
+---
+items:
+  - NamespaceDeclaration:
+      visibility: Default
+      annotations: []
+      name:
+        segments:
+          - str
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: false
+        receiver: ~
+        name: len
+        outer_generic_params: []
+        func_generic_params: []
+        self_param: ~
+        params:
+          - name: s
+            ty:
+              Array:
+                element_type: U8
+                size: ~
+        return_types:
+          - USize
+      body:
+        statements:
+          - Pass
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: false
+        receiver: ~
+        name: is_empty
+        outer_generic_params: []
+        func_generic_params: []
+        self_param: ~
+        params:
+          - name: s
+            ty:
+              Array:
+                element_type: U8
+                size: ~
+        return_types:
+          - Bool
+      body:
+        statements:
+          - Return:
+              BinaryOp:
+                lhs:
+                  Call:
+                    callee:
+                      Path:
+                        segments:
+                          - len
+                    args:
+                      - name: ~
+                        value:
+                          Path:
+                            segments:
+                              - s
+                    generic_args: ~
+                    is_propagating: false
+                op: Equal
+                rhs:
+                  IntegerLiteral:
+                    base: Decimal
+                    digits: "0"
+                    suffix: ~
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: false
+        receiver: ~
+        name: starts_with
+        outer_generic_params: []
+        func_generic_params: []
+        self_param: ~
+        params:
+          - name: s
+            ty:
+              Array:
+                element_type: U8
+                size: ~
+          - name: prefix
+            ty:
+              Array:
+                element_type: U8
+                size: ~
+        return_types:
+          - Bool
+      body:
+        statements:
+          - Pass
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: false
+        receiver: ~
+        name: ends_with
+        outer_generic_params: []
+        func_generic_params: []
+        self_param: ~
+        params:
+          - name: s
+            ty:
+              Array:
+                element_type: U8
+                size: ~
+          - name: suffix
+            ty:
+              Array:
+                element_type: U8
+                size: ~
+        return_types:
+          - Bool
+      body:
+        statements:
+          - Pass
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: false
+        receiver: ~
+        name: contains
+        outer_generic_params: []
+        func_generic_params: []
+        self_param: ~
+        params:
+          - name: s
+            ty:
+              Array:
+                element_type: U8
+                size: ~
+          - name: sub
+            ty:
+              Array:
+                element_type: U8
+                size: ~
+        return_types:
+          - Bool
+      body:
+        statements:
+          - Pass
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: false
+        receiver: ~
+        name: trim
+        outer_generic_params: []
+        func_generic_params: []
+        self_param: ~
+        params:
+          - name: s
+            ty:
+              Array:
+                element_type: U8
+                size: ~
+        return_types:
+          - Array:
+              element_type: U8
+              size: ~
+      body:
+        statements:
+          - Pass
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: false
+        receiver: ~
+        name: split
+        outer_generic_params: []
+        func_generic_params: []
+        self_param: ~
+        params:
+          - name: s
+            ty:
+              Array:
+                element_type: U8
+                size: ~
+          - name: delimiter
+            ty: U8
+        return_types:
+          - Array:
+              element_type:
+                Array:
+                  element_type: U8
+                  size: ~
+              size: ~
+      body:
+        statements:
+          - Pass
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: false
+        receiver: ~
+        name: to_upper
+        outer_generic_params: []
+        func_generic_params: []
+        self_param: ~
+        params:
+          - name: s
+            ty:
+              Array:
+                element_type: U8
+                size: ~
+        return_types:
+          - Array:
+              element_type: U8
+              size: ~
+      body:
+        statements:
+          - Pass
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: false
+        receiver: ~
+        name: to_lower
+        outer_generic_params: []
+        func_generic_params: []
+        self_param: ~
+        params:
+          - name: s
+            ty:
+              Array:
+                element_type: U8
+                size: ~
+        return_types:
+          - Array:
+              element_type: U8
+              size: ~
+      body:
+        statements:
+          - Pass

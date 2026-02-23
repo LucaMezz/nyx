@@ -11,7 +11,8 @@ items:
         is_effect: false
         receiver: ~
         name: bool_conditions
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params:
           - name: a
@@ -21,7 +22,11 @@ items:
           - name: x
             ty: I32
         return_types:
-          - Ok
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
       body:
         statements:
           - If:
@@ -31,13 +36,11 @@ items:
                     Path:
                       segments:
                         - a
-                      generic_args: []
                   op: LogicalAnd
                   rhs:
                     Path:
                       segments:
                         - b
-                      generic_args: []
               then_body:
                 statements:
                   - Pass
@@ -50,13 +53,11 @@ items:
                     Path:
                       segments:
                         - a
-                      generic_args: []
                   op: LogicalOr
                   rhs:
                     Path:
                       segments:
                         - b
-                      generic_args: []
               then_body:
                 statements:
                   - Pass
@@ -70,7 +71,6 @@ items:
                     Path:
                       segments:
                         - a
-                      generic_args: []
               then_body:
                 statements:
                   - Pass
@@ -85,7 +85,6 @@ items:
                         Path:
                           segments:
                             - x
-                          generic_args: []
                       op: GreaterThan
                       rhs:
                         BinaryOp:
@@ -99,7 +98,6 @@ items:
                             Path:
                               segments:
                                 - x
-                              generic_args: []
                   op: LessThan
                   rhs:
                     IntegerLiteral:
@@ -120,7 +118,6 @@ items:
                         Path:
                           segments:
                             - a
-                          generic_args: []
                       op: LogicalAnd
                       rhs:
                         BinaryOp:
@@ -131,13 +128,11 @@ items:
                                 Path:
                                   segments:
                                     - b
-                                  generic_args: []
                           op: LogicalOr
                           rhs:
                             Path:
                               segments:
                                 - x
-                              generic_args: []
                   op: Equal
                   rhs:
                     IntegerLiteral:

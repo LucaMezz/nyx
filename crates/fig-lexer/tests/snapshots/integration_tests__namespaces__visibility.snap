@@ -19,7 +19,7 @@ expression: tokens
 - LParen
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Dedent
 - Export
@@ -33,7 +33,7 @@ expression: tokens
 - LParen
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Public
 - Func
@@ -41,6 +41,6 @@ expression: tokens
 - LParen
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Dedent

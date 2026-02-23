@@ -6,8 +6,9 @@ items:
   - Interface:
       visibility: Default
       annotations: []
-      name: Marker
+      name:
+        segments:
+          - Marker
       generic_params: []
       extends: []
-      requires: []
       methods: []

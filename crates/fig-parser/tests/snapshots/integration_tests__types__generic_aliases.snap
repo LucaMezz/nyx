@@ -1,0 +1,91 @@
+---
+source: crates/fig-parser/tests/integration_tests.rs
+expression: ast
+---
+items:
+  - TypeAlias:
+      visibility: Default
+      annotations: []
+      name:
+        segments:
+          - Slice
+      generic_params:
+        - Type:
+            name: T
+            bounds: []
+            default_type: ~
+      aliased_type:
+        Array:
+          element_type:
+            Path:
+              path:
+                segments:
+                  - T
+              generic_args: []
+          size: ~
+  - TypeAlias:
+      visibility: Default
+      annotations: []
+      name:
+        segments:
+          - OptSlice
+      generic_params:
+        - Type:
+            name: T
+            bounds: []
+            default_type: ~
+      aliased_type:
+        Nullable:
+          Array:
+            element_type:
+              Path:
+                path:
+                  segments:
+                    - T
+                generic_args: []
+            size: ~
+  - TypeAlias:
+      visibility: Default
+      annotations: []
+      name:
+        segments:
+          - PairPtr
+      generic_params:
+        - Type:
+            name: T
+            bounds: []
+            default_type: ~
+      aliased_type:
+        Pointer:
+          nullable: false
+          mutable: false
+          element_type:
+            Path:
+              path:
+                segments:
+                  - T
+              generic_args: []
+  - TypeAlias:
+      visibility: Default
+      annotations: []
+      name:
+        segments:
+          - Array
+      generic_params:
+        - Type:
+            name: T
+            bounds: []
+            default_type: ~
+      aliased_type:
+        Array:
+          element_type:
+            Path:
+              path:
+                segments:
+                  - T
+              generic_args: []
+          size:
+            IntegerLiteral:
+              base: Decimal
+              digits: "16"
+              suffix: ~

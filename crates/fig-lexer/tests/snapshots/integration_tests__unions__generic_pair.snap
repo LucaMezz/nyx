@@ -29,7 +29,7 @@ expression: tokens
 - RBracket
 - Newline
 - Indent
-- OkLiteral
+- Ident: ok
 - Colon
 - Ident: T
 - Newline

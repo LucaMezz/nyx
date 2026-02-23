@@ -3,7 +3,7 @@ source: crates/fig-lexer/tests/integration_tests.rs
 expression: tokens
 ---
 - Using
-- Core
+- Ident: core
 - ColonColon
 - Ident: memory
 - Newline
@@ -229,7 +229,6 @@ expression: tokens
 - Newline
 - Return
 - And
-- Mut
 - SelfLower
 - Dot
 - Ident: cache
@@ -343,7 +342,7 @@ expression: tokens
 - Ident: SlabCache
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - Let
@@ -363,7 +362,7 @@ expression: tokens
 - Newline
 - Indent
 - Return
-- OkLiteral
+- Ident: ok
 - Newline
 - Dedent
 - SelfLower
@@ -454,7 +453,6 @@ expression: tokens
 - Newline
 - Return
 - And
-- Mut
 - SelfLower
 - Dot
 - Ident: slabs
@@ -566,7 +564,7 @@ expression: tokens
 - U8
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - Let
@@ -707,7 +705,6 @@ expression: tokens
 - Indent
 - Return
 - And
-- Mut
 - SelfLower
 - Dot
 - Ident: slabs
@@ -820,7 +817,7 @@ expression: tokens
 - SelfLower
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - Let
@@ -1102,7 +1099,7 @@ expression: tokens
 - Ident: Slab
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - SelfLower
@@ -1200,7 +1197,7 @@ expression: tokens
 - Ident: Slab
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - SelfLower
@@ -1279,7 +1276,7 @@ expression: tokens
 - Ident: Slab
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - SelfLower
@@ -1287,7 +1284,6 @@ expression: tokens
 - Ident: remove_from_list
 - LParen
 - And
-- Mut
 - SelfLower
 - Dot
 - Ident: partial_slabs
@@ -1300,7 +1296,6 @@ expression: tokens
 - Ident: remove_from_list
 - LParen
 - And
-- Mut
 - SelfLower
 - Dot
 - Ident: full_slabs
@@ -1313,7 +1308,6 @@ expression: tokens
 - Ident: remove_from_list
 - LParen
 - And
-- Mut
 - SelfLower
 - Dot
 - Ident: free_slabs
@@ -1351,7 +1345,7 @@ expression: tokens
 - Ident: Slab
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - For
@@ -1612,7 +1606,7 @@ expression: tokens
 - Ident: T
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - SelfLower

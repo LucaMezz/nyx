@@ -11,7 +11,8 @@ items:
         is_effect: false
         receiver: ~
         name: alloc_byte
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params: []
         return_types:
@@ -30,7 +31,8 @@ items:
         is_effect: false
         receiver: ~
         name: get_ptr
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params:
           - name: data
@@ -55,14 +57,16 @@ items:
         is_effect: false
         receiver: ~
         name: opt_ptr
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params: []
         return_types:
-          - Pointer:
-              nullable: true
-              mutable: false
-              element_type: U8
+          - Nullable:
+              Pointer:
+                nullable: false
+                mutable: false
+                element_type: U8
       body:
         statements:
           - Pass

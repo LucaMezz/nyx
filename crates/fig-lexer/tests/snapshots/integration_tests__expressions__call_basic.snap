@@ -28,7 +28,7 @@ expression: tokens
 - LParen
 - RParen
 - Arrow
-- OkLiteral
+- "Null"
 - Newline
 - Indent
 - Let

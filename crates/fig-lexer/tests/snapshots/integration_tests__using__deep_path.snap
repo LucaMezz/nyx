@@ -3,14 +3,14 @@ source: crates/fig-lexer/tests/integration_tests.rs
 expression: tokens
 ---
 - Using
-- Std
+- Ident: std
 - ColonColon
 - Ident: collections
 - ColonColon
 - Ident: hash_map
 - Newline
 - Using
-- Core
+- Ident: core
 - ColonColon
 - Ident: mem
 - ColonColon

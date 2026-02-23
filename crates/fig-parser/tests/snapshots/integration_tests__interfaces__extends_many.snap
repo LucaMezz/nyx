@@ -6,42 +6,51 @@ items:
   - Interface:
       visibility: Default
       annotations: []
-      name: FullNumeric
+      name:
+        segments:
+          - FullNumeric
       generic_params: []
       extends:
         - Path:
-            segments:
-              - Add
+            path:
+              segments:
+                - Add
             generic_args: []
         - Path:
-            segments:
-              - Sub
+            path:
+              segments:
+                - Sub
             generic_args: []
         - Path:
-            segments:
-              - Mul
+            path:
+              segments:
+                - Mul
             generic_args: []
         - Path:
-            segments:
-              - Div
+            path:
+              segments:
+                - Div
             generic_args: []
         - Path:
-            segments:
-              - Neg
+            path:
+              segments:
+                - Neg
             generic_args: []
         - Path:
-            segments:
-              - Eq
+            path:
+              segments:
+                - Eq
             generic_args: []
         - Path:
-            segments:
-              - Ord
+            path:
+              segments:
+                - Ord
             generic_args: []
         - Path:
-            segments:
-              - Display
+            path:
+              segments:
+                - Display
             generic_args: []
-      requires: []
       methods:
         - visibility: Default
           annotations: []
@@ -49,20 +58,26 @@ items:
           is_effect: false
           receiver: ~
           name: abs
-          generic_params: []
+          outer_generic_params: []
+          func_generic_params: []
           self_param:
             is_pointer: true
             is_mutable: false
           params: []
           return_types:
-            - SelfType
+            - Path:
+                path:
+                  segments:
+                    - Self
+                generic_args: []
         - visibility: Default
           annotations: []
           is_extern: false
           is_effect: false
           receiver: ~
           name: signum
-          generic_params: []
+          outer_generic_params: []
+          func_generic_params: []
           self_param:
             is_pointer: true
             is_mutable: false

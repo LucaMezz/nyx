@@ -11,7 +11,8 @@ items:
         is_effect: false
         receiver: ~
         name: get_zero
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params: []
         return_types:
@@ -31,7 +32,8 @@ items:
         is_effect: false
         receiver: ~
         name: get_true
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params: []
         return_types:
@@ -48,7 +50,8 @@ items:
         is_effect: false
         receiver: ~
         name: get_pi
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params: []
         return_types:

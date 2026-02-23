@@ -6,10 +6,11 @@ items:
   - Interface:
       visibility: Default
       annotations: []
-      name: Allocator
+      name:
+        segments:
+          - Allocator
       generic_params: []
       extends: []
-      requires: []
       methods:
         - visibility: Default
           annotations: []
@@ -17,7 +18,8 @@ items:
           is_effect: true
           receiver: ~
           name: allocate
-          generic_params: []
+          outer_generic_params: []
+          func_generic_params: []
           self_param:
             is_pointer: true
             is_mutable: true
@@ -35,7 +37,8 @@ items:
           is_effect: true
           receiver: ~
           name: deallocate
-          generic_params: []
+          outer_generic_params: []
+          func_generic_params: []
           self_param:
             is_pointer: true
             is_mutable: true
@@ -47,14 +50,19 @@ items:
                   mutable: true
                   element_type: U8
           return_types:
-            - Ok
+            - Path:
+                path:
+                  segments:
+                    - ok
+                generic_args: []
         - visibility: Default
           annotations: []
           is_extern: false
           is_effect: true
           receiver: ~
           name: reallocate
-          generic_params: []
+          outer_generic_params: []
+          func_generic_params: []
           self_param:
             is_pointer: true
             is_mutable: true

@@ -222,84 +222,84 @@ func Logger::append_timestamp(*self, buffer: *mut [u8], ts: u64) -> ok
 
 // Convenience logging macros/functions
 
-export func! log_trace(file: [u8], line: u32, func: [u8], msg: [u8]) -> ok
+export func! log_trace(file: [u8], line: u32, fun: [u8], msg: [u8]) -> ok
     let logger = get_logger()
     let entry = LogEntry(
         timestamp: get_timestamp(),
         level: LogLevel::TRACE,
         file: file,
         line: line,
-        function: func,
+        function: fun,
         message: msg,
         thread_id: get_thread_id()
     )
     logger.log(&entry)
     pass
 
-export func! log_debug(file: [u8], line: u32, func: [u8], msg: [u8]) -> ok
+export func! log_debug(file: [u8], line: u32, fun: [u8], msg: [u8]) -> ok
     let logger = get_logger()
     let entry = LogEntry(
         timestamp: get_timestamp(),
         level: LogLevel::DEBUG,
         file: file,
         line: line,
-        function: func,
+        function: fun,
         message: msg,
         thread_id: get_thread_id()
     )
     logger.log(&entry)
     pass
 
-export func! log_info(file: [u8], line: u32, func: [u8], msg: [u8]) -> ok
+export func! log_info(file: [u8], line: u32, fun: [u8], msg: [u8]) -> ok
     let logger = get_logger()
     let entry = LogEntry(
         timestamp: get_timestamp(),
         level: LogLevel::INFO,
         file: file,
         line: line,
-        function: func,
+        function: fun,
         message: msg,
         thread_id: get_thread_id()
     )
     logger.log(&entry)
     pass
 
-export func! log_warn(file: [u8], line: u32, func: [u8], msg: [u8]) -> ok
+export func! log_warn(file: [u8], line: u32, fun: [u8], msg: [u8]) -> ok
     let logger = get_logger()
     let entry = LogEntry(
         timestamp: get_timestamp(),
         level: LogLevel::WARN,
         file: file,
         line: line,
-        function: func,
+        function: fun,
         message: msg,
         thread_id: get_thread_id()
     )
     logger.log(&entry)
     pass
 
-export func! log_error(file: [u8], line: u32, func: [u8], msg: [u8]) -> ok
+export func! log_error(file: [u8], line: u32, fun: [u8], msg: [u8]) -> ok
     let logger = get_logger()
     let entry = LogEntry(
         timestamp: get_timestamp(),
         level: LogLevel::ERROR,
         file: file,
         line: line,
-        function: func,
+        function: fun,
         message: msg,
         thread_id: get_thread_id()
     )
     logger.log(&entry)
     pass
 
-export func! log_fatal(file: [u8], line: u32, func: [u8], msg: [u8]) -> ok
+export func! log_fatal(file: [u8], line: u32, fun: [u8], msg: [u8]) -> ok
     let logger = get_logger()
     let entry = LogEntry(
         timestamp: get_timestamp(),
         level: LogLevel::FATAL,
         file: file,
         line: line,
-        function: func,
+        function: fun,
         message: msg,
         thread_id: get_thread_id()
     )

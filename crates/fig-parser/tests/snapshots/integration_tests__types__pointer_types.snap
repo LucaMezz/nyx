@@ -6,7 +6,9 @@ items:
   - TypeAlias:
       visibility: Default
       annotations: []
-      name: RawPtr
+      name:
+        segments:
+          - RawPtr
       generic_params: []
       aliased_type:
         Pointer:
@@ -16,7 +18,9 @@ items:
   - TypeAlias:
       visibility: Default
       annotations: []
-      name: MutPtr
+      name:
+        segments:
+          - MutPtr
       generic_params: []
       aliased_type:
         Pointer:
@@ -26,27 +30,35 @@ items:
   - TypeAlias:
       visibility: Default
       annotations: []
-      name: OptPtr
+      name:
+        segments:
+          - OptPtr
       generic_params: []
       aliased_type:
-        Pointer:
-          nullable: true
-          mutable: false
-          element_type: U8
+        Nullable:
+          Pointer:
+            nullable: false
+            mutable: false
+            element_type: U8
   - TypeAlias:
       visibility: Default
       annotations: []
-      name: OptMutPtr
+      name:
+        segments:
+          - OptMutPtr
       generic_params: []
       aliased_type:
-        Pointer:
-          nullable: true
-          mutable: true
-          element_type: U8
+        Nullable:
+          Pointer:
+            nullable: false
+            mutable: true
+            element_type: U8
   - TypeAlias:
       visibility: Default
       annotations: []
-      name: PtrPtr
+      name:
+        segments:
+          - PtrPtr
       generic_params: []
       aliased_type:
         Pointer:
@@ -60,7 +72,9 @@ items:
   - TypeAlias:
       visibility: Default
       annotations: []
-      name: MutPtrPtr
+      name:
+        segments:
+          - MutPtrPtr
       generic_params: []
       aliased_type:
         Pointer:

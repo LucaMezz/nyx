@@ -6,12 +6,19 @@ items:
   - Union:
       visibility: Default
       annotations: []
-      name: Value
+      name:
+        segments:
+          - Value
       generic_params: []
       requires: []
       variants:
         - name: null_val
-          ty: Ok
+          ty:
+            Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
         - name: bool_val
           ty: Bool
         - name: int_val
@@ -30,6 +37,7 @@ items:
               mutable: false
               element_type:
                 Path:
-                  segments:
-                    - Value
+                  path:
+                    segments:
+                      - Value
                   generic_args: []

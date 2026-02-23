@@ -11,7 +11,8 @@ items:
         is_effect: false
         receiver: ~
         name: sum_ptr
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params:
           - name: ptr
@@ -43,16 +44,19 @@ items:
                     Path:
                       segments:
                         - range
-                      generic_args: []
                   args:
-                    - IntegerLiteral:
-                        base: Decimal
-                        digits: "0"
-                        suffix: ~
-                    - Path:
-                        segments:
-                          - len
-                        generic_args: []
+                    - name: ~
+                      value:
+                        IntegerLiteral:
+                          base: Decimal
+                          digits: "0"
+                          suffix: ~
+                    - name: ~
+                      value:
+                        Path:
+                          segments:
+                            - len
+                  generic_args: ~
                   is_propagating: false
               body:
                 statements:
@@ -70,15 +74,30 @@ items:
                                   Path:
                                     segments:
                                       - ptr
-                                    generic_args: []
                                 op: Add
                                 rhs:
                                   Path:
                                     segments:
                                       - i
-                                    generic_args: []
+                  - Expression:
+                      Assign:
+                        lhs:
+                          Path:
+                            segments:
+                              - total
+                        op: Assign
+                        rhs:
+                          BinaryOp:
+                            lhs:
+                              Path:
+                                segments:
+                                  - total
+                            op: Add
+                            rhs:
+                              Path:
+                                segments:
+                                  - val
           - Return:
               Path:
                 segments:
                   - total
-                generic_args: []

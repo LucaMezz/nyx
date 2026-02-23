@@ -3,7 +3,7 @@ source: crates/fig-lexer/tests/integration_tests.rs
 expression: tokens
 ---
 - Union
-- Core
+- Ident: core
 - ColonColon
 - Ident: error
 - ColonColon
@@ -13,7 +13,7 @@ expression: tokens
 - RBracket
 - Newline
 - Indent
-- OkLiteral
+- Ident: ok
 - Colon
 - Ident: T
 - Newline

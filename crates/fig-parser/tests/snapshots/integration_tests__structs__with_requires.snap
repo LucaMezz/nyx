@@ -7,7 +7,9 @@ items:
       visibility: Default
       annotations: []
       is_packed: false
-      name: Queue
+      name:
+        segments:
+          - Queue
       generic_params:
         - Type:
             name: T
@@ -15,49 +17,65 @@ items:
             default_type: ~
       requires:
         - Path:
-            segments:
-              - Container
+            path:
+              segments:
+                - Container
             generic_args:
               - Path:
-                  segments:
-                    - T
+                  path:
+                    segments:
+                      - T
                   generic_args: []
       fields:
         - name: head
           ty:
-            Pointer:
-              nullable: true
-              mutable: false
-              element_type:
-                Path:
-                  segments:
-                    - Node
-                  generic_args:
-                    - Path:
-                        segments:
-                          - T
-                        generic_args: []
+            Nullable:
+              Pointer:
+                nullable: false
+                mutable: false
+                element_type:
+                  Path:
+                    path:
+                      segments:
+                        - Node
+                    generic_args:
+                      - Path:
+                          path:
+                            segments:
+                              - T
+                          generic_args: []
+          visibility: Default
+          annotations: []
         - name: tail
           ty:
-            Pointer:
-              nullable: true
-              mutable: false
-              element_type:
-                Path:
-                  segments:
-                    - Node
-                  generic_args:
-                    - Path:
-                        segments:
-                          - T
-                        generic_args: []
+            Nullable:
+              Pointer:
+                nullable: false
+                mutable: false
+                element_type:
+                  Path:
+                    path:
+                      segments:
+                        - Node
+                    generic_args:
+                      - Path:
+                          path:
+                            segments:
+                              - T
+                          generic_args: []
+          visibility: Default
+          annotations: []
         - name: len
           ty: USize
+          visibility: Default
+          annotations: []
   - Struct:
       visibility: Default
       annotations: []
       is_packed: false
-      name: Display
+      name:
+        segments:
+          - Display
       generic_params:
         - Type:
             name: T
@@ -65,21 +83,30 @@ items:
             default_type: ~
       requires:
         - Path:
-            segments:
-              - Drawable
+            path:
+              segments:
+                - Drawable
             generic_args: []
         - Path:
-            segments:
-              - Resizable
+            path:
+              segments:
+                - Resizable
             generic_args: []
       fields:
         - name: width
           ty: U32
+          visibility: Default
+          annotations: []
         - name: height
           ty: U32
+          visibility: Default
+          annotations: []
         - name: content
           ty:
             Path:
-              segments:
-                - T
+              path:
+                segments:
+                  - T
               generic_args: []
+          visibility: Default
+          annotations: []

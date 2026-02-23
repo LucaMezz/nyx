@@ -1,0 +1,318 @@
+---
+source: crates/fig-parser/tests/integration_tests.rs
+expression: ast
+---
+items:
+  - Struct:
+      visibility: Default
+      annotations: []
+      is_packed: false
+      name:
+        segments:
+          - Stack
+      generic_params:
+        - Type:
+            name: T
+            bounds: []
+            default_type: ~
+      requires: []
+      fields:
+        - name: data
+          ty:
+            Pointer:
+              nullable: false
+              mutable: true
+              element_type:
+                Path:
+                  path:
+                    segments:
+                      - T
+                  generic_args: []
+          visibility: Default
+          annotations: []
+        - name: len
+          ty: USize
+          visibility: Default
+          annotations: []
+        - name: cap
+          ty: USize
+          visibility: Default
+          annotations: []
+  - Const:
+      visibility: Default
+      annotations: []
+      generic_params: []
+      receiver:
+        - name: Stack
+          generic_args:
+            - Path:
+                path:
+                  segments:
+                    - T
+                generic_args: []
+      name: INITIAL_CAP
+      ty: USize
+      value:
+        IntegerLiteral:
+          base: Decimal
+          digits: "8"
+          suffix: ~
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: Stack
+            generic_args:
+              - Type:
+                  name: T
+                  bounds: []
+                  default_type: ~
+        name: new
+        outer_generic_params: []
+        func_generic_params: []
+        self_param: ~
+        params: []
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - Stack
+              generic_args:
+                - Path:
+                    path:
+                      segments:
+                        - T
+                    generic_args: []
+      body:
+        statements:
+          - Pass
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: false
+        receiver:
+          - name: Stack
+            generic_args:
+              - Type:
+                  name: T
+                  bounds: []
+                  default_type: ~
+        name: is_empty
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: false
+        params: []
+        return_types:
+          - Bool
+      body:
+        statements:
+          - Return:
+              BinaryOp:
+                lhs:
+                  FieldAccess:
+                    object: SelfValue
+                    field: len
+                    is_propagating: false
+                op: Equal
+                rhs:
+                  IntegerLiteral:
+                    base: Decimal
+                    digits: "0"
+                    suffix: ~
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: false
+        receiver:
+          - name: Stack
+            generic_args:
+              - Type:
+                  name: T
+                  bounds: []
+                  default_type: ~
+        name: len
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: false
+        params: []
+        return_types:
+          - USize
+      body:
+        statements:
+          - Return:
+              FieldAccess:
+                object: SelfValue
+                field: len
+                is_propagating: false
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: Stack
+            generic_args:
+              - Type:
+                  name: T
+                  bounds: []
+                  default_type: ~
+        name: push
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params:
+          - name: val
+            ty:
+              Path:
+                path:
+                  segments:
+                    - T
+                generic_args: []
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
+      body:
+        statements:
+          - Pass
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: Stack
+            generic_args:
+              - Type:
+                  name: T
+                  bounds: []
+                  default_type: ~
+        name: pop
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params: []
+        return_types:
+          - Nullable:
+              Path:
+                path:
+                  segments:
+                    - T
+                generic_args: []
+      body:
+        statements:
+          - If:
+              condition:
+                Call:
+                  callee:
+                    FieldAccess:
+                      object: SelfValue
+                      field: is_empty
+                      is_propagating: false
+                  args: []
+                  generic_args: ~
+                  is_propagating: false
+              then_body:
+                statements:
+                  - Return: NullLiteral
+              elif_clauses: []
+              else_body: ~
+          - Pass
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: false
+        receiver:
+          - name: Stack
+            generic_args:
+              - Type:
+                  name: T
+                  bounds: []
+                  default_type: ~
+        name: peek
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: false
+        params: []
+        return_types:
+          - Nullable:
+              Pointer:
+                nullable: false
+                mutable: false
+                element_type:
+                  Path:
+                    path:
+                      segments:
+                        - T
+                    generic_args: []
+      body:
+        statements:
+          - If:
+              condition:
+                Call:
+                  callee:
+                    FieldAccess:
+                      object: SelfValue
+                      field: is_empty
+                      is_propagating: false
+                  args: []
+                  generic_args: ~
+                  is_propagating: false
+              then_body:
+                statements:
+                  - Return: NullLiteral
+              elif_clauses: []
+              else_body: ~
+          - Pass
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: Stack
+            generic_args:
+              - Type:
+                  name: T
+                  bounds: []
+                  default_type: ~
+        name: free
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params: []
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
+      body:
+        statements:
+          - Pass

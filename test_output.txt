@@ -1,0 +1,664 @@
+warning: virtual workspace defaulting to `resolver = "1"` despite one or more workspace members being on edition 2024 which implies `resolver = "3"`
+  |
+  = note: to keep the current resolver, specify `workspace.resolver = "1"` in the workspace root's manifest
+  = note: to use the edition 2024 resolver, specify `workspace.resolver = "3"` in the workspace root's manifest
+  = note: for more details see https://doc.rust-lang.org/cargo/reference/resolver.html#resolver-versions
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.22s
+     Running unittests src\lib.rs (target\debug\deps\fig_parser-24d2d7f6cc38055d.exe)
+
+running 167 tests
+test pretty_print::tests::test_display_trait_type ... ok
+test pretty_print::tests::test_print_alignof ... ok
+test pretty_print::tests::test_ascii_output ... ok
+test pretty_print::tests::test_custom_indent_size ... ok
+test pretty_print::tests::test_display_trait_expression ... ok
+test pretty_print::tests::test_print_array_literal ... ok
+test pretty_print::tests::test_print_array_type_dynamic ... ok
+test pretty_print::tests::test_print_array_type_fixed_size ... ok
+test pretty_print::tests::test_print_call ... ok
+test pretty_print::tests::test_print_binary_op ... ok
+test pretty_print::tests::test_print_boolean ... ok
+test pretty_print::tests::test_print_call_propagating ... ok
+test pretty_print::tests::test_print_const_param ... ok
+test pretty_print::tests::test_print_cast ... ok
+test pretty_print::tests::test_print_const_statement ... ok
+test pretty_print::tests::test_print_empty_array ... ok
+test pretty_print::tests::test_print_enum ... ok
+test pretty_print::tests::test_print_field_access ... ok
+test pretty_print::tests::test_print_for_statement ... ok
+test pretty_print::tests::test_print_field_access_propagating ... ok
+test pretty_print::tests::test_print_if_elif_else ... ok
+test pretty_print::tests::test_print_if_statement ... ok
+test pretty_print::tests::test_print_index ... ok
+test pretty_print::tests::test_print_integer_literal ... ok
+test pretty_print::tests::test_print_interface ... ok
+test pretty_print::tests::test_print_interpolated_string ... ok
+test pretty_print::tests::test_print_let_statement ... ok
+test pretty_print::tests::test_print_mut_statement ... ok
+test pretty_print::tests::test_print_namespace ... ok
+test pretty_print::tests::test_print_nested_expression ... ok
+test pretty_print::tests::test_print_null_literal ... ok
+test pretty_print::tests::test_print_nullable_mutable_pointer_type ... ok
+test pretty_print::tests::test_print_offsetof ... ok
+test pretty_print::tests::test_print_ok_literal ... ok
+test pretty_print::tests::test_print_packed_struct ... ok
+test pretty_print::tests::test_print_pass_statement ... ok
+test pretty_print::tests::test_print_path_qualified ... ok
+test pretty_print::tests::test_print_path_simple ... ok
+test pretty_print::tests::test_print_path_type ... ok
+test pretty_print::tests::test_print_pointer_type ... ok
+test pretty_print::tests::test_print_primitive_types ... ok
+test pretty_print::tests::test_print_return_statement ... ok
+test pretty_print::tests::test_print_self_value ... ok
+test pretty_print::tests::test_print_sizeof ... ok
+test pretty_print::tests::test_print_source_file_empty ... ok
+test pretty_print::tests::test_print_struct ... ok
+test pretty_print::tests::test_print_type_access ... ok
+test pretty_print::tests::test_print_type_param_simple ... ok
+test pretty_print::tests::test_print_type_param_with_bounds ... ok
+test pretty_print::tests::test_print_type_param_with_default ... ok
+test pretty_print::tests::test_print_unary_op ... ok
+test pretty_print::tests::test_print_union ... ok
+test pretty_print::tests::test_print_using_statement ... ok
+test pretty_print::tests::test_print_while_statement ... ok
+test tests::function_tests::test_function_no_params ... ok
+test tests::function_tests::test_function_with_array_return ... ok
+test tests::function_tests::test_function_no_return_type ... ok
+test tests::function_tests::test_function_with_bounded_generic ... ok
+test tests::function_tests::test_function_with_complex_types ... ok
+test tests::function_tests::test_function_with_const_param ... ok
+test tests::function_tests::test_function_with_generic_params ... ok
+test tests::function_tests::test_function_with_mixed_generics ... ok
+test tests::function_tests::test_function_with_multiple_bounds ... ok
+test tests::function_tests::test_function_with_multiple_generics ... ok
+test tests::function_tests::test_function_with_single_param ... ok
+test tests::function_tests::test_function_with_trailing_comma ... ok
+test tests::function_tests::test_function_with_where_clause ... ok
+test tests::function_tests::test_most_basic_function ... ok
+test tests::function_tests::test_simple_function ... ok
+test tests::interface_tests::test_interface_no_body ... ok
+test tests::interface_tests::test_interface_with_complex_types ... ok
+test tests::interface_tests::test_interface_with_extends_clause ... ok
+test tests::interface_tests::test_interface_with_extends_and_where ... ok
+test tests::interface_tests::test_interface_with_generic_params ... ok
+test tests::interface_tests::test_interface_with_method_parameters ... ok
+test tests::interface_tests::test_interface_with_where_clause ... ok
+test tests::interface_tests::test_simple_interface ... ok
+test tests::namespace_tests::test_empty_namespace ... ok
+test tests::namespace_tests::test_namespace_with_enum ... ok
+test tests::namespace_tests::test_namespace_with_function ... ok
+test tests::namespace_tests::test_namespace_with_interface ... ok
+test tests::namespace_tests::test_namespace_with_complex_items ... ok
+test tests::namespace_tests::test_namespace_with_multiple_items ... ok
+test tests::namespace_tests::test_namespace_with_struct ... ok
+test tests::namespace_tests::test_namespace_with_union ... ok
+test tests::namespace_tests::test_nested_namespace ... ok
+test tests::namespace_tests::test_simple_namespace ... ok
+test tests::struct_enum_union_tests::enum_tests::test_enum_single_variant ... ok
+test tests::struct_enum_union_tests::enum_tests::test_enum_mixed_discriminants ... ok
+test tests::struct_enum_union_tests::enum_tests::test_enum_with_bounded_generic ... ok
+test tests::struct_enum_union_tests::enum_tests::test_enum_with_discriminants ... ok
+test tests::struct_enum_union_tests::enum_tests::test_enum_with_const_param ... ok
+test tests::struct_enum_union_tests::enum_tests::test_enum_with_generic_params ... ok
+test tests::struct_enum_union_tests::enum_tests::test_enum_with_i32_representation ... ok
+test tests::struct_enum_union_tests::enum_tests::test_enum_with_representation ... ok
+test tests::struct_enum_union_tests::enum_tests::test_enum_with_requires_and_where ... ok
+test tests::struct_enum_union_tests::enum_tests::test_enum_with_requires_clause ... ok
+test tests::struct_enum_union_tests::enum_tests::test_enum_with_usize_representation ... ok
+test tests::struct_enum_union_tests::enum_tests::test_enum_with_where_clause ... ok
+test tests::struct_enum_union_tests::enum_tests::test_simple_enum ... ok
+test tests::struct_enum_union_tests::struct_tests::test_simple_struct ... ok
+test tests::struct_enum_union_tests::struct_tests::test_struct_with_bounded_generic ... ok
+test tests::struct_enum_union_tests::struct_tests::test_struct_with_complex_types ... ok
+test tests::struct_enum_union_tests::struct_tests::test_struct_with_const_param ... ok
+test tests::struct_enum_union_tests::struct_tests::test_struct_with_generic_params ... ok
+test tests::struct_enum_union_tests::struct_tests::test_struct_with_multiple_bounded_generics ... ok
+test tests::struct_enum_union_tests::struct_tests::test_struct_with_requires_clause ... ok
+test tests::struct_enum_union_tests::struct_tests::test_struct_with_requires_and_where ... ok
+test tests::struct_enum_union_tests::struct_tests::test_struct_with_single_field ... ok
+test tests::struct_enum_union_tests::struct_tests::test_struct_with_where_clause ... ok
+test tests::struct_enum_union_tests::union_tests::test_simple_union ... ok
+test tests::struct_enum_union_tests::union_tests::test_union_single_variant ... ok
+test tests::struct_enum_union_tests::union_tests::test_union_with_bounded_generic ... ok
+test tests::struct_enum_union_tests::union_tests::test_union_with_complex_types ... ok
+test tests::struct_enum_union_tests::union_tests::test_union_with_const_param ... ok
+test tests::struct_enum_union_tests::union_tests::test_union_with_generic_params ... ok
+test tests::struct_enum_union_tests::union_tests::test_union_with_requires_and_where ... ok
+test tests::struct_enum_union_tests::union_tests::test_union_with_requires_clause ... ok
+test tests::struct_enum_union_tests::union_tests::test_union_with_where_clause ... ok
+test tests::test_address_of_expression ... ok
+test tests::test_array_literal_empty ... ok
+test tests::test_array_literal_with_elements ... ok
+test tests::test_binary_add ... ok
+test tests::test_bitwise_operations ... ok
+test tests::test_comparison ... ok
+test tests::test_dereference_address_of_expression ... ok
+test tests::test_dereference_expression ... ok
+test tests::test_indentation_tokens ... ok
+test tests::test_lexer_integration ... ok
+test tests::test_nested_address_of_dereference ... ok
+test tests::test_logical_or ... ok
+test tests::test_parenthesized ... ok
+test tests::test_parse_as_expression_with_error_union ... ok
+test tests::test_parse_error_union_type ... ok
+test tests::test_parse_fixed_array_type ... ok
+test tests::test_parse_mutable_pointer ... ok
+test tests::test_parse_generics_list ... ok
+test tests::test_parse_nested_pointer_i64 ... ok
+test tests::test_parse_nullable_pointer ... ok
+test tests::test_parse_nullable_pointer_error_union ... ok
+test tests::test_parse_pointer_error_union ... ok
+test tests::test_parse_primitive_type_bool ... ok
+test tests::test_parse_primitive_type_f64 ... ok
+test tests::test_parse_primitive_type_i32 ... ok
+test tests::test_parse_primitive_type_ok ... ok
+test tests::test_parse_primitive_type_u8 ... ok
+test tests::test_parse_raw_pointer ... ok
+test tests::test_parse_slice_type ... ok
+test tests::test_parse_typed_pointer_u32 ... ok
+test tests::test_precedence_mul_add ... ok
+test tests::test_simple_boolean ... ok
+test tests::test_simple_integer ... ok
+test tests::test_unary_negation ... ok
+test tests::test_unary_with_binary_precedence ... ok
+test tests::test_unary_with_parenthesized ... ok
+test tests::type_alias_tests::test_simple_type_alias ... ok
+test tests::type_alias_tests::test_type_alias_error_union ... ok
+test tests::type_alias_tests::test_type_alias_fixed_array_type ... ok
+test tests::type_alias_tests::test_type_alias_pointer_type ... ok
+test tests::type_alias_tests::test_type_alias_slice_type ... ok
+test tests::type_alias_tests::test_type_alias_with_bounded_generic ... ok
+test tests::type_alias_tests::test_type_alias_with_generic_params ... ok
+test tests::type_alias_tests::test_type_alias_with_const_param ... ok
+test tests::type_alias_tests::test_type_alias_with_complex_where_clause ... ok
+test tests::type_alias_tests::test_type_alias_with_mixed_params_and_where_clause ... ok
+test tests::type_alias_tests::test_type_alias_with_multiple_bounds ... ok
+test tests::type_alias_tests::test_type_alias_with_where_clause ... ok
+
+test result: ok. 167 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests\integration_tests.rs (target\debug\deps\integration_tests-bab32fe3dc65933a.exe)
+
+running 201 tests
+test parser_test::annotations/multi_args.fig                ... ok
+test parser_test::comments/multiple_comments.fig            ... ok
+test parser_test::comments/single_line.fig                  ... ok
+test parser_test::control_flow/block_anon.fig               ... ok
+test parser_test::annotations/stacked.fig                   ... ok
+test parser_test::control_flow/block_named.fig              ... ok
+test parser_test::annotations/with_args.fig                 ... ok
+test parser_test::comments/comments_between_definitions.fig ... ok
+test parser_test::annotations/no_args.fig                   ... ok
+test parser_test::control_flow/for_nested.fig               ... ok
+test parser_test::control_flow/for_with_body.fig            ... ok
+test parser_test::control_flow/for_basic.fig                ... ok
+test parser_test::control_flow/if_elif_else.fig             ... ok
+test parser_test::control_flow/if_bool_conditions.fig       ... ok
+test parser_test::control_flow/for_ptr_iteration.fig        ... ok
+test parser_test::edge_cases/deeply_nested_types.fig        ... FAILED
+test parser_test::control_flow/if_else.fig                  ... ok
+test parser_test::edge_cases/consecutive_pass_functions.fig ... ok
+test parser_test::edge_cases/for_no_body.fig                ... FAILED
+test parser_test::edge_cases/interface_clauses_only.fig     ... FAILED
+test parser_test::control_flow/if_simple.fig                ... ok
+test parser_test::edge_cases/const_referencing_const.fig    ... ok
+test parser_test::control_flow/if_many_elif.fig             ... ok
+test parser_test::edge_cases/annotation_complex_arg.fig     ... ok
+test parser_test::control_flow/pass_statement.fig           ... ok
+test parser_test::control_flow/if_nested.fig                ... ok
+test parser_test::edge_cases/empty_file.fig                 ... ok
+test parser_test::control_flow/while_basic.fig              ... ok
+test parser_test::edge_cases/where_before_pass.fig          ... FAILED
+test parser_test::edge_cases/empty_string.fig               ... ok
+test parser_test::edge_cases/long_identifiers.fig           ... ok
+test parser_test::edge_cases/while_no_body.fig              ... FAILED
+test parser_test::edge_cases/chained_casts.fig              ... ok
+test parser_test::control_flow/return_various.fig           ... ok
+test parser_test::enums/namespaced.fig                      ... FAILED
+test parser_test::edge_cases/zero_params.fig                ... ok
+test parser_test::edge_cases/only_comments.fig              ... ok
+test parser_test::edge_cases/nested_structs.fig             ... ok
+test parser_test::enums/simple.fig                          ... ok
+test parser_test::enums/mixed_values.fig                    ... ok
+test parser_test::edge_cases/single_char_identifiers.fig    ... ok
+test parser_test::edge_cases/many_let_bindings.fig          ... ok
+test parser_test::edge_cases/underscore_identifiers.fig     ... ok
+test parser_test::edge_cases/zero_literals.fig              ... ok
+test parser_test::enums/single_variant.fig                  ... ok
+test parser_test::enums/explicit_values.fig                 ... ok
+test parser_test::enums/visibility.fig                      ... ok
+test parser_test::expressions/effect_call_suffix.fig        ... FAILED
+test parser_test::expressions/call_basic.fig                ... FAILED
+test parser_test::expressions/field_access.fig              ... FAILED
+test parser_test::enums/many_variants.fig                   ... ok
+test parser_test::expressions/as_cast.fig                   ... ok
+test parser_test::expressions/arithmetic.fig                ... ok
+test parser_test::enums/with_requires.fig                   ... ok
+test parser_test::expressions/self_expr.fig                 ... FAILED
+test parser_test::enums/with_annotations.fig                ... ok
+test parser_test::enums/with_repr.fig                       ... ok
+test parser_test::expressions/logical.fig                   ... ok
+test parser_test::expressions/chained_postfix.fig           ... ok
+test parser_test::expressions/bitwise.fig                   ... ok
+test parser_test::expressions/comparisons.fig               ... ok
+test parser_test::expressions/index_suffix.fig              ... ok
+test parser_test::functions/calling_functions.fig           ... FAILED
+test parser_test::expressions/method_call.fig               ... ok
+test parser_test::functions/effect_generic_self.fig         ... FAILED
+test parser_test::functions/effect_marker.fig               ... FAILED
+test parser_test::functions/generic_basic.fig               ... FAILED
+test parser_test::functions/generic_scope_syntax.fig        ... FAILED
+test parser_test::functions/generic_where.fig               ... FAILED
+test parser_test::expressions/field_access_chained.fig      ... ok
+test parser_test::expressions/type_access.fig               ... ok
+test parser_test::expressions/parenthesized.fig             ... ok
+test parser_test::expressions/operator_precedence.fig       ... ok
+test parser_test::expressions/sizeof_alignof_offsetof.fig   ... ok
+test parser_test::functions/definitions_pass.fig            ... ok
+test parser_test::functions/declarations_basic.fig          ... ok
+test parser_test::expressions/unary.fig                     ... ok
+test parser_test::functions/extern_declarations.fig         ... ok
+test parser_test::functions/mut_self.fig                    ... ok
+test parser_test::functions/body_with_locals.fig            ... ok
+test parser_test::generics/basic_params.fig                 ... FAILED
+test parser_test::generics/where_compound_bounds.fig        ... FAILED
+test parser_test::generics/type_arguments.fig               ... FAILED
+test parser_test::generics/where_multiple_params.fig        ... FAILED
+test parser_test::generics/default_params.fig               ... FAILED
+test parser_test::integration/all_features.fig              ... FAILED
+test parser_test::integration/hash_map.fig                  ... FAILED
+test parser_test::integration/error_handling.fig            ... FAILED
+test parser_test::functions/multiple_parameters.fig         ... ok
+test parser_test::functions/namespaced_methods.fig          ... ok
+test parser_test::functions/no_return_type.fig              ... ok
+test parser_test::integration/interpreter_ast.fig           ... FAILED
+test parser_test::integration/iterator_range.fig            ... FAILED
+test parser_test::functions/return_pointer.fig              ... ok
+test parser_test::integration/seq_dynamic_array.fig         ... FAILED
+test parser_test::integration/stack.fig                     ... FAILED
+test parser_test::interfaces/all_clauses.fig                ... FAILED
+test parser_test::functions/pointer_parameters.fig          ... ok
+test parser_test::integration/string_utils_namespace.fig    ... FAILED
+test parser_test::integration/linked_list.fig               ... FAILED
+test parser_test::functions/visibility.fig                  ... ok
+test parser_test::interfaces/visibility_generic.fig         ... FAILED
+test parser_test::interfaces/namespaced.fig                 ... FAILED
+test parser_test::interfaces/with_where.fig                 ... FAILED
+test parser_test::functions/self_parameters.fig             ... ok
+test parser_test::functions/return_slice_array.fig          ... ok
+test parser_test::functions/return_statement.fig            ... ok
+test parser_test::interfaces/empty.fig                      ... ok
+test parser_test::interfaces/single_method.fig              ... ok
+test parser_test::interfaces/with_requires.fig              ... ok
+test parser_test::interfaces/effect_methods.fig             ... ok
+test parser_test::literals/booleans.fig                     ... ok
+test parser_test::interfaces/extends_many.fig               ... ok
+test parser_test::interfaces/with_extends.fig               ... ok
+test parser_test::interfaces/multiple_methods.fig           ... ok
+test parser_test::literals/integers.fig                     ... ok
+test parser_test::literals/strings_basic.fig                ... ok
+test parser_test::literals/floats.fig                       ... ok
+test parser_test::literals/mixed_literals.fig               ... ok
+test parser_test::literals/strings_interpolated.fig         ... ok
+test parser_test::integration/math_vector.fig               ... ok
+test parser_test::namespaces/empty_pass.fig                 ... ok
+test parser_test::paths/type_prefixed.fig                   ... FAILED
+test parser_test::literals/strings_interpolated_field.fig   ... ok
+test parser_test::namespaces/declaration_only.fig           ... ok
+test parser_test::paths/with_generics.fig                   ... FAILED
+test parser_test::realistic/arg_parser.fig                  ... FAILED
+test parser_test::realistic/async_runtime.fig               ... FAILED
+test parser_test::realistic/binary_serializer.fig           ... FAILED
+test parser_test::realistic/cli_builder.fig                 ... FAILED
+test parser_test::namespaces/path_name.fig                  ... ok
+test parser_test::namespaces/nested.fig                     ... ok
+test parser_test::realistic/btree.fig                       ... FAILED
+test parser_test::realistic/compression.fig                 ... FAILED
+test parser_test::realistic/buddy_allocator.fig             ... FAILED
+test parser_test::realistic/database_index.fig              ... FAILED
+test parser_test::namespaces/visibility.fig                 ... ok
+test parser_test::realistic/fixed_point_math.fig            ... FAILED
+test parser_test::realistic/hash_map.fig                    ... FAILED
+test parser_test::realistic/elf_parser.fig                  ... FAILED
+test parser_test::realistic/lexer.fig                       ... FAILED
+test parser_test::realistic/http_types.fig                  ... FAILED
+test parser_test::realistic/logger.fig                      ... FAILED
+test parser_test::realistic/ring_buffer.fig                 ... FAILED
+test parser_test::realistic/json_parser.fig                 ... FAILED
+test parser_test::realistic/regex_engine.fig                ... FAILED
+test parser_test::realistic/slab_allocator.fig              ... FAILED
+test parser_test::realistic/tcp_server.fig                  ... FAILED
+test parser_test::realistic/utf8_string.fig                 ... FAILED
+test parser_test::realistic/virtual_machine.fig             ... FAILED
+test parser_test::realistic/thread_pool.fig                 ... FAILED
+test parser_test::structs/namespaced.fig                    ... FAILED
+test parser_test::namespaces/with_functions.fig             ... ok
+test parser_test::namespaces/with_annotations.fig           ... ok
+test parser_test::namespaces/with_types.fig                 ... ok
+test parser_test::structs/multiple_fields.fig               ... ok
+test parser_test::paths/builtin_namespaces.fig              ... ok
+test parser_test::paths/simple_and_namespaced.fig           ... ok
+test parser_test::structs/with_annotations.fig              ... FAILED
+test parser_test::structs/empty.fig                         ... ok
+test parser_test::structs/pointer_fields.fig                ... ok
+test parser_test::types/complex_nested_types.fig            ... FAILED
+test parser_test::structs/generic_multiple.fig              ... ok
+test parser_test::types/generic_aliases.fig                 ... FAILED
+test parser_test::structs/generic_single.fig                ... ok
+test parser_test::types/namespaced_aliases.fig              ... FAILED
+test parser_test::types/ok_null_optional.fig                ... FAILED
+test parser_test::structs/requires_and_where.fig            ... ok
+test parser_test::structs/single_field.fig                  ... ok
+test parser_test::structs/packed.fig                        ... ok
+test parser_test::unions/generic_pair.fig                   ... FAILED
+test parser_test::structs/slice_fields.fig                  ... ok
+test parser_test::structs/visibility.fig                    ... ok
+test parser_test::unions/namespaced.fig                     ... FAILED
+test parser_test::unions/visibility.fig                     ... FAILED
+test parser_test::unions/with_requires.fig                  ... FAILED
+test parser_test::structs/with_where.fig                    ... ok
+test parser_test::structs/with_requires.fig                 ... ok
+test parser_test::types/array_types.fig                     ... ok
+test parser_test::types/generic_path_aliases.fig            ... ok
+test parser_test::types/pointer_types.fig                   ... ok
+test parser_test::types/slice_types.fig                     ... ok
+test parser_test::types/visibility_on_types.fig             ... ok
+test parser_test::types/primitive_aliases.fig               ... ok
+test parser_test::using/deep_path.fig                       ... ok
+test parser_test::unions/many_variants.fig                  ... ok
+test parser_test::unions/generic_single.fig                 ... ok
+test parser_test::unions/simple.fig                         ... ok
+test parser_test::unions/with_where.fig                     ... ok
+test parser_test::using/with_visibility.fig                 ... ok
+test parser_test::using/simple.fig                          ... ok
+test parser_test::variables/const_public.fig                ... ok
+test parser_test::variables/const_no_type.fig               ... ok
+test parser_test::variables/const_type_associated.fig       ... ok
+test parser_test::variables/const_generic.fig               ... ok
+test parser_test::variables/mut_no_type.fig                 ... ok
+test parser_test::variables/const_with_type.fig             ... ok
+test parser_test::variables/let_no_type.fig                 ... ok
+test parser_test::variables/let_with_type.fig               ... ok
+test parser_test::variables/mut_with_type.fig               ... ok
+test parser_test::visibility/all_modifiers.fig              ... ok
+
+failures:
+
+---- parser_test::edge_cases/deeply_nested_types.fig ----
+"Parse error in ../../tests/valid/edge_cases/deeply_nested_types.fig: UnrecognizedToken { token: (64, Question, 65), expected: [\"\\\"Self\\\"\", \"\\\"[\\\"\", \"\\\"alloc\\\"\", \"\\\"bool\\\"\", \"\\\"core\\\"\", \"\\\"f32\\\"\", \"\\\"f64\\\"\", \"\\\"i16\\\"\", \"\\\"i32\\\"\", \"\\\"i64\\\"\", \"\\\"i8\\\"\", \"\\\"ident\\\"\", \"\\\"isize\\\"\", \"\\\"null\\\"\", \"\\\"ok\\\"\", \"\\\"std\\\"\", \"\\\"u16\\\"\", \"\\\"u32\\\"\", \"\\\"u64\\\"\", \"\\\"u8\\\"\", \"\\\"usize\\\"\"] }"
+
+---- parser_test::edge_cases/for_no_body.fig ----
+"Parse error in ../../tests/valid/edge_cases/for_no_body.fig: UnrecognizedToken { token: (168, Dedent, 168), expected: [\"\\\"INDENT\\\"\"] }"
+
+---- parser_test::edge_cases/interface_clauses_only.fig ----
+"Parse error in ../../tests/valid/edge_cases/interface_clauses_only.fig: UnrecognizedToken { token: (163, SelfKeyword, 167), expected: [\"\\\"ident\\\"\"] }"
+
+---- parser_test::edge_cases/where_before_pass.fig ----
+"Parse error in ../../tests/valid/edge_cases/where_before_pass.fig: UnrecognizedToken { token: (113, LBracket, 114), expected: [\"\\\"(\\\"\", \"\\\".\\\"\", \"\\\"::\\\"\"] }"
+
+---- parser_test::edge_cases/while_no_body.fig ----
+"Parse error in ../../tests/valid/edge_cases/while_no_body.fig: UnrecognizedToken { token: (150, Dedent, 150), expected: [\"\\\"INDENT\\\"\"] }"
+
+---- parser_test::enums/namespaced.fig ----
+"Parse error in ../../tests/valid/enums/namespaced.fig: UnrecognizedToken { token: (42, ColonColon, 44), expected: [\"\\\"NEWLINE\\\"\", \"\\\"[\\\"\"] }"
+
+---- parser_test::expressions/effect_call_suffix.fig ----
+"Parse error in ../../tests/valid/expressions/effect_call_suffix.fig: UnrecognizedToken { token: (97, Bang, 98), expected: [\"\\\"%=\\\"\", \"\\\"&=\\\"\", \"\\\"(\\\"\", \"\\\"*=\\\"\", \"\\\"+=\\\"\", \"\\\"-=\\\"\", \"\\\".\\\"\", \"\\\"/=\\\"\", \"\\\"::\\\"\", \"\\\"<<=\\\"\", \"\\\"=\\\"\", \"\\\">>=\\\"\", \"\\\"NEWLINE\\\"\", \"\\\"[\\\"\", \"\\\"^=\\\"\", \"\\\"as\\\"\", \"\\\"|=\\\"\"] }"
+
+---- parser_test::expressions/call_basic.fig ----
+"Parse error in ../../tests/valid/expressions/call_basic.fig: UnrecognizedToken { token: (180, LParen, 181), expected: [\"\\\"%\\\"\", \"\\\")\\\"\", \"\\\"*\\\"\", \"\\\",\\\"\", \"\\\"/\\\"\"] }"
+
+---- parser_test::expressions/field_access.fig ----
+"Parse error in ../../tests/valid/expressions/field_access.fig: UnrecognizedToken { token: (154, Plus, 155), expected: [\"\\\"(\\\"\", \"\\\".\\\"\", \"\\\"::\\\"\", \"\\\"NEWLINE\\\"\", \"\\\"[\\\"\", \"\\\"as\\\"\"] }"
+
+---- parser_test::expressions/self_expr.fig ----
+"Parse error in ../../tests/valid/expressions/self_expr.fig: UnrecognizedToken { token: (140, Ne, 142), expected: [\"\\\"(\\\"\", \"\\\".\\\"\", \"\\\"::\\\"\", \"\\\"NEWLINE\\\"\", \"\\\"[\\\"\", \"\\\"as\\\"\"] }"
+
+---- parser_test::functions/calling_functions.fig ----
+"Parse error in ../../tests/valid/functions/calling_functions.fig: UnrecognizedToken { token: (157, LParen, 158), expected: [\"\\\"%\\\"\", \"\\\")\\\"\", \"\\\"*\\\"\", \"\\\",\\\"\", \"\\\"/\\\"\"] }"
+
+---- parser_test::functions/effect_generic_self.fig ----
+"Parse error in ../../tests/valid/functions/effect_generic_self.fig: UnrecognizedToken { token: (65, LBracket, 66), expected: [\"\\\"(\\\"\", \"\\\".\\\"\", \"\\\"::\\\"\"] }"
+
+---- parser_test::functions/effect_marker.fig ----
+"Parse error in ../../tests/valid/functions/effect_marker.fig: UnrecognizedToken { token: (162, LBracket, 163), expected: [\"\\\"(\\\"\", \"\\\".\\\"\", \"\\\"::\\\"\"] }"
+
+---- parser_test::functions/generic_basic.fig ----
+"Parse error in ../../tests/valid/functions/generic_basic.fig: UnrecognizedToken { token: (63, LBracket, 64), expected: [\"\\\"(\\\"\", \"\\\".\\\"\", \"\\\"::\\\"\"] }"
+
+---- parser_test::functions/generic_scope_syntax.fig ----
+"Parse error in ../../tests/valid/functions/generic_scope_syntax.fig: UnrecognizedToken { token: (78, LBracket, 79), expected: [\"\\\"alloc\\\"\", \"\\\"core\\\"\", \"\\\"ident\\\"\", \"\\\"std\\\"\"] }"
+
+---- parser_test::functions/generic_where.fig ----
+"Parse error in ../../tests/valid/functions/generic_where.fig: UnrecognizedToken { token: (49, LBracket, 50), expected: [\"\\\"(\\\"\", \"\\\".\\\"\", \"\\\"::\\\"\"] }"
+
+---- parser_test::generics/basic_params.fig ----
+"Parse error in ../../tests/valid/generics/basic_params.fig: UnrecognizedToken { token: (63, LBracket, 64), expected: [\"\\\"(\\\"\", \"\\\".\\\"\", \"\\\"::\\\"\"] }"
+
+---- parser_test::generics/where_compound_bounds.fig ----
+"Parse error in ../../tests/valid/generics/where_compound_bounds.fig: UnrecognizedToken { token: (73, LBracket, 74), expected: [\"\\\"(\\\"\", \"\\\".\\\"\", \"\\\"::\\\"\"] }"
+
+---- parser_test::generics/type_arguments.fig ----
+"Parse error in ../../tests/valid/generics/type_arguments.fig: UnrecognizedToken { token: (84, I32, 87), expected: [\"\\\"!\\\"\", \"\\\"&\\\"\", \"\\\"(\\\"\", \"\\\"*\\\"\", \"\\\"+\\\"\", \"\\\"-\\\"\", \"\\\"[\\\"\", \"\\\"alignof\\\"\", \"\\\"alloc\\\"\", \"\\\"char\\\"\", \"\\\"core\\\"\", \"\\\"false\\\"\", \"\\\"float\\\"\", \"\\\"ident\\\"\", \"\\\"int\\\"\", \"\\\"interpstring\\\"\", \"\\\"null\\\"\", \"\\\"offsetof\\\"\", \"\\\"ok\\\"\", \"\\\"self\\\"\", \"\\\"sizeof\\\"\", \"\\\"std\\\"\", \"\\\"string\\\"\", \"\\\"true\\\"\", \"\\\"~\\\"\"] }"
+
+---- parser_test::generics/where_multiple_params.fig ----
+"Parse error in ../../tests/valid/generics/where_multiple_params.fig: UnrecognizedToken { token: (67, LBracket, 68), expected: [\"\\\"(\\\"\", \"\\\".\\\"\", \"\\\"::\\\"\"] }"
+
+---- parser_test::generics/default_params.fig ----
+"Parse error in ../../tests/valid/generics/default_params.fig: UnrecognizedToken { token: (136, LBracket, 137), expected: [\"\\\"(\\\"\", \"\\\".\\\"\", \"\\\"::\\\"\"] }"
+
+---- parser_test::integration/all_features.fig ----
+"Parse error in ../../tests/valid/integration/all_features.fig: UnrecognizedToken { token: (138, Export, 144), expected: [\"\\\"#\\\"\", \"\\\"const\\\"\", \"\\\"enum\\\"\", \"\\\"extern\\\"\", \"\\\"func\\\"\", \"\\\"interface\\\"\", \"\\\"namespace\\\"\", \"\\\"packed\\\"\", \"\\\"struct\\\"\", \"\\\"type\\\"\", \"\\\"union\\\"\", \"\\\"using\\\"\"] }"
+
+---- parser_test::integration/hash_map.fig ----
+"Parse error in ../../tests/valid/integration/hash_map.fig: UnrecognizedToken { token: (313, Ident(\"V\"), 314), expected: [\"\\\"*\\\"\"] }"
+
+---- parser_test::integration/error_handling.fig ----
+"Parse error in ../../tests/valid/integration/error_handling.fig: UnrecognizedToken { token: (159, OkLiteral, 161), expected: [\"\\\"ident\\\"\", \"\\\"requires\\\"\", \"\\\"where\\\"\"] }"
+
+---- parser_test::integration/interpreter_ast.fig ----
+"Parse error in ../../tests/valid/integration/interpreter_ast.fig: UnrecognizedToken { token: (416, Dot, 417), expected: [\"\\\"%\\\"\", \"\\\")\\\"\", \"\\\"*\\\"\", \"\\\",\\\"\", \"\\\"/\\\"\"] }"
+
+---- parser_test::integration/iterator_range.fig ----
+"Parse error in ../../tests/valid/integration/iterator_range.fig: UnrecognizedToken { token: (113, Ident(\"T\"), 114), expected: [\"\\\"*\\\"\"] }"
+
+---- parser_test::integration/seq_dynamic_array.fig ----
+"Parse error in ../../tests/valid/integration/seq_dynamic_array.fig: UnrecognizedToken { token: (329, LBracket, 330), expected: [\"\\\"(\\\"\", \"\\\".\\\"\", \"\\\"::\\\"\"] }"
+
+---- parser_test::integration/stack.fig ----
+"Parse error in ../../tests/valid/integration/stack.fig: UnrecognizedToken { token: (186, LBracket, 187), expected: [\"\\\"(\\\"\", \"\\\".\\\"\", \"\\\"::\\\"\"] }"
+
+---- parser_test::interfaces/all_clauses.fig ----
+"Parse error in ../../tests/valid/interfaces/all_clauses.fig: UnrecognizedToken { token: (162, Requires, 170), expected: [\"\\\"DEDENT\\\"\", \"\\\"extern\\\"\", \"\\\"func\\\"\"] }"
+
+---- parser_test::integration/string_utils_namespace.fig ----
+"Parse error in ../../tests/valid/integration/string_utils_namespace.fig: UnrecognizedToken { token: (151, EqEq, 153), expected: [\"\\\"(\\\"\", \"\\\".\\\"\", \"\\\"::\\\"\", \"\\\"NEWLINE\\\"\", \"\\\"[\\\"\", \"\\\"as\\\"\"] }"
+
+---- parser_test::integration/linked_list.fig ----
+"Parse error in ../../tests/valid/integration/linked_list.fig: UnrecognizedToken { token: (184, LBracket, 185), expected: [\"\\\"(\\\"\", \"\\\".\\\"\", \"\\\"::\\\"\"] }"
+
+---- parser_test::interfaces/visibility_generic.fig ----
+"Parse error in ../../tests/valid/interfaces/visibility_generic.fig: UnrecognizedToken { token: (112, Ident(\"T\"), 113), expected: [\"\\\"*\\\"\"] }"
+
+---- parser_test::interfaces/namespaced.fig ----
+"Parse error in ../../tests/valid/interfaces/namespaced.fig: UnrecognizedToken { token: (45, Std, 48), expected: [\"\\\"ident\\\"\"] }"
+
+---- parser_test::interfaces/with_where.fig ----
+"Parse error in ../../tests/valid/interfaces/with_where.fig: UnrecognizedToken { token: (187, Ident(\"T\"), 188), expected: [\"\\\"*\\\"\"] }"
+
+---- parser_test::paths/type_prefixed.fig ----
+"Parse error in ../../tests/valid/paths/type_prefixed.fig: UnrecognizedToken { token: (59, ColonColon, 61), expected: [\"\\\"*\\\"\", \"\\\"?\\\"\", \"\\\"Self\\\"\", \"\\\"[\\\"\", \"\\\"alloc\\\"\", \"\\\"bool\\\"\", \"\\\"core\\\"\", \"\\\"f32\\\"\", \"\\\"f64\\\"\", \"\\\"i16\\\"\", \"\\\"i32\\\"\", \"\\\"i64\\\"\", \"\\\"i8\\\"\", \"\\\"ident\\\"\", \"\\\"isize\\\"\", \"\\\"null\\\"\", \"\\\"ok\\\"\", \"\\\"std\\\"\", \"\\\"u16\\\"\", \"\\\"u32\\\"\", \"\\\"u64\\\"\", \"\\\"u8\\\"\", \"\\\"usize\\\"\"] }"
+
+---- parser_test::paths/with_generics.fig ----
+"Parse error in ../../tests/valid/paths/with_generics.fig: UnrecognizedToken { token: (87, I32, 90), expected: [\"\\\"!\\\"\", \"\\\"&\\\"\", \"\\\"(\\\"\", \"\\\"*\\\"\", \"\\\"+\\\"\", \"\\\"-\\\"\", \"\\\"[\\\"\", \"\\\"alignof\\\"\", \"\\\"alloc\\\"\", \"\\\"char\\\"\", \"\\\"core\\\"\", \"\\\"false\\\"\", \"\\\"float\\\"\", \"\\\"ident\\\"\", \"\\\"int\\\"\", \"\\\"interpstring\\\"\", \"\\\"null\\\"\", \"\\\"offsetof\\\"\", \"\\\"ok\\\"\", \"\\\"self\\\"\", \"\\\"sizeof\\\"\", \"\\\"std\\\"\", \"\\\"string\\\"\", \"\\\"true\\\"\", \"\\\"~\\\"\"] }"
+
+---- parser_test::realistic/arg_parser.fig ----
+"Parse error in ../../tests/valid/realistic/arg_parser.fig: UnrecognizedToken { token: (276, LBracket, 277), expected: [\"\\\"*\\\"\"] }"
+
+---- parser_test::realistic/async_runtime.fig ----
+"Parse error in ../../tests/valid/realistic/async_runtime.fig: UnrecognizedToken { token: (272, Fn, 274), expected: [\"\\\"*\\\"\", \"\\\"?\\\"\", \"\\\"Self\\\"\", \"\\\"[\\\"\", \"\\\"alloc\\\"\", \"\\\"bool\\\"\", \"\\\"core\\\"\", \"\\\"f32\\\"\", \"\\\"f64\\\"\", \"\\\"i16\\\"\", \"\\\"i32\\\"\", \"\\\"i64\\\"\", \"\\\"i8\\\"\", \"\\\"ident\\\"\", \"\\\"isize\\\"\", \"\\\"mut\\\"\", \"\\\"null\\\"\", \"\\\"ok\\\"\", \"\\\"std\\\"\", \"\\\"u16\\\"\", \"\\\"u32\\\"\", \"\\\"u64\\\"\", \"\\\"u8\\\"\", \"\\\"usize\\\"\"] }"
+
+---- parser_test::realistic/binary_serializer.fig ----
+"Parse error in ../../tests/valid/realistic/binary_serializer.fig: UnrecognizedToken { token: (215, OkLiteral, 217), expected: [\"\\\"ident\\\"\", \"\\\"requires\\\"\", \"\\\"where\\\"\"] }"
+
+---- parser_test::realistic/cli_builder.fig ----
+"Parse error in ../../tests/valid/realistic/cli_builder.fig: UnrecognizedToken { token: (200, U8, 202), expected: [\"\\\"*\\\"\"] }"
+
+---- parser_test::realistic/btree.fig ----
+"Parse error in ../../tests/valid/realistic/btree.fig: UnrecognizedToken { token: (333, Star, 334), expected: [\"\\\"Self\\\"\", \"\\\"[\\\"\", \"\\\"alloc\\\"\", \"\\\"bool\\\"\", \"\\\"core\\\"\", \"\\\"f32\\\"\", \"\\\"f64\\\"\", \"\\\"i16\\\"\", \"\\\"i32\\\"\", \"\\\"i64\\\"\", \"\\\"i8\\\"\", \"\\\"ident\\\"\", \"\\\"isize\\\"\", \"\\\"null\\\"\", \"\\\"ok\\\"\", \"\\\"std\\\"\", \"\\\"u16\\\"\", \"\\\"u32\\\"\", \"\\\"u64\\\"\", \"\\\"u8\\\"\", \"\\\"usize\\\"\"] }"
+
+---- parser_test::realistic/compression.fig ----
+"Parse error in ../../tests/valid/realistic/compression.fig: UnrecognizedToken { token: (459, Newline, 461), expected: [\"\\\"!\\\"\", \"\\\"&\\\"\", \"\\\"(\\\"\", \"\\\")\\\"\", \"\\\"*\\\"\", \"\\\"+\\\"\", \"\\\"-\\\"\", \"\\\"[\\\"\", \"\\\"alignof\\\"\", \"\\\"alloc\\\"\", \"\\\"char\\\"\", \"\\\"core\\\"\", \"\\\"false\\\"\", \"\\\"float\\\"\", \"\\\"ident\\\"\", \"\\\"int\\\"\", \"\\\"interpstring\\\"\", \"\\\"null\\\"\", \"\\\"offsetof\\\"\", \"\\\"ok\\\"\", \"\\\"self\\\"\", \"\\\"sizeof\\\"\", \"\\\"std\\\"\", \"\\\"string\\\"\", \"\\\"true\\\"\", \"\\\"~\\\"\"] }"
+
+---- parser_test::realistic/buddy_allocator.fig ----
+"Parse error in ../../tests/valid/realistic/buddy_allocator.fig: UnrecognizedToken { token: (702, Alloc, 707), expected: [\"\\\"ident\\\"\"] }"
+
+---- parser_test::realistic/database_index.fig ----
+"Parse error in ../../tests/valid/realistic/database_index.fig: UnrecognizedToken { token: (254, Star, 255), expected: [\"\\\"Self\\\"\", \"\\\"[\\\"\", \"\\\"alloc\\\"\", \"\\\"bool\\\"\", \"\\\"core\\\"\", \"\\\"f32\\\"\", \"\\\"f64\\\"\", \"\\\"i16\\\"\", \"\\\"i32\\\"\", \"\\\"i64\\\"\", \"\\\"i8\\\"\", \"\\\"ident\\\"\", \"\\\"isize\\\"\", \"\\\"null\\\"\", \"\\\"ok\\\"\", \"\\\"std\\\"\", \"\\\"u16\\\"\", \"\\\"u32\\\"\", \"\\\"u64\\\"\", \"\\\"u8\\\"\", \"\\\"usize\\\"\"] }"
+
+---- parser_test::realistic/fixed_point_math.fig ----
+"Parse error in ../../tests/valid/realistic/fixed_point_math.fig: UnrecognizedToken { token: (197, Raw, 200), expected: [\"\\\"DEDENT\\\"\", \"\\\"ident\\\"\", \"\\\"requires\\\"\", \"\\\"where\\\"\"] }"
+
+---- parser_test::realistic/hash_map.fig ----
+"Parse error in ../../tests/valid/realistic/hash_map.fig: UnrecognizedToken { token: (452, LBracket, 453), expected: [\"\\\"(\\\"\", \"\\\".\\\"\", \"\\\"::\\\"\"] }"
+
+---- parser_test::realistic/elf_parser.fig ----
+"Parse error in ../../tests/valid/realistic/elf_parser.fig: UnrecognizedToken { token: (696, OkLiteral, 698), expected: [\"\\\"ident\\\"\", \"\\\"requires\\\"\", \"\\\"where\\\"\"] }"
+
+---- parser_test::realistic/lexer.fig ----
+"Parse error in ../../tests/valid/realistic/lexer.fig: UnrecognizedToken { token: (831, Type, 835), expected: [\"\\\"DEDENT\\\"\", \"\\\"ident\\\"\", \"\\\"requires\\\"\", \"\\\"where\\\"\"] }"
+
+---- parser_test::realistic/http_types.fig ----
+"Parse error in ../../tests/valid/realistic/http_types.fig: UnrecognizedToken { token: (537, LBracket, 538), expected: [\"\\\"*\\\"\"] }"
+
+---- parser_test::realistic/logger.fig ----
+"Parse error in ../../tests/valid/realistic/logger.fig: UnrecognizedToken { token: (342, LBracket, 343), expected: [\"\\\"*\\\"\"] }"
+
+---- parser_test::realistic/ring_buffer.fig ----
+"Parse error in ../../tests/valid/realistic/ring_buffer.fig: UnrecognizedToken { token: (213, LBracket, 214), expected: [\"\\\"(\\\"\", \"\\\".\\\"\", \"\\\"::\\\"\"] }"
+
+---- parser_test::realistic/json_parser.fig ----
+"Parse error in ../../tests/valid/realistic/json_parser.fig: UnrecognizedToken { token: (701, OkLiteral, 703), expected: [\"\\\"ident\\\"\", \"\\\"requires\\\"\", \"\\\"where\\\"\"] }"
+
+---- parser_test::realistic/regex_engine.fig ----
+"Parse error in ../../tests/valid/realistic/regex_engine.fig: UnrecognizedToken { token: (464, LParen, 465), expected: [\"\\\"*\\\"\", \"\\\"?\\\"\", \"\\\"Self\\\"\", \"\\\"[\\\"\", \"\\\"alloc\\\"\", \"\\\"bool\\\"\", \"\\\"core\\\"\", \"\\\"f32\\\"\", \"\\\"f64\\\"\", \"\\\"i16\\\"\", \"\\\"i32\\\"\", \"\\\"i64\\\"\", \"\\\"i8\\\"\", \"\\\"ident\\\"\", \"\\\"isize\\\"\", \"\\\"null\\\"\", \"\\\"ok\\\"\", \"\\\"std\\\"\", \"\\\"u16\\\"\", \"\\\"u32\\\"\", \"\\\"u64\\\"\", \"\\\"u8\\\"\", \"\\\"usize\\\"\"] }"
+
+---- parser_test::realistic/slab_allocator.fig ----
+"Parse error in ../../tests/valid/realistic/slab_allocator.fig: UnrecognizedToken { token: (211, Star, 212), expected: [\"\\\"Self\\\"\", \"\\\"[\\\"\", \"\\\"alloc\\\"\", \"\\\"bool\\\"\", \"\\\"core\\\"\", \"\\\"f32\\\"\", \"\\\"f64\\\"\", \"\\\"i16\\\"\", \"\\\"i32\\\"\", \"\\\"i64\\\"\", \"\\\"i8\\\"\", \"\\\"ident\\\"\", \"\\\"isize\\\"\", \"\\\"null\\\"\", \"\\\"ok\\\"\", \"\\\"std\\\"\", \"\\\"u16\\\"\", \"\\\"u32\\\"\", \"\\\"u64\\\"\", \"\\\"u8\\\"\", \"\\\"usize\\\"\"] }"
+
+---- parser_test::realistic/tcp_server.fig ----
+"Parse error in ../../tests/valid/realistic/tcp_server.fig: UnrecognizedToken { token: (530, OkLiteral, 532), expected: [\"\\\"ident\\\"\", \"\\\"requires\\\"\", \"\\\"where\\\"\"] }"
+
+---- parser_test::realistic/utf8_string.fig ----
+"Parse error in ../../tests/valid/realistic/utf8_string.fig: UnrecognizedToken { token: (229, OkLiteral, 231), expected: [\"\\\"ident\\\"\", \"\\\"requires\\\"\", \"\\\"where\\\"\"] }"
+
+---- parser_test::realistic/virtual_machine.fig ----
+"Parse error in ../../tests/valid/realistic/virtual_machine.fig: UnrecognizedToken { token: (519, Bool, 523), expected: [\"\\\"DEDENT\\\"\", \"\\\"ident\\\"\"] }"
+
+---- parser_test::realistic/thread_pool.fig ----
+"Parse error in ../../tests/valid/realistic/thread_pool.fig: UnrecognizedToken { token: (291, OkLiteral, 293), expected: [\"\\\"ident\\\"\", \"\\\"requires\\\"\", \"\\\"where\\\"\"] }"
+
+---- parser_test::structs/namespaced.fig ----
+"Parse error in ../../tests/valid/structs/namespaced.fig: UnrecognizedToken { token: (61, ColonColon, 63), expected: [\"\\\"NEWLINE\\\"\", \"\\\"[\\\"\"] }"
+
+---- parser_test::structs/with_annotations.fig ----
+"Parse error in ../../tests/valid/structs/with_annotations.fig: UnrecognizedToken { token: (137, Packed, 143), expected: [\"\\\"ident\\\"\"] }"
+
+---- parser_test::types/complex_nested_types.fig ----
+"Parse error in ../../tests/valid/types/complex_nested_types.fig: UnrecognizedToken { token: (115, Question, 116), expected: [\"\\\"Self\\\"\", \"\\\"[\\\"\", \"\\\"alloc\\\"\", \"\\\"bool\\\"\", \"\\\"core\\\"\", \"\\\"f32\\\"\", \"\\\"f64\\\"\", \"\\\"i16\\\"\", \"\\\"i32\\\"\", \"\\\"i64\\\"\", \"\\\"i8\\\"\", \"\\\"ident\\\"\", \"\\\"isize\\\"\", \"\\\"null\\\"\", \"\\\"ok\\\"\", \"\\\"std\\\"\", \"\\\"u16\\\"\", \"\\\"u32\\\"\", \"\\\"u64\\\"\", \"\\\"u8\\\"\", \"\\\"usize\\\"\"] }"
+
+---- parser_test::types/generic_aliases.fig ----
+"Parse error in ../../tests/valid/types/generic_aliases.fig: UnrecognizedToken { token: (66, LBracket, 67), expected: [\"\\\"*\\\"\"] }"
+
+---- parser_test::types/namespaced_aliases.fig ----
+"Parse error in ../../tests/valid/types/namespaced_aliases.fig: UnrecognizedToken { token: (70, ColonColon, 72), expected: [\"\\\"=\\\"\", \"\\\"NEWLINE\\\"\", \"\\\"[\\\"\"] }"
+
+---- parser_test::types/ok_null_optional.fig ----
+"Parse error in ../../tests/valid/types/ok_null_optional.fig: UnrecognizedToken { token: (81, I32, 84), expected: [\"\\\"*\\\"\"] }"
+
+---- parser_test::unions/generic_pair.fig ----
+"Parse error in ../../tests/valid/unions/generic_pair.fig: UnrecognizedToken { token: (134, OkLiteral, 136), expected: [\"\\\"ident\\\"\", \"\\\"requires\\\"\", \"\\\"where\\\"\"] }"
+
+---- parser_test::unions/namespaced.fig ----
+"Parse error in ../../tests/valid/unions/namespaced.fig: UnrecognizedToken { token: (27, Core, 31), expected: [\"\\\"ident\\\"\"] }"
+
+---- parser_test::unions/visibility.fig ----
+"Parse error in ../../tests/valid/unions/visibility.fig: UnrecognizedToken { token: (63, OkLiteral, 65), expected: [\"\\\"ident\\\"\", \"\\\"requires\\\"\", \"\\\"where\\\"\"] }"
+
+---- parser_test::unions/with_requires.fig ----
+"Parse error in ../../tests/valid/unions/with_requires.fig: UnrecognizedToken { token: (37, Std, 40), expected: [\"\\\"ident\\\"\"] }"
+
+
+failures:
+    parser_test::edge_cases/deeply_nested_types.fig
+    parser_test::edge_cases/for_no_body.fig
+    parser_test::edge_cases/interface_clauses_only.fig
+    parser_test::edge_cases/where_before_pass.fig
+    parser_test::edge_cases/while_no_body.fig
+    parser_test::enums/namespaced.fig
+    parser_test::expressions/effect_call_suffix.fig
+    parser_test::expressions/call_basic.fig
+    parser_test::expressions/field_access.fig
+    parser_test::expressions/self_expr.fig
+    parser_test::functions/calling_functions.fig
+    parser_test::functions/effect_generic_self.fig
+    parser_test::functions/effect_marker.fig
+    parser_test::functions/generic_basic.fig
+    parser_test::functions/generic_scope_syntax.fig
+    parser_test::functions/generic_where.fig
+    parser_test::generics/basic_params.fig
+    parser_test::generics/where_compound_bounds.fig
+    parser_test::generics/type_arguments.fig
+    parser_test::generics/where_multiple_params.fig
+    parser_test::generics/default_params.fig
+    parser_test::integration/all_features.fig
+    parser_test::integration/hash_map.fig
+    parser_test::integration/error_handling.fig
+    parser_test::integration/interpreter_ast.fig
+    parser_test::integration/iterator_range.fig
+    parser_test::integration/seq_dynamic_array.fig
+    parser_test::integration/stack.fig
+    parser_test::interfaces/all_clauses.fig
+    parser_test::integration/string_utils_namespace.fig
+    parser_test::integration/linked_list.fig
+    parser_test::interfaces/visibility_generic.fig
+    parser_test::interfaces/namespaced.fig
+    parser_test::interfaces/with_where.fig
+    parser_test::paths/type_prefixed.fig
+    parser_test::paths/with_generics.fig
+    parser_test::realistic/arg_parser.fig
+    parser_test::realistic/async_runtime.fig
+    parser_test::realistic/binary_serializer.fig
+    parser_test::realistic/cli_builder.fig
+    parser_test::realistic/btree.fig
+    parser_test::realistic/compression.fig
+    parser_test::realistic/buddy_allocator.fig
+    parser_test::realistic/database_index.fig
+    parser_test::realistic/fixed_point_math.fig
+    parser_test::realistic/hash_map.fig
+    parser_test::realistic/elf_parser.fig
+    parser_test::realistic/lexer.fig
+    parser_test::realistic/http_types.fig
+    parser_test::realistic/logger.fig
+    parser_test::realistic/ring_buffer.fig
+    parser_test::realistic/json_parser.fig
+    parser_test::realistic/regex_engine.fig
+    parser_test::realistic/slab_allocator.fig
+    parser_test::realistic/tcp_server.fig
+    parser_test::realistic/utf8_string.fig
+    parser_test::realistic/virtual_machine.fig
+    parser_test::realistic/thread_pool.fig
+    parser_test::structs/namespaced.fig
+    parser_test::structs/with_annotations.fig
+    parser_test::types/complex_nested_types.fig
+    parser_test::types/generic_aliases.fig
+    parser_test::types/namespaced_aliases.fig
+    parser_test::types/ok_null_optional.fig
+    parser_test::unions/generic_pair.fig
+    parser_test::unions/namespaced.fig
+    parser_test::unions/visibility.fig
+    parser_test::unions/with_requires.fig
+
+test result: FAILED. 133 passed; 68 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.09s
+
+error: test failed, to rerun pass `-p fig-parser --test integration_tests`

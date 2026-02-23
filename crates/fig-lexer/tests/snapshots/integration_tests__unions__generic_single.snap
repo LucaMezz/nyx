@@ -15,6 +15,6 @@ expression: tokens
 - Newline
 - Ident: none
 - Colon
-- OkLiteral
+- Ident: ok
 - Newline
 - Dedent

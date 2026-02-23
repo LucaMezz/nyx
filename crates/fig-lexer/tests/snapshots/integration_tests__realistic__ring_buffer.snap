@@ -3,7 +3,7 @@ source: crates/fig-lexer/tests/integration_tests.rs
 expression: tokens
 ---
 - Using
-- Core
+- Ident: core
 - ColonColon
 - Ident: memory
 - Newline
@@ -240,7 +240,7 @@ expression: tokens
 - Ident: T
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - If
@@ -614,7 +614,7 @@ expression: tokens
 - SelfLower
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - SelfLower
@@ -1777,7 +1777,14 @@ expression: tokens
 - Dedent
 - Let
 - Ident: back_index
+- Colon
+- USize
 - Eq
+- IntegerLiteral:
+    base: Decimal
+    digits: "0"
+    suffix: ~
+- Newline
 - If
 - SelfLower
 - Dot
@@ -1787,7 +1794,10 @@ expression: tokens
     base: Decimal
     digits: "0"
     suffix: ~
-- Ident: then
+- Newline
+- Indent
+- Ident: back_index
+- Eq
 - SelfLower
 - Dot
 - Ident: capacity
@@ -1796,7 +1806,13 @@ expression: tokens
     base: Decimal
     digits: "1"
     suffix: ~
+- Newline
+- Dedent
 - Else
+- Newline
+- Indent
+- Ident: back_index
+- Eq
 - SelfLower
 - Dot
 - Ident: tail
@@ -1806,6 +1822,7 @@ expression: tokens
     digits: "1"
     suffix: ~
 - Newline
+- Dedent
 - Return
 - And
 - SelfLower
@@ -1902,7 +1919,7 @@ expression: tokens
 - SelfLower
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - SelfLower
@@ -1975,7 +1992,7 @@ expression: tokens
 - SelfLower
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - For
@@ -2026,7 +2043,7 @@ expression: tokens
 - SelfLower
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - SelfLower

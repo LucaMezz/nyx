@@ -13,6 +13,6 @@ expression: tokens
 - SelfLower
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Dedent

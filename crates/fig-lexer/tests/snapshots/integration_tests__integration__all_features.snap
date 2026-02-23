@@ -3,12 +3,12 @@ source: crates/fig-lexer/tests/integration_tests.rs
 expression: tokens
 ---
 - Using
-- Std
+- Ident: std
 - ColonColon
 - Ident: io
 - Newline
 - Using
-- Core
+- Ident: core
 - ColonColon
 - Ident: mem
 - Newline
@@ -139,7 +139,7 @@ expression: tokens
 - SelfLower
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Func
 - Bang
@@ -150,7 +150,7 @@ expression: tokens
 - SelfLower
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Func
 - Ident: is_running
@@ -187,7 +187,7 @@ expression: tokens
 - Arrow
 - Ident: MaybeError
 - LBracket
-- OkLiteral
+- Ident: ok
 - RBracket
 - Newline
 - Indent

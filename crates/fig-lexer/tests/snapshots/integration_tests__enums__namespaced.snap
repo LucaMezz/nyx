@@ -41,7 +41,7 @@ expression: tokens
 - Newline
 - Dedent
 - Enum
-- Core
+- Ident: core
 - ColonColon
 - Ident: os
 - ColonColon

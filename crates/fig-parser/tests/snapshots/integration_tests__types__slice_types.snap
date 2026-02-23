@@ -6,7 +6,9 @@ items:
   - TypeAlias:
       visibility: Default
       annotations: []
-      name: ByteSlice
+      name:
+        segments:
+          - ByteSlice
       generic_params: []
       aliased_type:
         Array:
@@ -15,7 +17,9 @@ items:
   - TypeAlias:
       visibility: Default
       annotations: []
-      name: IntSlice
+      name:
+        segments:
+          - IntSlice
       generic_params: []
       aliased_type:
         Array:
@@ -24,7 +28,9 @@ items:
   - TypeAlias:
       visibility: Default
       annotations: []
-      name: BoolSlice
+      name:
+        segments:
+          - BoolSlice
       generic_params: []
       aliased_type:
         Array:
@@ -33,7 +39,9 @@ items:
   - TypeAlias:
       visibility: Default
       annotations: []
-      name: SliceOfSlices
+      name:
+        segments:
+          - SliceOfSlices
       generic_params: []
       aliased_type:
         Array:

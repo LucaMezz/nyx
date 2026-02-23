@@ -120,7 +120,7 @@ func! Serializer::write_f64(*mut self, value: f64) -> SerdeResult[ok]
     let bits = f64_to_bits(value)
     return self.write_u64(bits)
 
-func! Serializer::write_option[T](*mut self, opt: ?T, write_fn: *fn(*mut Serializer, T) -> SerdeResult[ok]) -> SerdeResult[ok]
+func! Serializer::write_option[T](*mut self, opt: ?T, write_fn: *func(*mut Serializer, T) -> SerdeResult[ok]) -> SerdeResult[ok]
     if opt == null
         return self.write_bool(false)
     
@@ -246,7 +246,7 @@ func! Deserializer::read_f64(*mut self) -> SerdeResult[f64]
     let value = f64_from_bits(bits)
     return SerdeResult[f64]::ok(value)
 
-func! Deserializer::read_option[T](*mut self, read_fn: *fn(*mut Deserializer) -> SerdeResult[T]) -> SerdeResult[?T]
+func! Deserializer::read_option[T](*mut self, read_fn: *func(*mut Deserializer) -> SerdeResult[T]) -> SerdeResult[?T]
     let has_value_result = self.read_bool()
     let has_value = has_value_result.ok
     
@@ -303,7 +303,7 @@ func! Person::deserialize(de: *mut Deserializer) -> SerdeResult[Person]
 
 // Array serialization helpers
 
-func! serialize_array[T](ser: *mut Serializer, arr: [T], write_fn: *fn(*mut Serializer, T) -> SerdeResult[ok]) -> SerdeResult[ok]
+func! serialize_array[T](ser: *mut Serializer, arr: [T], write_fn: *func(*mut Serializer, T) -> SerdeResult[ok]) -> SerdeResult[ok]
     ser.write_varint(arr.len as u64)
     
     for i in range(0, arr.len)
@@ -311,7 +311,7 @@ func! serialize_array[T](ser: *mut Serializer, arr: [T], write_fn: *fn(*mut Seri
     
     return SerdeResult[ok]::ok(ok)
 
-func! deserialize_array[T](de: *mut Deserializer, read_fn: *fn(*mut Deserializer) -> SerdeResult[T]) -> SerdeResult[[T]]
+func! deserialize_array[T](de: *mut Deserializer, read_fn: *func(*mut Deserializer) -> SerdeResult[T]) -> SerdeResult[[T]]
     let len_result = de.read_varint()
     let len = len_result.ok as usize
     

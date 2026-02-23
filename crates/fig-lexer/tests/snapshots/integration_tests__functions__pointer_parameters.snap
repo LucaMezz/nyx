@@ -20,7 +20,7 @@ expression: tokens
 - USize
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - Pass
@@ -45,7 +45,7 @@ expression: tokens
 - USize
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - Pass

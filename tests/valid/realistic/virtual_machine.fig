@@ -41,7 +41,7 @@ enum Opcode
 union Value
     int: i64
     float: f64
-    bool: bool
+    boolean: bool
     nil: ok
 
 struct Instruction
@@ -174,42 +174,42 @@ func! VM::execute(*mut self, instruction: *Instruction) -> ok
     elif instruction.opcode == Opcode::EQ
         let b = self.pop()
         let a = self.pop()
-        let result = Value::bool(a.int == b.int)
+        let result = Value::boolean(a.int == b.int)
         self.push(result)
     elif instruction.opcode == Opcode::NE
         let b = self.pop()
         let a = self.pop()
-        let result = Value::bool(a.int != b.int)
+        let result = Value::boolean(a.int != b.int)
         self.push(result)
     elif instruction.opcode == Opcode::LT
         let b = self.pop()
         let a = self.pop()
-        let result = Value::bool(a.int < b.int)
+        let result = Value::boolean(a.int < b.int)
         self.push(result)
     elif instruction.opcode == Opcode::LE
         let b = self.pop()
         let a = self.pop()
-        let result = Value::bool(a.int <= b.int)
+        let result = Value::boolean(a.int <= b.int)
         self.push(result)
     elif instruction.opcode == Opcode::GT
         let b = self.pop()
         let a = self.pop()
-        let result = Value::bool(a.int > b.int)
+        let result = Value::boolean(a.int > b.int)
         self.push(result)
     elif instruction.opcode == Opcode::GE
         let b = self.pop()
         let a = self.pop()
-        let result = Value::bool(a.int >= b.int)
+        let result = Value::boolean(a.int >= b.int)
         self.push(result)
     elif instruction.opcode == Opcode::JMP
         self.program_counter = (instruction.operand as usize) - 1
     elif instruction.opcode == Opcode::JMP_IF_TRUE
         let value = self.pop()
-        if value.bool
+        if value.boolean
             self.program_counter = (instruction.operand as usize) - 1
     elif instruction.opcode == Opcode::JMP_IF_FALSE
         let value = self.pop()
-        if !value.bool
+        if !value.boolean
             self.program_counter = (instruction.operand as usize) - 1
     elif instruction.opcode == Opcode::CALL
         let frame = CallFrame(

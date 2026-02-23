@@ -3,7 +3,7 @@ source: crates/fig-lexer/tests/integration_tests.rs
 expression: tokens
 ---
 - Using
-- Core
+- Ident: core
 - ColonColon
 - Ident: memory
 - Newline
@@ -42,7 +42,7 @@ expression: tokens
 - Ident: Fixed
 - Newline
 - Indent
-- Raw
+- Ident: raw
 - Colon
 - I64
 - Newline
@@ -64,7 +64,7 @@ expression: tokens
 - Return
 - Ident: Fixed
 - LParen
-- Raw
+- Ident: raw
 - Colon
 - LParen
 - Ident: value
@@ -93,7 +93,7 @@ expression: tokens
 - Return
 - Ident: Fixed
 - LParen
-- Raw
+- Ident: raw
 - Colon
 - LParen
 - Ident: value
@@ -115,7 +115,7 @@ expression: tokens
 - ColonColon
 - Ident: from_raw
 - LParen
-- Raw
+- Ident: raw
 - Colon
 - I64
 - RParen
@@ -126,9 +126,9 @@ expression: tokens
 - Return
 - Ident: Fixed
 - LParen
-- Raw
+- Ident: raw
 - Colon
-- Raw
+- Ident: raw
 - RParen
 - Newline
 - Dedent
@@ -148,7 +148,7 @@ expression: tokens
 - LParen
 - SelfLower
 - Dot
-- Raw
+- Ident: raw
 - Shr
 - Ident: FRACTION_BITS
 - RParen
@@ -172,7 +172,7 @@ expression: tokens
 - LParen
 - SelfLower
 - Dot
-- Raw
+- Ident: raw
 - As
 - F64
 - RParen
@@ -203,15 +203,15 @@ expression: tokens
 - Return
 - Ident: Fixed
 - LParen
-- Raw
+- Ident: raw
 - Colon
 - SelfLower
 - Dot
-- Raw
+- Ident: raw
 - Plus
 - Ident: other
 - Dot
-- Raw
+- Ident: raw
 - RParen
 - Newline
 - Dedent
@@ -234,15 +234,15 @@ expression: tokens
 - Return
 - Ident: Fixed
 - LParen
-- Raw
+- Ident: raw
 - Colon
 - SelfLower
 - Dot
-- Raw
+- Ident: raw
 - Minus
 - Ident: other
 - Dot
-- Raw
+- Ident: raw
 - RParen
 - Newline
 - Dedent
@@ -268,11 +268,11 @@ expression: tokens
 - LParen
 - SelfLower
 - Dot
-- Raw
+- Ident: raw
 - Star
 - Ident: other
 - Dot
-- Raw
+- Ident: raw
 - RParen
 - Shr
 - Ident: FRACTION_BITS
@@ -280,7 +280,7 @@ expression: tokens
 - Return
 - Ident: Fixed
 - LParen
-- Raw
+- Ident: raw
 - Colon
 - Ident: result
 - RParen
@@ -308,19 +308,19 @@ expression: tokens
 - LParen
 - SelfLower
 - Dot
-- Raw
+- Ident: raw
 - Shl
 - Ident: FRACTION_BITS
 - RParen
 - Slash
 - Ident: other
 - Dot
-- Raw
+- Ident: raw
 - Newline
 - Return
 - Ident: Fixed
 - LParen
-- Raw
+- Ident: raw
 - Colon
 - Ident: result
 - RParen
@@ -341,12 +341,12 @@ expression: tokens
 - Return
 - Ident: Fixed
 - LParen
-- Raw
+- Ident: raw
 - Colon
 - Minus
 - SelfLower
 - Dot
-- Raw
+- Ident: raw
 - RParen
 - Newline
 - Dedent
@@ -365,7 +365,7 @@ expression: tokens
 - If
 - SelfLower
 - Dot
-- Raw
+- Ident: raw
 - Lt
 - IntegerLiteral:
     base: Decimal
@@ -376,23 +376,23 @@ expression: tokens
 - Return
 - Ident: Fixed
 - LParen
-- Raw
+- Ident: raw
 - Colon
 - Minus
 - SelfLower
 - Dot
-- Raw
+- Ident: raw
 - RParen
 - Newline
 - Dedent
 - Return
 - Ident: Fixed
 - LParen
-- Raw
+- Ident: raw
 - Colon
 - SelfLower
 - Dot
-- Raw
+- Ident: raw
 - RParen
 - Newline
 - Dedent
@@ -419,11 +419,11 @@ expression: tokens
 - Return
 - Ident: Fixed
 - LParen
-- Raw
+- Ident: raw
 - Colon
 - SelfLower
 - Dot
-- Raw
+- Ident: raw
 - And
 - Ident: mask
 - RParen
@@ -453,11 +453,11 @@ expression: tokens
 - If
 - SelfLower
 - Dot
-- Raw
+- Ident: raw
 - Gt
 - Ident: floored
 - Dot
-- Raw
+- Ident: raw
 - Newline
 - Indent
 - Return
@@ -536,7 +536,7 @@ expression: tokens
 - If
 - SelfLower
 - Dot
-- Raw
+- Ident: raw
 - Le
 - IntegerLiteral:
     base: Decimal
@@ -561,7 +561,7 @@ expression: tokens
 - Eq
 - SelfLower
 - Dot
-- Raw
+- Ident: raw
 - Newline
 - Mut
 - Ident: result
@@ -598,7 +598,7 @@ expression: tokens
 - LParen
 - SelfLower
 - Dot
-- Raw
+- Ident: raw
 - Shl
 - Ident: FRACTION_BITS
 - RParen
@@ -624,7 +624,7 @@ expression: tokens
 - Return
 - Ident: Fixed
 - LParen
-- Raw
+- Ident: raw
 - Colon
 - Ident: result
 - RParen
@@ -694,7 +694,7 @@ expression: tokens
 - If
 - Ident: angle
 - Dot
-- Raw
+- Ident: raw
 - Lt
 - IntegerLiteral:
     base: Decimal
@@ -715,11 +715,11 @@ expression: tokens
 - Elif
 - Ident: angle
 - Dot
-- Raw
+- Ident: raw
 - Ge
 - Ident: two_pi
 - Dot
-- Raw
+- Ident: raw
 - Newline
 - Indent
 - Ident: angle
@@ -1020,11 +1020,11 @@ expression: tokens
 - Return
 - SelfLower
 - Dot
-- Raw
+- Ident: raw
 - EqEq
 - Ident: other
 - Dot
-- Raw
+- Ident: raw
 - Newline
 - Dedent
 - Func
@@ -1046,11 +1046,11 @@ expression: tokens
 - Return
 - SelfLower
 - Dot
-- Raw
+- Ident: raw
 - Ne
 - Ident: other
 - Dot
-- Raw
+- Ident: raw
 - Newline
 - Dedent
 - Func
@@ -1072,11 +1072,11 @@ expression: tokens
 - Return
 - SelfLower
 - Dot
-- Raw
+- Ident: raw
 - Lt
 - Ident: other
 - Dot
-- Raw
+- Ident: raw
 - Newline
 - Dedent
 - Func
@@ -1098,11 +1098,11 @@ expression: tokens
 - Return
 - SelfLower
 - Dot
-- Raw
+- Ident: raw
 - Le
 - Ident: other
 - Dot
-- Raw
+- Ident: raw
 - Newline
 - Dedent
 - Func
@@ -1124,11 +1124,11 @@ expression: tokens
 - Return
 - SelfLower
 - Dot
-- Raw
+- Ident: raw
 - Gt
 - Ident: other
 - Dot
-- Raw
+- Ident: raw
 - Newline
 - Dedent
 - Func
@@ -1150,11 +1150,11 @@ expression: tokens
 - Return
 - SelfLower
 - Dot
-- Raw
+- Ident: raw
 - Ge
 - Ident: other
 - Dot
-- Raw
+- Ident: raw
 - Newline
 - Dedent
 - Export
@@ -1516,7 +1516,7 @@ expression: tokens
 - If
 - Ident: len
 - Dot
-- Raw
+- Ident: raw
 - EqEq
 - IntegerLiteral:
     base: Decimal
@@ -2139,7 +2139,7 @@ expression: tokens
 - If
 - Ident: len
 - Dot
-- Raw
+- Ident: raw
 - EqEq
 - IntegerLiteral:
     base: Decimal

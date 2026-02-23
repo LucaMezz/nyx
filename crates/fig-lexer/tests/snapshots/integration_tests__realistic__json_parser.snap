@@ -3,7 +3,7 @@ source: crates/fig-lexer/tests/integration_tests.rs
 expression: tokens
 ---
 - Using
-- Std
+- Ident: std
 - ColonColon
 - Ident: io
 - Newline
@@ -13,7 +13,7 @@ expression: tokens
 - Indent
 - Ident: null_val
 - Colon
-- OkLiteral
+- Ident: ok
 - Newline
 - Ident: bool_val
 - Colon
@@ -99,7 +99,7 @@ expression: tokens
 - Indent
 - Ident: unexpected_eof
 - Colon
-- OkLiteral
+- Ident: ok
 - Newline
 - Ident: unexpected_char
 - Colon
@@ -117,15 +117,15 @@ expression: tokens
 - Newline
 - Ident: unclosed_string
 - Colon
-- OkLiteral
+- Ident: ok
 - Newline
 - Ident: unclosed_array
 - Colon
-- OkLiteral
+- Ident: ok
 - Newline
 - Ident: unclosed_object
 - Colon
-- OkLiteral
+- Ident: ok
 - Newline
 - Dedent
 - Union
@@ -135,7 +135,7 @@ expression: tokens
 - RBracket
 - Newline
 - Indent
-- OkLiteral
+- Ident: ok
 - Colon
 - Ident: T
 - Newline
@@ -295,7 +295,7 @@ expression: tokens
 - ColonColon
 - Ident: unexpected_eof
 - LParen
-- OkLiteral
+- Ident: ok
 - RParen
 - RParen
 - Newline
@@ -478,13 +478,13 @@ expression: tokens
 - Ident: JsonValue
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
 - Ident: JsonValue
 - ColonColon
 - Ident: null_val
 - LParen
-- OkLiteral
+- Ident: ok
 - RParen
 - RParen
 - Newline
@@ -501,7 +501,7 @@ expression: tokens
 - ColonColon
 - Ident: unexpected_eof
 - LParen
-- OkLiteral
+- Ident: ok
 - RParen
 - RParen
 - Newline
@@ -538,7 +538,7 @@ expression: tokens
 - Ident: JsonValue
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
 - Ident: JsonValue
 - ColonColon
@@ -564,7 +564,7 @@ expression: tokens
 - Ident: JsonValue
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
 - Ident: JsonValue
 - ColonColon
@@ -587,7 +587,7 @@ expression: tokens
 - ColonColon
 - Ident: unexpected_eof
 - LParen
-- OkLiteral
+- Ident: ok
 - RParen
 - RParen
 - Newline
@@ -667,7 +667,7 @@ expression: tokens
 - ColonColon
 - Ident: unexpected_eof
 - LParen
-- OkLiteral
+- Ident: ok
 - RParen
 - RParen
 - Newline
@@ -721,7 +721,7 @@ expression: tokens
 - ColonColon
 - Ident: unclosed_string
 - LParen
-- OkLiteral
+- Ident: ok
 - RParen
 - RParen
 - Newline
@@ -752,7 +752,7 @@ expression: tokens
 - RBracket
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
 - Ident: buffer
 - RParen
@@ -800,7 +800,7 @@ expression: tokens
 - ColonColon
 - Ident: unclosed_string
 - LParen
-- OkLiteral
+- Ident: ok
 - RParen
 - RParen
 - Newline
@@ -842,7 +842,7 @@ expression: tokens
 - ColonColon
 - Ident: unexpected_eof
 - LParen
-- OkLiteral
+- Ident: ok
 - RParen
 - RParen
 - Newline
@@ -871,7 +871,7 @@ expression: tokens
 - U8
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
 - IntegerLiteral:
     base: Decimal
@@ -895,7 +895,7 @@ expression: tokens
 - U8
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
 - IntegerLiteral:
     base: Decimal
@@ -919,7 +919,7 @@ expression: tokens
 - U8
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
 - IntegerLiteral:
     base: Decimal
@@ -957,7 +957,7 @@ expression: tokens
 - U8
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
 - Ident: ch
 - RParen
@@ -1095,7 +1095,7 @@ expression: tokens
 - Ident: JsonValue
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
 - Ident: JsonValue
 - ColonColon
@@ -1151,7 +1151,7 @@ expression: tokens
 - ColonColon
 - Ident: unexpected_eof
 - LParen
-- OkLiteral
+- Ident: ok
 - RParen
 - RParen
 - Newline
@@ -1211,7 +1211,7 @@ expression: tokens
 - Ident: JsonValue
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
 - Ident: JsonValue
 - ColonColon
@@ -1280,7 +1280,7 @@ expression: tokens
 - Ident: JsonValue
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
 - Ident: JsonValue
 - ColonColon
@@ -1333,7 +1333,7 @@ expression: tokens
 - ColonColon
 - Ident: unclosed_array
 - LParen
-- OkLiteral
+- Ident: ok
 - RParen
 - RParen
 - Newline
@@ -1351,7 +1351,7 @@ expression: tokens
 - ColonColon
 - Ident: unclosed_array
 - LParen
-- OkLiteral
+- Ident: ok
 - RParen
 - RParen
 - Newline
@@ -1398,7 +1398,7 @@ expression: tokens
 - ColonColon
 - Ident: unexpected_eof
 - LParen
-- OkLiteral
+- Ident: ok
 - RParen
 - RParen
 - Newline
@@ -1458,7 +1458,7 @@ expression: tokens
 - Ident: JsonValue
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
 - Ident: JsonValue
 - ColonColon
@@ -1527,7 +1527,7 @@ expression: tokens
 - ColonColon
 - Ident: unexpected_eof
 - LParen
-- OkLiteral
+- Ident: ok
 - RParen
 - RParen
 - Newline
@@ -1572,7 +1572,7 @@ expression: tokens
 - Ident: JsonValue
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
 - Ident: JsonValue
 - ColonColon
@@ -1625,7 +1625,7 @@ expression: tokens
 - ColonColon
 - Ident: unclosed_object
 - LParen
-- OkLiteral
+- Ident: ok
 - RParen
 - RParen
 - Newline
@@ -1643,7 +1643,7 @@ expression: tokens
 - ColonColon
 - Ident: unclosed_object
 - LParen
-- OkLiteral
+- Ident: ok
 - RParen
 - RParen
 - Newline
@@ -1810,7 +1810,7 @@ expression: tokens
 - SelfLower
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - For
@@ -2097,7 +2097,7 @@ expression: tokens
 - RBracket
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - Pass
@@ -2122,7 +2122,7 @@ expression: tokens
 - RBracket
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - Pass
@@ -2146,7 +2146,7 @@ expression: tokens
 - RBracket
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - Pass
@@ -2170,7 +2170,7 @@ expression: tokens
 - RBracket
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - Pass

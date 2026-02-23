@@ -11,11 +11,16 @@ items:
         is_effect: false
         receiver: ~
         name: setup
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params: []
         return_types:
-          - Ok
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
       body:
         statements:
           - Let:
@@ -46,13 +51,11 @@ items:
                     Path:
                       segments:
                         - a
-                      generic_args: []
                   op: Add
                   rhs:
                     Path:
                       segments:
                         - b
-                      generic_args: []
           - Mut:
               annotations: []
               name: x
@@ -80,7 +83,8 @@ items:
         is_effect: false
         receiver: ~
         name: f
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params:
           - name: a
@@ -97,10 +101,8 @@ items:
                   Path:
                     segments:
                       - a
-                    generic_args: []
                 op: Add
                 rhs:
                   Path:
                     segments:
                       - b
-                    generic_args: []

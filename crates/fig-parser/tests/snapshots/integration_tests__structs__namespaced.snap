@@ -1,0 +1,125 @@
+---
+source: crates/fig-parser/tests/integration_tests.rs
+expression: ast
+---
+items:
+  - Struct:
+      visibility: Default
+      annotations: []
+      is_packed: false
+      name:
+        segments:
+          - math
+          - Matrix
+      generic_params:
+        - Type:
+            name: T
+            bounds:
+              - Path:
+                  path:
+                    segments:
+                      - Numeric
+                  generic_args: []
+            default_type: ~
+        - Type:
+            name: U
+            bounds:
+              - Path:
+                  path:
+                    segments:
+                      - Numeric
+                  generic_args: []
+            default_type: ~
+      requires:
+        - Path:
+            path:
+              segments:
+                - Add
+            generic_args: []
+        - Path:
+            path:
+              segments:
+                - Mul
+            generic_args: []
+      fields:
+        - name: rows
+          ty: USize
+          visibility: Private
+          annotations: []
+        - name: cols
+          ty: USize
+          visibility: Private
+          annotations: []
+        - name: data
+          ty:
+            Array:
+              element_type:
+                Path:
+                  path:
+                    segments:
+                      - T
+                  generic_args: []
+              size: ~
+          visibility: Private
+          annotations: []
+  - Struct:
+      visibility: Default
+      annotations: []
+      is_packed: false
+      name:
+        segments:
+          - std
+          - collections
+          - HashMap
+      generic_params:
+        - Type:
+            name: K
+            bounds:
+              - Path:
+                  path:
+                    segments:
+                      - Hash
+                  generic_args: []
+              - Path:
+                  path:
+                    segments:
+                      - Eq
+                  generic_args: []
+            default_type: ~
+        - Type:
+            name: V
+            bounds: []
+            default_type: ~
+      requires: []
+      fields:
+        - name: buckets
+          ty:
+            Array:
+              element_type:
+                Nullable:
+                  Pointer:
+                    nullable: false
+                    mutable: false
+                    element_type:
+                      Path:
+                        path:
+                          segments:
+                            - Entry
+                        generic_args:
+                          - Path:
+                              path:
+                                segments:
+                                  - K
+                              generic_args: []
+                          - Path:
+                              path:
+                                segments:
+                                  - V
+                              generic_args: []
+              size: ~
+          visibility: Private
+          annotations: []
+        - name: len
+          ty: USize
+          visibility: Private
+          annotations: []

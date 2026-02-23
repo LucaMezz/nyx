@@ -23,7 +23,7 @@ expression: tokens
 - Ident: other
 - Colon
 - Star
-- SelfKeyword
+- Ident: Self
 - RParen
 - Arrow
 - I32

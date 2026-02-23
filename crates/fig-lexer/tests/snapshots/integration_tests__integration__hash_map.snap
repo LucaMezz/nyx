@@ -61,7 +61,7 @@ expression: tokens
 - Ident: V
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Func
 - Ident: get
@@ -255,7 +255,7 @@ expression: tokens
 - Ident: V
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - Where

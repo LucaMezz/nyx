@@ -1,0 +1,115 @@
+---
+source: crates/fig-parser/tests/integration_tests.rs
+expression: ast
+---
+items:
+  - Interface:
+      visibility: Public
+      annotations: []
+      name:
+        segments:
+          - Iterator
+      generic_params:
+        - Type:
+            name: T
+            bounds: []
+            default_type: ~
+      extends: []
+      methods:
+        - visibility: Default
+          annotations: []
+          is_extern: false
+          is_effect: false
+          receiver: ~
+          name: next
+          outer_generic_params: []
+          func_generic_params: []
+          self_param:
+            is_pointer: true
+            is_mutable: true
+          params: []
+          return_types:
+            - Nullable:
+                Path:
+                  path:
+                    segments:
+                      - T
+                  generic_args: []
+        - visibility: Default
+          annotations: []
+          is_extern: false
+          is_effect: false
+          receiver: ~
+          name: has_next
+          outer_generic_params: []
+          func_generic_params: []
+          self_param:
+            is_pointer: true
+            is_mutable: false
+          params: []
+          return_types:
+            - Bool
+  - Interface:
+      visibility: Export
+      annotations: []
+      name:
+        segments:
+          - Collection
+      generic_params:
+        - Type:
+            name: T
+            bounds: []
+            default_type: ~
+      extends: []
+      methods:
+        - visibility: Default
+          annotations: []
+          is_extern: false
+          is_effect: false
+          receiver: ~
+          name: len
+          outer_generic_params: []
+          func_generic_params: []
+          self_param:
+            is_pointer: true
+            is_mutable: false
+          params: []
+          return_types:
+            - USize
+        - visibility: Default
+          annotations: []
+          is_extern: false
+          is_effect: false
+          receiver: ~
+          name: is_empty
+          outer_generic_params: []
+          func_generic_params: []
+          self_param:
+            is_pointer: true
+            is_mutable: false
+          params: []
+          return_types:
+            - Bool
+        - visibility: Default
+          annotations: []
+          is_extern: false
+          is_effect: false
+          receiver: ~
+          name: iter
+          outer_generic_params: []
+          func_generic_params: []
+          self_param:
+            is_pointer: true
+            is_mutable: false
+          params: []
+          return_types:
+            - Path:
+                path:
+                  segments:
+                    - Iterator
+                generic_args:
+                  - Path:
+                      path:
+                        segments:
+                          - T
+                      generic_args: []

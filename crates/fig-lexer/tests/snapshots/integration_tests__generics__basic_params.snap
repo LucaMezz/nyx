@@ -61,7 +61,7 @@ expression: tokens
 - Ident: B
 - RBracket
 - Eq
-- OkLiteral
+- Ident: ok
 - Newline
 - Union
 - Ident: Either

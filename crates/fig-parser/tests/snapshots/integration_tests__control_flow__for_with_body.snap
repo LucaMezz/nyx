@@ -11,7 +11,8 @@ items:
         is_effect: false
         receiver: ~
         name: process
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params:
           - name: data
@@ -20,7 +21,11 @@ items:
                 element_type: I32
                 size: ~
         return_types:
-          - Ok
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
       body:
         statements:
           - For:
@@ -29,7 +34,6 @@ items:
                 Path:
                   segments:
                     - data
-                  generic_args: []
               body:
                 statements:
                   - Let:
@@ -42,7 +46,6 @@ items:
                             Path:
                               segments:
                                 - item
-                              generic_args: []
                           op: Multiply
                           rhs:
                             IntegerLiteral:
@@ -57,5 +60,4 @@ items:
                         Path:
                           segments:
                             - doubled
-                          generic_args: []
                   - Pass

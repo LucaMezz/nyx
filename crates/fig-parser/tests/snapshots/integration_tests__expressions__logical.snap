@@ -11,7 +11,8 @@ items:
         is_effect: false
         receiver: ~
         name: logical_ops
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params:
           - name: a
@@ -19,7 +20,11 @@ items:
           - name: b
             ty: Bool
         return_types:
-          - Ok
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
       body:
         statements:
           - Let:
@@ -32,13 +37,11 @@ items:
                     Path:
                       segments:
                         - a
-                      generic_args: []
                   op: LogicalAnd
                   rhs:
                     Path:
                       segments:
                         - b
-                      generic_args: []
           - Let:
               annotations: []
               name: or
@@ -49,11 +52,9 @@ items:
                     Path:
                       segments:
                         - a
-                      generic_args: []
                   op: LogicalOr
                   rhs:
                     Path:
                       segments:
                         - b
-                      generic_args: []
           - Pass

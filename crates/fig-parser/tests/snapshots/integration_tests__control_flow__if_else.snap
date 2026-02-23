@@ -11,7 +11,8 @@ items:
         is_effect: false
         receiver: ~
         name: abs
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params:
           - name: x
@@ -27,7 +28,6 @@ items:
                     Path:
                       segments:
                         - x
-                      generic_args: []
                   op: GreaterThanOrEqual
                   rhs:
                     IntegerLiteral:
@@ -40,7 +40,6 @@ items:
                       Path:
                         segments:
                           - x
-                        generic_args: []
               elif_clauses: []
               else_body:
                 statements:
@@ -51,4 +50,3 @@ items:
                           Path:
                             segments:
                               - x
-                            generic_args: []

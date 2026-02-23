@@ -11,7 +11,8 @@ items:
         is_effect: false
         receiver: ~
         name: empty_slice
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params: []
         return_types:
@@ -29,7 +30,8 @@ items:
         is_effect: false
         receiver: ~
         name: null_terminated
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params:
           - name: s
@@ -55,7 +57,8 @@ items:
         is_effect: false
         receiver: ~
         name: fixed_buffer
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params: []
         return_types:

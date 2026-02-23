@@ -14,7 +14,7 @@ expression: tokens
 - I32
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - Let

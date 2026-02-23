@@ -11,11 +11,16 @@ items:
         is_effect: false
         receiver: ~
         name: nop
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params: []
         return_types:
-          - Ok
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
   - FunctionDeclaration:
       signature:
         visibility: Default
@@ -24,7 +29,8 @@ items:
         is_effect: false
         receiver: ~
         name: identity
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params:
           - name: x
@@ -39,7 +45,8 @@ items:
         is_effect: false
         receiver: ~
         name: add
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params:
           - name: a
@@ -56,7 +63,8 @@ items:
         is_effect: false
         receiver: ~
         name: greet
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params:
           - name: name
@@ -65,4 +73,8 @@ items:
                 element_type: U8
                 size: ~
         return_types:
-          - Ok
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []

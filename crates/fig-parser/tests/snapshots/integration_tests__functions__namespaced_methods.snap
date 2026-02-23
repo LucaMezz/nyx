@@ -7,14 +7,20 @@ items:
       visibility: Default
       annotations: []
       is_packed: false
-      name: Vector2
+      name:
+        segments:
+          - Vector2
       generic_params: []
       requires: []
       fields:
         - name: x
           ty: F64
+          visibility: Default
+          annotations: []
         - name: y
           ty: F64
+          visibility: Default
+          annotations: []
   - Function:
       signature:
         visibility: Default
@@ -22,11 +28,11 @@ items:
         is_extern: false
         is_effect: false
         receiver:
-          segments:
-            - Vector2
-          generic_args: []
+          - name: Vector2
+            generic_args: []
         name: new
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params:
           - name: x
@@ -35,8 +41,9 @@ items:
             ty: F64
         return_types:
           - Path:
-              segments:
-                - Vector2
+              path:
+                segments:
+                  - Vector2
               generic_args: []
       body:
         statements:
@@ -48,17 +55,18 @@ items:
         is_extern: false
         is_effect: false
         receiver:
-          segments:
-            - Vector2
-          generic_args: []
+          - name: Vector2
+            generic_args: []
         name: zero
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params: []
         return_types:
           - Path:
-              segments:
-                - Vector2
+              path:
+                segments:
+                  - Vector2
               generic_args: []
       body:
         statements:
@@ -70,11 +78,11 @@ items:
         is_extern: false
         is_effect: false
         receiver:
-          segments:
-            - Vector2
-          generic_args: []
+          - name: Vector2
+            generic_args: []
         name: len
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param:
           is_pointer: true
           is_mutable: false
@@ -91,11 +99,11 @@ items:
         is_extern: false
         is_effect: false
         receiver:
-          segments:
-            - Vector2
-          generic_args: []
+          - name: Vector2
+            generic_args: []
         name: dot
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param:
           is_pointer: true
           is_mutable: false
@@ -107,8 +115,9 @@ items:
                 mutable: false
                 element_type:
                   Path:
-                    segments:
-                      - Vector2
+                    path:
+                      segments:
+                        - Vector2
                     generic_args: []
         return_types:
           - F64
@@ -122,11 +131,11 @@ items:
         is_extern: false
         is_effect: false
         receiver:
-          segments:
-            - Vector2
-          generic_args: []
+          - name: Vector2
+            generic_args: []
         name: add
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param:
           is_pointer: true
           is_mutable: false
@@ -138,13 +147,15 @@ items:
                 mutable: false
                 element_type:
                   Path:
-                    segments:
-                      - Vector2
+                    path:
+                      segments:
+                        - Vector2
                     generic_args: []
         return_types:
           - Path:
-              segments:
-                - Vector2
+              path:
+                segments:
+                  - Vector2
               generic_args: []
       body:
         statements:

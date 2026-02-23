@@ -11,11 +11,16 @@ items:
         is_effect: false
         receiver: ~
         name: sum_range
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params: []
         return_types:
-          - Ok
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
       body:
         statements:
           - For:
@@ -26,16 +31,20 @@ items:
                     Path:
                       segments:
                         - range
-                      generic_args: []
                   args:
-                    - IntegerLiteral:
-                        base: Decimal
-                        digits: "0"
-                        suffix: ~
-                    - IntegerLiteral:
-                        base: Decimal
-                        digits: "10"
-                        suffix: ~
+                    - name: ~
+                      value:
+                        IntegerLiteral:
+                          base: Decimal
+                          digits: "0"
+                          suffix: ~
+                    - name: ~
+                      value:
+                        IntegerLiteral:
+                          base: Decimal
+                          digits: "10"
+                          suffix: ~
+                  generic_args: ~
                   is_propagating: false
               body:
                 statements:
@@ -48,7 +57,8 @@ items:
         is_effect: false
         receiver: ~
         name: iterate_slice
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params:
           - name: data
@@ -57,7 +67,11 @@ items:
                 element_type: I32
                 size: ~
         return_types:
-          - Ok
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
       body:
         statements:
           - For:
@@ -66,7 +80,6 @@ items:
                 Path:
                   segments:
                     - data
-                  generic_args: []
               body:
                 statements:
                   - Pass

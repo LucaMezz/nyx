@@ -1,0 +1,50 @@
+---
+source: crates/fig-parser/tests/integration_tests.rs
+expression: ast
+---
+items:
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: false
+        receiver: ~
+        name: test
+        outer_generic_params: []
+        func_generic_params: []
+        self_param: ~
+        params:
+          - name: x
+            ty: I32
+        return_types:
+          - I32
+      body:
+        statements:
+          - Let:
+              annotations: []
+              name: y
+              ty: ~
+              value:
+                Path:
+                  segments:
+                    - x
+          - Let:
+              annotations: []
+              name: z
+              ty: ~
+              value:
+                BinaryOp:
+                  lhs:
+                    Path:
+                      segments:
+                        - y
+                  op: Add
+                  rhs:
+                    Path:
+                      segments:
+                        - x
+          - Return:
+              Path:
+                segments:
+                  - z

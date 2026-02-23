@@ -1,0 +1,34 @@
+---
+source: crates/fig-parser/tests/integration_tests.rs
+expression: ast
+---
+items:
+  - TypeAlias:
+      visibility: Default
+      annotations: []
+      name:
+        segments:
+          - String
+      generic_params: []
+      aliased_type:
+        Array:
+          element_type: U8
+          size: ~
+  - TypeAlias:
+      visibility: Default
+      annotations: []
+      name:
+        segments:
+          - Vector2
+          - Alpine
+      generic_params: []
+      aliased_type: I32
+  - TypeAlias:
+      visibility: Default
+      annotations: []
+      name:
+        segments:
+          - math
+          - Matrix
+      generic_params: []
+      aliased_type: I32

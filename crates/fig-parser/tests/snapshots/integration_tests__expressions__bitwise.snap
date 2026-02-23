@@ -11,7 +11,8 @@ items:
         is_effect: false
         receiver: ~
         name: bitwise_ops
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params:
           - name: a
@@ -19,7 +20,11 @@ items:
           - name: b
             ty: U32
         return_types:
-          - Ok
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
       body:
         statements:
           - Let:
@@ -32,13 +37,11 @@ items:
                     Path:
                       segments:
                         - a
-                      generic_args: []
                   op: BitwiseAnd
                   rhs:
                     Path:
                       segments:
                         - b
-                      generic_args: []
           - Let:
               annotations: []
               name: bor
@@ -49,13 +52,11 @@ items:
                     Path:
                       segments:
                         - a
-                      generic_args: []
                   op: BitwiseOr
                   rhs:
                     Path:
                       segments:
                         - b
-                      generic_args: []
           - Let:
               annotations: []
               name: bxor
@@ -66,13 +67,11 @@ items:
                     Path:
                       segments:
                         - a
-                      generic_args: []
                   op: BitwiseXor
                   rhs:
                     Path:
                       segments:
                         - b
-                      generic_args: []
           - Let:
               annotations: []
               name: shl
@@ -83,7 +82,6 @@ items:
                     Path:
                       segments:
                         - a
-                      generic_args: []
                   op: ShiftLeft
                   rhs:
                     IntegerLiteral:
@@ -100,7 +98,6 @@ items:
                     Path:
                       segments:
                         - a
-                      generic_args: []
                   op: ShiftRight
                   rhs:
                     IntegerLiteral:

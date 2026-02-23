@@ -50,6 +50,12 @@ expression: tokens
 - Ident: i
 - RParen
 - Newline
+- Ident: total
+- Eq
+- Ident: total
+- Plus
+- Ident: val
+- Newline
 - Dedent
 - Return
 - Ident: total

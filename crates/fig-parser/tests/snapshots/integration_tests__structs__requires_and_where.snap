@@ -7,28 +7,34 @@ items:
       visibility: Default
       annotations: []
       is_packed: false
-      name: Vector
+      name:
+        segments:
+          - Vector
       generic_params:
         - Type:
             name: T
             bounds:
               - Path:
-                  segments:
-                    - Numeric
+                  path:
+                    segments:
+                      - Numeric
                   generic_args: []
               - Path:
-                  segments:
-                    - Sized
+                  path:
+                    segments:
+                      - Sized
                   generic_args: []
             default_type: ~
       requires:
         - Path:
-            segments:
-              - Display
+            path:
+              segments:
+                - Display
             generic_args: []
         - Path:
-            segments:
-              - Debug
+            path:
+              segments:
+                - Debug
             generic_args: []
       fields:
         - name: data
@@ -36,11 +42,18 @@ items:
             Array:
               element_type:
                 Path:
-                  segments:
-                    - T
+                  path:
+                    segments:
+                      - T
                   generic_args: []
               size: ~
+          visibility: Default
+          annotations: []
         - name: len
           ty: USize
+          visibility: Default
+          annotations: []
         - name: cap
           ty: USize
+          visibility: Default
+          annotations: []

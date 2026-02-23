@@ -11,11 +11,16 @@ items:
         is_effect: false
         receiver: ~
         name: many_bindings
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params: []
         return_types:
-          - Ok
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
       body:
         statements:
           - Let:
@@ -118,13 +123,11 @@ items:
                     Path:
                       segments:
                         - a
-                      generic_args: []
                   op: Add
                   rhs:
                     Path:
                       segments:
                         - b
-                      generic_args: []
           - Let:
               annotations: []
               name: l
@@ -135,13 +138,11 @@ items:
                     Path:
                       segments:
                         - c
-                      generic_args: []
                   op: Add
                   rhs:
                     Path:
                       segments:
                         - d
-                      generic_args: []
           - Let:
               annotations: []
               name: m
@@ -152,13 +153,11 @@ items:
                     Path:
                       segments:
                         - e
-                      generic_args: []
                   op: Add
                   rhs:
                     Path:
                       segments:
                         - f
-                      generic_args: []
           - Let:
               annotations: []
               name: n
@@ -169,13 +168,11 @@ items:
                     Path:
                       segments:
                         - g
-                      generic_args: []
                   op: Add
                   rhs:
                     Path:
                       segments:
                         - h
-                      generic_args: []
           - Let:
               annotations: []
               name: o
@@ -186,13 +183,11 @@ items:
                     Path:
                       segments:
                         - i
-                      generic_args: []
                   op: Add
                   rhs:
                     Path:
                       segments:
                         - j
-                      generic_args: []
           - Let:
               annotations: []
               name: p
@@ -209,29 +204,24 @@ items:
                                 Path:
                                   segments:
                                     - k
-                                  generic_args: []
                               op: Add
                               rhs:
                                 Path:
                                   segments:
                                     - l
-                                  generic_args: []
                           op: Add
                           rhs:
                             Path:
                               segments:
                                 - m
-                              generic_args: []
                       op: Add
                       rhs:
                         Path:
                           segments:
                             - n
-                          generic_args: []
                   op: Add
                   rhs:
                     Path:
                       segments:
                         - o
-                      generic_args: []
           - Pass

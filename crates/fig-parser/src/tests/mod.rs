@@ -294,13 +294,6 @@ fn test_parse_primitive_type_bool() {
 }
 
 #[test]
-fn test_parse_primitive_type_ok() {
-    let result = parser::TypeParser::new().parse(Lexer::new("ok"));
-    assert!(result.is_ok());
-    assert_eq!(result.unwrap(), Type::Ok);
-}
-
-#[test]
 fn test_parse_raw_pointer() {
     let result = parser::TypeParser::new().parse(Lexer::new("*u8"));
     assert!(result.is_ok());
@@ -338,12 +331,17 @@ fn test_parse_mutable_pointer() {
 
 #[test]
 fn test_parse_nullable_pointer() {
+    // With the new grammar `?*i32` → Nullable(Pointer { nullable: false, .. })
     let result = parser::TypeParser::new().parse(Lexer::new("?*i32"));
     assert!(result.is_ok());
-    if let Type::Pointer { element_type, nullable, mutable } = result.unwrap() {
-        assert!(nullable);
-        assert!(!mutable);
-        assert_eq!(*element_type, Type::I32);
+    if let Type::Nullable(inner) = result.unwrap() {
+        if let Type::Pointer { element_type, nullable, mutable } = *inner {
+            assert!(!nullable);
+            assert!(!mutable);
+            assert_eq!(*element_type, Type::I32);
+        } else {
+            panic!("Expected Pointer inside Nullable");
+        }
     } else {
         panic!("Expected nullable pointer");
     }
@@ -391,12 +389,12 @@ fn test_parse_fixed_array_type() {
 
 #[test]
 fn test_parse_error_union_type() {
-    // T ! E  is the "ok-or-error" type union
-    let result = parser::TypeParser::new().parse(Lexer::new("i32 ! IoError"));
+    // T ! E  is the "ok-or-error" type union; use TopLevelTypeParser
+    let result = parser::TopLevelTypeParser::new().parse(Lexer::new("i32 ! IoError"));
     assert!(result.is_ok());
     if let Type::ErrorUnion { ok_type, err_type } = result.unwrap() {
         assert_eq!(*ok_type, Type::I32);
-        assert_eq!(err_type.segments, vec!["IoError".to_string()]);
+        if let Type::Path { path, .. } = *err_type { assert_eq!(path.segments, vec!["IoError".to_string()]); } else { panic!("Expected Path type for err_type"); }
     } else {
         panic!("Expected ErrorUnion type");
     }
@@ -404,12 +402,12 @@ fn test_parse_error_union_type() {
 
 #[test]
 fn test_parse_pointer_error_union() {
-    // *T ! E  should be  (*T) ! E
-    let result = parser::TypeParser::new().parse(Lexer::new("*i32 ! IoError"));
+    // *T ! E  should be  (*T) ! E; use TopLevelTypeParser
+    let result = parser::TopLevelTypeParser::new().parse(Lexer::new("*i32 ! IoError"));
     assert!(result.is_ok());
     if let Type::ErrorUnion { ok_type, err_type } = result.unwrap() {
         assert!(matches!(*ok_type, Type::Pointer { .. }));
-        assert_eq!(err_type.segments[0], "IoError");
+        if let Type::Path { path, .. } = *err_type { assert_eq!(path.segments[0], "IoError"); } else { panic!("Expected Path type for err_type"); }
     } else {
         panic!("Expected ErrorUnion wrapping pointer");
     }
@@ -417,14 +415,14 @@ fn test_parse_pointer_error_union() {
 
 #[test]
 fn test_parse_nullable_pointer_error_union() {
-    // ?*T ! E  should be  (?*T) ! E
-    let result = parser::TypeParser::new().parse(Lexer::new("?*u8 ! IoError"));
+    // ?*T ! E  should be  (?*T) ! E = Nullable(Pointer{..}) ! E; use TopLevelTypeParser
+    let result = parser::TopLevelTypeParser::new().parse(Lexer::new("?*u8 ! IoError"));
     assert!(result.is_ok());
     if let Type::ErrorUnion { ok_type, .. } = result.unwrap() {
-        if let Type::Pointer { nullable, .. } = *ok_type {
-            assert!(nullable);
+        if let Type::Nullable(inner) = *ok_type {
+            assert!(matches!(*inner, Type::Pointer { .. }));
         } else {
-            panic!("Expected nullable pointer inside error union");
+            panic!("Expected Nullable(Pointer) inside error union");
         }
     } else {
         panic!("Expected ErrorUnion");

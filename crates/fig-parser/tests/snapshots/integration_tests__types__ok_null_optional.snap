@@ -1,0 +1,40 @@
+---
+source: crates/fig-parser/tests/integration_tests.rs
+expression: ast
+---
+items:
+  - TypeAlias:
+      visibility: Default
+      annotations: []
+      name:
+        segments:
+          - Nothing
+      generic_params: []
+      aliased_type: "Null"
+  - TypeAlias:
+      visibility: Default
+      annotations: []
+      name:
+        segments:
+          - OptInt
+      generic_params: []
+      aliased_type:
+        Nullable: I32
+  - TypeAlias:
+      visibility: Default
+      annotations: []
+      name:
+        segments:
+          - OptBool
+      generic_params: []
+      aliased_type:
+        Nullable: Bool
+  - TypeAlias:
+      visibility: Default
+      annotations: []
+      name:
+        segments:
+          - OptFloat
+      generic_params: []
+      aliased_type:
+        Nullable: F64

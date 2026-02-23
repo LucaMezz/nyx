@@ -3,7 +3,7 @@
 // Token snapshots are stored in .snap.yml files using insta
 
 use datatest_stable::Utf8Path;
-use fig_lexer::{IndentLexer, LexicalError};
+use fig_lexer::{diagnostics::DiagnosticError, format_lex_errors, IndentLexer};
 
 fn lexer_test(path: &Utf8Path, contents: String) -> datatest_stable::Result<()> {
     // Tokenize the entire file
@@ -20,19 +20,8 @@ fn lexer_test(path: &Utf8Path, contents: String) -> datatest_stable::Result<()> 
 
     // Check for lexer errors
     if !errors.is_empty() {
-        // Format errors with detailed information
-        let mut error_details = String::new();
-        for (i, error) in errors.iter().enumerate() {
-            error_details.push_str(&format!("\n  Error {}: {}", i + 1, error));
-            if let Some(span) = error.span() {
-                let (line, col) = LexicalError::position_from_source(&contents, span.start);
-                error_details.push_str(&format!(" (line {}, column {})", line, col));
-                // Show the problematic text
-                let snippet = contents.get(span.clone()).unwrap_or("<invalid span>");
-                error_details.push_str(&format!("\n     Text: {:?}", snippet));
-            }
-        }
-        return Err(format!("Lexer errors in {}:{}", path, error_details).into());
+        let rendered = format_lex_errors(path.as_str(), &contents, &errors);
+        return Err(Box::new(DiagnosticError(rendered)));
     }
 
     // Create snapshot name from the test path

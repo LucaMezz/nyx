@@ -1,0 +1,282 @@
+---
+source: crates/fig-parser/tests/integration_tests.rs
+expression: ast
+---
+items:
+  - Struct:
+      visibility: Default
+      annotations: []
+      is_packed: false
+      name:
+        segments:
+          - Node
+      generic_params:
+        - Type:
+            name: T
+            bounds: []
+            default_type: ~
+      requires: []
+      fields:
+        - name: value
+          ty:
+            Path:
+              path:
+                segments:
+                  - T
+              generic_args: []
+          visibility: Default
+          annotations: []
+        - name: next
+          ty:
+            Nullable:
+              Pointer:
+                nullable: false
+                mutable: true
+                element_type:
+                  Path:
+                    path:
+                      segments:
+                        - Node
+                    generic_args:
+                      - Path:
+                          path:
+                            segments:
+                              - T
+                          generic_args: []
+          visibility: Default
+          annotations: []
+  - Struct:
+      visibility: Default
+      annotations: []
+      is_packed: false
+      name:
+        segments:
+          - LinkedList
+      generic_params:
+        - Type:
+            name: T
+            bounds: []
+            default_type: ~
+      requires: []
+      fields:
+        - name: head
+          ty:
+            Nullable:
+              Pointer:
+                nullable: false
+                mutable: true
+                element_type:
+                  Path:
+                    path:
+                      segments:
+                        - Node
+                    generic_args:
+                      - Path:
+                          path:
+                            segments:
+                              - T
+                          generic_args: []
+          visibility: Default
+          annotations: []
+        - name: len
+          ty: USize
+          visibility: Default
+          annotations: []
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: LinkedList
+            generic_args:
+              - Type:
+                  name: T
+                  bounds: []
+                  default_type: ~
+        name: new
+        outer_generic_params: []
+        func_generic_params: []
+        self_param: ~
+        params: []
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - LinkedList
+              generic_args:
+                - Path:
+                    path:
+                      segments:
+                        - T
+                    generic_args: []
+      body:
+        statements:
+          - Pass
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: LinkedList
+            generic_args:
+              - Type:
+                  name: T
+                  bounds: []
+                  default_type: ~
+        name: push_front
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params:
+          - name: value
+            ty:
+              Path:
+                path:
+                  segments:
+                    - T
+                generic_args: []
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
+      body:
+        statements:
+          - Pass
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: LinkedList
+            generic_args:
+              - Type:
+                  name: T
+                  bounds: []
+                  default_type: ~
+        name: pop_front
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params: []
+        return_types:
+          - Nullable:
+              Path:
+                path:
+                  segments:
+                    - T
+                generic_args: []
+      body:
+        statements:
+          - Pass
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: false
+        receiver:
+          - name: LinkedList
+            generic_args:
+              - Type:
+                  name: T
+                  bounds: []
+                  default_type: ~
+        name: len
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: false
+        params: []
+        return_types:
+          - USize
+      body:
+        statements:
+          - Return:
+              FieldAccess:
+                object: SelfValue
+                field: len
+                is_propagating: false
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: false
+        receiver:
+          - name: LinkedList
+            generic_args:
+              - Type:
+                  name: T
+                  bounds: []
+                  default_type: ~
+        name: is_empty
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: false
+        params: []
+        return_types:
+          - Bool
+      body:
+        statements:
+          - Return:
+              BinaryOp:
+                lhs:
+                  FieldAccess:
+                    object: SelfValue
+                    field: len
+                    is_propagating: false
+                op: Equal
+                rhs:
+                  IntegerLiteral:
+                    base: Decimal
+                    digits: "0"
+                    suffix: ~
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: false
+        receiver:
+          - name: LinkedList
+            generic_args:
+              - Type:
+                  name: T
+                  bounds: []
+                  default_type: ~
+        name: peek_front
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: false
+        params: []
+        return_types:
+          - Nullable:
+              Pointer:
+                nullable: false
+                mutable: false
+                element_type:
+                  Path:
+                    path:
+                      segments:
+                        - T
+                    generic_args: []
+      body:
+        statements:
+          - Pass

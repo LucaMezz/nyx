@@ -7,7 +7,9 @@ items:
       visibility: Default
       annotations: []
       is_packed: false
-      name: Pair
+      name:
+        segments:
+          - Pair
       generic_params:
         - Type:
             name: A
@@ -22,20 +24,28 @@ items:
         - name: first
           ty:
             Path:
-              segments:
-                - A
+              path:
+                segments:
+                  - A
               generic_args: []
+          visibility: Default
+          annotations: []
         - name: second
           ty:
             Path:
-              segments:
-                - B
+              path:
+                segments:
+                  - B
               generic_args: []
+          visibility: Default
+          annotations: []
   - Struct:
       visibility: Default
       annotations: []
       is_packed: false
-      name: Triple
+      name:
+        segments:
+          - Triple
       generic_params:
         - Type:
             name: A
@@ -54,26 +64,37 @@ items:
         - name: a
           ty:
             Path:
-              segments:
-                - A
+              path:
+                segments:
+                  - A
               generic_args: []
+          visibility: Default
+          annotations: []
         - name: b
           ty:
             Path:
-              segments:
-                - B
+              path:
+                segments:
+                  - B
               generic_args: []
+          visibility: Default
+          annotations: []
         - name: c
           ty:
             Path:
-              segments:
-                - C
+              path:
+                segments:
+                  - C
               generic_args: []
+          visibility: Default
+          annotations: []
   - Struct:
       visibility: Default
       annotations: []
       is_packed: false
-      name: Map
+      name:
+        segments:
+          - Map
       generic_params:
         - Type:
             name: K
@@ -88,30 +109,42 @@ items:
         - name: key
           ty:
             Path:
-              segments:
-                - K
+              path:
+                segments:
+                  - K
               generic_args: []
+          visibility: Default
+          annotations: []
         - name: value
           ty:
             Path:
-              segments:
-                - V
+              path:
+                segments:
+                  - V
               generic_args: []
+          visibility: Default
+          annotations: []
         - name: next
           ty:
-            Pointer:
-              nullable: true
-              mutable: false
-              element_type:
-                Path:
-                  segments:
-                    - Map
-                  generic_args:
-                    - Path:
-                        segments:
-                          - K
-                        generic_args: []
-                    - Path:
-                        segments:
-                          - V
-                        generic_args: []
+            Nullable:
+              Pointer:
+                nullable: false
+                mutable: false
+                element_type:
+                  Path:
+                    path:
+                      segments:
+                        - Map
+                    generic_args:
+                      - Path:
+                          path:
+                            segments:
+                              - K
+                          generic_args: []
+                      - Path:
+                          path:
+                            segments:
+                              - V
+                          generic_args: []
+          visibility: Default
+          annotations: []

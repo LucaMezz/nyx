@@ -3,7 +3,7 @@ source: crates/fig-lexer/tests/integration_tests.rs
 expression: tokens
 ---
 - Using
-- Core
+- Ident: core
 - ColonColon
 - Ident: memory
 - Newline
@@ -125,7 +125,7 @@ expression: tokens
 - Newline
 - Ident: truncated_file
 - Colon
-- OkLiteral
+- Ident: ok
 - Newline
 - Ident: invalid_section_offset
 - Colon
@@ -139,7 +139,7 @@ expression: tokens
 - RBracket
 - Newline
 - Indent
-- OkLiteral
+- Ident: ok
 - Colon
 - Ident: T
 - Newline
@@ -685,7 +685,7 @@ expression: tokens
 - Eq
 - Ident: header_result
 - Dot
-- OkLiteral
+- Ident: ok
 - Newline
 - Let
 - Ident: program_headers
@@ -774,7 +774,7 @@ expression: tokens
 - Ident: ElfFile
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
 - Ident: elf
 - RParen
@@ -932,62 +932,54 @@ expression: tokens
 - Newline
 - Let
 - Ident: entry_point
-- Eq
-- If
-- SelfLower
-- Dot
-- Ident: is_64bit
-- Ident: then
-- SelfLower
-- Dot
-- Ident: read_u64
-- LParen
-- RParen
-- Else
-- SelfLower
-- Dot
-- Ident: read_u32
-- LParen
-- RParen
-- As
+- Colon
 - U64
+- Eq
+- IntegerLiteral:
+    base: Decimal
+    digits: "0"
+    suffix: ~
 - Newline
 - Let
 - Ident: program_header_offset
-- Eq
-- If
-- SelfLower
-- Dot
-- Ident: is_64bit
-- Ident: then
-- SelfLower
-- Dot
-- Ident: read_u64
-- LParen
-- RParen
-- Else
-- SelfLower
-- Dot
-- Ident: read_u32
-- LParen
-- RParen
-- As
+- Colon
 - U64
+- Eq
+- IntegerLiteral:
+    base: Decimal
+    digits: "0"
+    suffix: ~
 - Newline
 - Let
 - Ident: section_header_offset
+- Colon
+- U64
 - Eq
+- IntegerLiteral:
+    base: Decimal
+    digits: "0"
+    suffix: ~
+- Newline
 - If
 - SelfLower
 - Dot
 - Ident: is_64bit
-- Ident: then
+- Newline
+- Indent
+- Ident: entry_point
+- Eq
 - SelfLower
 - Dot
 - Ident: read_u64
 - LParen
 - RParen
+- Newline
+- Dedent
 - Else
+- Newline
+- Indent
+- Ident: entry_point
+- Eq
 - SelfLower
 - Dot
 - Ident: read_u32
@@ -996,6 +988,65 @@ expression: tokens
 - As
 - U64
 - Newline
+- Dedent
+- If
+- SelfLower
+- Dot
+- Ident: is_64bit
+- Newline
+- Indent
+- Ident: program_header_offset
+- Eq
+- SelfLower
+- Dot
+- Ident: read_u64
+- LParen
+- RParen
+- Newline
+- Dedent
+- Else
+- Newline
+- Indent
+- Ident: program_header_offset
+- Eq
+- SelfLower
+- Dot
+- Ident: read_u32
+- LParen
+- RParen
+- As
+- U64
+- Newline
+- Dedent
+- If
+- SelfLower
+- Dot
+- Ident: is_64bit
+- Newline
+- Indent
+- Ident: section_header_offset
+- Eq
+- SelfLower
+- Dot
+- Ident: read_u64
+- LParen
+- RParen
+- Newline
+- Dedent
+- Else
+- Newline
+- Indent
+- Ident: section_header_offset
+- Eq
+- SelfLower
+- Dot
+- Ident: read_u32
+- LParen
+- RParen
+- As
+- U64
+- Newline
+- Dedent
 - Let
 - Ident: flags
 - Eq
@@ -1185,7 +1236,7 @@ expression: tokens
 - Ident: ElfHeader
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
 - Ident: header
 - RParen

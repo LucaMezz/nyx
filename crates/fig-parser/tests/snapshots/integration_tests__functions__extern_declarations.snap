@@ -11,7 +11,8 @@ items:
         is_effect: false
         receiver: ~
         name: malloc
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params:
           - name: size
@@ -29,7 +30,8 @@ items:
         is_effect: false
         receiver: ~
         name: free
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params:
           - name: ptr
@@ -39,7 +41,11 @@ items:
                 mutable: true
                 element_type: U8
         return_types:
-          - Ok
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
   - FunctionDeclaration:
       signature:
         visibility: Default
@@ -48,7 +54,8 @@ items:
         is_effect: false
         receiver: ~
         name: memcpy
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params:
           - name: dst
@@ -78,7 +85,8 @@ items:
         is_effect: false
         receiver: ~
         name: printf
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params:
           - name: fmt

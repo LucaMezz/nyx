@@ -28,7 +28,6 @@ items:
             Path:
               segments:
                 - BASE
-              generic_args: []
           op: Multiply
           rhs:
             IntegerLiteral:
@@ -48,10 +47,8 @@ items:
             Path:
               segments:
                 - DOUBLE
-              generic_args: []
           op: Add
           rhs:
             Path:
               segments:
                 - BASE
-              generic_args: []

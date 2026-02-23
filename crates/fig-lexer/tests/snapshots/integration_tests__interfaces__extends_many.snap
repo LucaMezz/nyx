@@ -33,7 +33,7 @@ expression: tokens
 - SelfLower
 - RParen
 - Arrow
-- SelfKeyword
+- Ident: Self
 - Newline
 - Func
 - Ident: signum

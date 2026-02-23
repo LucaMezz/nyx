@@ -36,7 +36,7 @@ expression: tokens
 - Ident: B
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - Pass

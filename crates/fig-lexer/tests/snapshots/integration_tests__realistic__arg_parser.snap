@@ -3,7 +3,7 @@ source: crates/fig-lexer/tests/integration_tests.rs
 expression: tokens
 ---
 - Using
-- Std
+- Ident: std
 - ColonColon
 - Ident: io
 - Newline
@@ -137,7 +137,7 @@ expression: tokens
 - RBracket
 - Newline
 - Indent
-- OkLiteral
+- Ident: ok
 - Colon
 - Ident: T
 - Newline
@@ -254,7 +254,7 @@ expression: tokens
 - RBracket
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - Let
@@ -344,7 +344,7 @@ expression: tokens
 - Bool
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - Let
@@ -436,7 +436,7 @@ expression: tokens
 - RBracket
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - Let
@@ -522,7 +522,7 @@ expression: tokens
 - Bool
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - Let
@@ -600,7 +600,7 @@ expression: tokens
 - Ident: ArgDef
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - Pass
@@ -789,7 +789,7 @@ expression: tokens
 - Ident: ParsedArgs
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
 - And
 - Ident: results
@@ -1005,7 +1005,7 @@ expression: tokens
 - Ident: ParsedArg
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
 - Ident: ParsedArg
 - LParen
@@ -1065,7 +1065,7 @@ expression: tokens
 - Ident: ParsedArg
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
 - Ident: ParsedArg
 - LParen
@@ -1146,7 +1146,7 @@ expression: tokens
 - Ident: ParsedArg
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
 - Ident: ParsedArg
 - LParen
@@ -1291,7 +1291,7 @@ expression: tokens
 - Ident: ParsedArg
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
 - Ident: ParsedArg
 - LParen
@@ -1356,7 +1356,7 @@ expression: tokens
 - Ident: ParsedArg
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
 - Ident: ParsedArg
 - LParen
@@ -1439,7 +1439,7 @@ expression: tokens
 - Ident: ParsedArg
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
 - Ident: ParsedArg
 - LParen
@@ -1509,7 +1509,7 @@ expression: tokens
 - Arrow
 - Ident: ParseResult
 - LBracket
-- OkLiteral
+- Ident: ok
 - RBracket
 - Newline
 - Indent
@@ -1532,7 +1532,7 @@ expression: tokens
 - Return
 - Ident: ParseResult
 - LBracket
-- OkLiteral
+- Ident: ok
 - RBracket
 - ColonColon
 - Ident: err
@@ -1575,12 +1575,12 @@ expression: tokens
 - Return
 - Ident: ParseResult
 - LBracket
-- OkLiteral
+- Ident: ok
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
-- OkLiteral
+- Ident: ok
 - RParen
 - Newline
 - Dedent
@@ -2027,7 +2027,7 @@ expression: tokens
 - Arrow
 - Ident: ParseResult
 - LBracket
-- OkLiteral
+- Ident: ok
 - RBracket
 - Newline
 - Indent
@@ -2075,7 +2075,7 @@ expression: tokens
 - Return
 - Ident: ParseResult
 - LBracket
-- OkLiteral
+- Ident: ok
 - RBracket
 - ColonColon
 - Ident: err
@@ -2095,12 +2095,12 @@ expression: tokens
 - Return
 - Ident: ParseResult
 - LBracket
-- OkLiteral
+- Ident: ok
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
-- OkLiteral
+- Ident: ok
 - RParen
 - Newline
 - Dedent
@@ -2114,7 +2114,7 @@ expression: tokens
 - SelfLower
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - Pass
@@ -2177,7 +2177,7 @@ expression: tokens
 - Ident: ParsedArg
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - Pass

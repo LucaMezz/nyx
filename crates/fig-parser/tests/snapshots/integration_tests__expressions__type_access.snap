@@ -11,11 +11,16 @@ items:
         is_effect: false
         receiver: ~
         name: type_access_exprs
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params: []
         return_types:
-          - Ok
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
       body:
         statements:
           - Let:
@@ -28,7 +33,6 @@ items:
                     Path:
                       segments:
                         - Foo
-                      generic_args: []
                   member: BAR
           - Let:
               annotations: []
@@ -42,7 +46,6 @@ items:
                         Path:
                           segments:
                             - std
-                          generic_args: []
                       member: io
                   member: STDIN
           - Let:
@@ -55,6 +58,5 @@ items:
                     Path:
                       segments:
                         - Color
-                      generic_args: []
                   member: RED
           - Pass

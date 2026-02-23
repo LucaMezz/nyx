@@ -249,7 +249,11 @@ func RingDeque[T]::peek_back(*self) -> ?*T
     if self.size == 0
         return null
     
-    let back_index = if self.tail == 0 then self.capacity - 1 else self.tail - 1
+    let back_index: usize = 0
+    if self.tail == 0
+        back_index = self.capacity - 1
+    else 
+        back_index = self.tail - 1
     return &self.data[back_index]
 
 func RingDeque[T]::is_empty(*self) -> bool

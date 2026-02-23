@@ -15,7 +15,7 @@ union PollResult[T]
     pending: ok
 
 export struct Future[T]
-    poll_fn: *fn(*mut Context) -> PollResult[T]
+    poll_func: *func(*mut Context) -> PollResult[T]
     state: TaskState
     waker: ?Waker
 
@@ -38,7 +38,7 @@ struct Context
 
 struct Waker
     task_id: u64
-    wake_fn: *fn(u64) -> ok
+    wake_func: *func(u64) -> null
 
 struct Executor
     ready_queue: [u64]
@@ -138,7 +138,7 @@ func! Runtime::run_once(*mut self) -> ok
     
     let waker = Waker(
         task_id: task_id,
-        wake_fn: wake_task
+        wake_func: wake_task
     )
     
     let mut_context = Context(
@@ -146,7 +146,7 @@ func! Runtime::run_once(*mut self) -> ok
         task_id: task_id
     )
     
-    let poll_result = (task.future.poll_fn)(&mut_context)
+    let poll_result = (task.future.poll_func)(&mut_context)
     
     task.future.state = TaskState::SUSPENDED
     
@@ -163,35 +163,35 @@ func! wake_task(task_id: u64) -> ok
 
 // Future implementations
 
-func! Future[T]::new(poll_fn: *fn(*mut Context) -> PollResult[T]) -> Future[T]
+func! Future[T]::new(poll_func: *func(*mut Context) -> PollResult[T]) -> Future[T]
     return Future[T](
-        poll_fn: poll_fn,
+        poll_func: poll_func,
         state: TaskState::READY,
         waker: null
     )
 
 func! Future[T]::poll(*mut self, ctx: *mut Context) -> PollResult[T]
-    return (self.poll_fn)(ctx)
+    return (self.poll_func)(ctx)
 
 // Common async operations
 
 func! async_sleep(duration_ms: u64) -> Future[ok]
-    let poll_fn = sleep_poll
-    return Future[ok]::new(poll_fn)
+    let poll_func = sleep_poll
+    return Future[ok]::new(poll_func)
 
 func! sleep_poll(ctx: *mut Context) -> PollResult[ok]
     return PollResult[ok]::pending(ok)
 
 func! async_read(fd: i32, buffer: *mut u8, size: usize) -> Future[usize]
-    let poll_fn = read_poll
-    return Future[usize]::new(poll_fn)
+    let poll_func = read_poll
+    return Future[usize]::new(poll_func)
 
 func! read_poll(ctx: *mut Context) -> PollResult[usize]
     return PollResult[usize]::pending(ok)
 
 func! async_write(fd: i32, buffer: *u8, size: usize) -> Future[usize]
-    let poll_fn = write_poll
-    return Future[usize]::new(poll_fn)
+    let poll_func = write_poll
+    return Future[usize]::new(poll_func)
 
 func! write_poll(ctx: *mut Context) -> PollResult[usize]
     return PollResult[usize]::pending(ok)

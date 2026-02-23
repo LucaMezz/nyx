@@ -11,11 +11,16 @@ items:
         is_effect: false
         receiver: ~
         name: nop
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params: []
         return_types:
-          - Ok
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
       body:
         statements:
           - Pass
@@ -27,13 +32,18 @@ items:
         is_effect: false
         receiver: ~
         name: empty_if
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params:
           - name: cond
             ty: Bool
         return_types:
-          - Ok
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
       body:
         statements:
           - If:
@@ -41,7 +51,6 @@ items:
                 Path:
                   segments:
                     - cond
-                  generic_args: []
               then_body:
                 statements:
                   - Pass
@@ -57,7 +66,8 @@ items:
         is_effect: false
         receiver: ~
         name: empty_for
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params:
           - name: data
@@ -66,7 +76,11 @@ items:
                 element_type: I32
                 size: ~
         return_types:
-          - Ok
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
       body:
         statements:
           - For:
@@ -75,7 +89,6 @@ items:
                 Path:
                   segments:
                     - data
-                  generic_args: []
               body:
                 statements:
                   - Pass

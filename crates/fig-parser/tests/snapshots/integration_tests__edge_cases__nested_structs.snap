@@ -7,37 +7,51 @@ items:
       visibility: Default
       annotations: []
       is_packed: false
-      name: Inner
+      name:
+        segments:
+          - Inner
       generic_params: []
       requires: []
       fields:
         - name: x
           ty: I32
+          visibility: Default
+          annotations: []
   - Struct:
       visibility: Default
       annotations: []
       is_packed: false
-      name: Outer
+      name:
+        segments:
+          - Outer
       generic_params: []
       requires: []
       fields:
         - name: inner
           ty:
             Path:
-              segments:
-                - Inner
+              path:
+                segments:
+                  - Inner
               generic_args: []
+          visibility: Default
+          annotations: []
   - Struct:
       visibility: Default
       annotations: []
       is_packed: false
-      name: DeepNest
+      name:
+        segments:
+          - DeepNest
       generic_params: []
       requires: []
       fields:
         - name: outer
           ty:
             Path:
-              segments:
-                - Outer
+              path:
+                segments:
+                  - Outer
               generic_args: []
+          visibility: Default
+          annotations: []

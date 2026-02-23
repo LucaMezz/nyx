@@ -1,11 +1,14 @@
 // Edge case: interface with only clauses, no methods
-interface RequiresAllocator
-    requires
-        Allocator
-
-interface MustBeOrdered
+interface Allocator[T]
+    extends
+        Display
+        Debug
     where
-        Self: Ord
+        T: Mem
+
+interface MustBeOrdered[T]
+    where
+        T: Ord
 
 interface ExtendsOnly
     extends

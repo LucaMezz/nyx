@@ -7,31 +7,42 @@ items:
       visibility: Default
       annotations: []
       is_packed: false
-      name: Inner
+      name:
+        segments:
+          - Inner
       generic_params: []
       requires: []
       fields:
         - name: value
           ty: I32
+          visibility: Default
+          annotations: []
   - Struct:
       visibility: Default
       annotations: []
       is_packed: false
-      name: Outer
+      name:
+        segments:
+          - Outer
       generic_params: []
       requires: []
       fields:
         - name: inner
           ty:
             Path:
-              segments:
-                - Inner
+              path:
+                segments:
+                  - Inner
               generic_args: []
+          visibility: Default
+          annotations: []
         - name: label
           ty:
             Array:
               element_type: U8
               size: ~
+          visibility: Default
+          annotations: []
   - Function:
       signature:
         visibility: Default
@@ -40,14 +51,16 @@ items:
         is_effect: false
         receiver: ~
         name: deep_field
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params:
           - name: o
             ty:
               Path:
-                segments:
-                  - Outer
+                path:
+                  segments:
+                    - Outer
                 generic_args: []
         return_types:
           - I32
@@ -61,7 +74,6 @@ items:
                       Path:
                         segments:
                           - o
-                        generic_args: []
                     field: inner
                     is_propagating: false
                 field: value

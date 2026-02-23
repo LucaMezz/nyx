@@ -7,7 +7,9 @@ items:
       visibility: Default
       annotations: []
       is_packed: false
-      name: Buffer
+      name:
+        segments:
+          - Buffer
       generic_params: []
       requires: []
       fields:
@@ -16,22 +18,34 @@ items:
             Array:
               element_type: U8
               size: ~
+          visibility: Default
+          annotations: []
         - name: len
           ty: USize
+          visibility: Default
+          annotations: []
   - Struct:
       visibility: Default
       annotations: []
       is_packed: false
-      name: Matrix
+      name:
+        segments:
+          - Matrix
       generic_params: []
       requires: []
       fields:
         - name: rows
           ty: USize
+          visibility: Default
+          annotations: []
         - name: cols
           ty: USize
+          visibility: Default
+          annotations: []
         - name: data
           ty:
             Array:
               element_type: F64
               size: ~
+          visibility: Default
+          annotations: []

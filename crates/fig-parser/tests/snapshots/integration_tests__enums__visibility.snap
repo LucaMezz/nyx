@@ -6,7 +6,9 @@ items:
   - Enum:
       visibility: Public
       annotations: []
-      name: Visibility
+      name:
+        segments:
+          - Visibility
       representation: ~
       generic_params: []
       requires: []
@@ -20,7 +22,9 @@ items:
   - Enum:
       visibility: Export
       annotations: []
-      name: ExportedStatus
+      name:
+        segments:
+          - ExportedStatus
       representation: ~
       generic_params: []
       requires: []

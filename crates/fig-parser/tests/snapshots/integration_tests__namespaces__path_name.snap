@@ -10,13 +10,14 @@ items:
         segments:
           - std
           - collections
-        generic_args: []
       items:
         - Struct:
             visibility: Export
             annotations: []
             is_packed: false
-            name: Seq
+            name:
+              segments:
+                - Seq
             generic_params:
               - Type:
                   name: T
@@ -31,10 +32,17 @@ items:
                     mutable: true
                     element_type:
                       Path:
-                        segments:
-                          - T
+                        path:
+                          segments:
+                            - T
                         generic_args: []
+                visibility: Default
+                annotations: []
               - name: len
                 ty: USize
+                visibility: Default
+                annotations: []
               - name: cap
                 ty: USize
+                visibility: Default
+                annotations: []

@@ -6,7 +6,9 @@ items:
   - Enum:
       visibility: Default
       annotations: []
-      name: One
+      name:
+        segments:
+          - One
       representation: ~
       generic_params: []
       requires: []
@@ -16,7 +18,9 @@ items:
   - Enum:
       visibility: Default
       annotations: []
-      name: SingleByte
+      name:
+        segments:
+          - SingleByte
       representation: U8
       generic_params: []
       requires: []

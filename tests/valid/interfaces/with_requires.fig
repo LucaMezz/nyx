@@ -1,9 +1,0 @@
-// Interface with requires clause
-interface Numeric[T]
-    requires
-        Add
-        Sub
-        Mul
-        Div
-    func zero() -> T
-    func one() -> T

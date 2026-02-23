@@ -8,11 +8,11 @@ expression: tokens
 - Indent
 - Ident: not_found
 - Colon
-- OkLiteral
+- Ident: ok
 - Newline
 - Ident: permission_denied
 - Colon
-- OkLiteral
+- Ident: ok
 - Newline
 - Ident: io_failure
 - Colon
@@ -26,7 +26,7 @@ expression: tokens
 - RBracket
 - Newline
 - Indent
-- OkLiteral
+- Ident: ok
 - Colon
 - Ident: T
 - Newline
@@ -106,7 +106,7 @@ expression: tokens
 - Arrow
 - Ident: Result
 - LBracket
-- OkLiteral
+- Ident: ok
 - RBracket
 - Newline
 - Indent

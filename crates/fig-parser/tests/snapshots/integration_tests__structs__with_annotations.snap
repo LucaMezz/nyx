@@ -1,0 +1,80 @@
+---
+source: crates/fig-parser/tests/integration_tests.rs
+expression: ast
+---
+items:
+  - Struct:
+      visibility: Default
+      annotations:
+        - name: repr
+          args:
+            - Path:
+                segments:
+                  - C
+      is_packed: false
+      name:
+        segments:
+          - CStruct
+      generic_params: []
+      requires: []
+      fields:
+        - name: x
+          ty: I32
+          visibility: Default
+          annotations: []
+        - name: y
+          ty: I32
+          visibility: Default
+          annotations: []
+  - Struct:
+      visibility: Default
+      annotations:
+        - name: align
+          args:
+            - IntegerLiteral:
+                base: Decimal
+                digits: "16"
+                suffix: ~
+      is_packed: false
+      name:
+        segments:
+          - AlignedBuffer
+      generic_params: []
+      requires: []
+      fields:
+        - name: data
+          ty:
+            Array:
+              element_type: U8
+              size:
+                IntegerLiteral:
+                  base: Decimal
+                  digits: "64"
+                  suffix: ~
+          visibility: Default
+          annotations: []
+  - Struct:
+      visibility: Default
+      annotations:
+        - name: unaligned
+          args: []
+        - name: repr
+          args:
+            - Path:
+                segments:
+                  - C
+      is_packed: true
+      name:
+        segments:
+          - PackedCStruct
+      generic_params: []
+      requires: []
+      fields:
+        - name: a
+          ty: U8
+          visibility: Default
+          annotations: []
+        - name: b
+          ty: U32
+          visibility: Default
+          annotations: []

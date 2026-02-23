@@ -3,7 +3,7 @@ source: crates/fig-lexer/tests/integration_tests.rs
 expression: tokens
 ---
 - Using
-- Core
+- Ident: core
 - ColonColon
 - Ident: memory
 - Newline
@@ -106,13 +106,13 @@ expression: tokens
 - Colon
 - F64
 - Newline
-- Bool
+- Ident: boolean
 - Colon
 - Bool
 - Newline
 - Ident: nil
 - Colon
-- OkLiteral
+- Ident: ok
 - Newline
 - Dedent
 - Struct
@@ -288,7 +288,7 @@ expression: tokens
 - RBracket
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - SelfLower
@@ -360,7 +360,7 @@ expression: tokens
 - SelfLower
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - SelfLower
@@ -482,7 +482,7 @@ expression: tokens
 - Ident: Instruction
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - If
@@ -1167,7 +1167,7 @@ expression: tokens
 - Eq
 - Ident: Value
 - ColonColon
-- Bool
+- Ident: boolean
 - LParen
 - Ident: a
 - Dot
@@ -1219,7 +1219,7 @@ expression: tokens
 - Eq
 - Ident: Value
 - ColonColon
-- Bool
+- Ident: boolean
 - LParen
 - Ident: a
 - Dot
@@ -1271,7 +1271,7 @@ expression: tokens
 - Eq
 - Ident: Value
 - ColonColon
-- Bool
+- Ident: boolean
 - LParen
 - Ident: a
 - Dot
@@ -1323,7 +1323,7 @@ expression: tokens
 - Eq
 - Ident: Value
 - ColonColon
-- Bool
+- Ident: boolean
 - LParen
 - Ident: a
 - Dot
@@ -1375,7 +1375,7 @@ expression: tokens
 - Eq
 - Ident: Value
 - ColonColon
-- Bool
+- Ident: boolean
 - LParen
 - Ident: a
 - Dot
@@ -1427,7 +1427,7 @@ expression: tokens
 - Eq
 - Ident: Value
 - ColonColon
-- Bool
+- Ident: boolean
 - LParen
 - Ident: a
 - Dot
@@ -1496,7 +1496,7 @@ expression: tokens
 - If
 - Ident: value
 - Dot
-- Bool
+- Ident: boolean
 - Newline
 - Indent
 - SelfLower
@@ -1541,7 +1541,7 @@ expression: tokens
 - Bang
 - Ident: value
 - Dot
-- Bool
+- Ident: boolean
 - Newline
 - Indent
 - SelfLower
@@ -1872,7 +1872,7 @@ expression: tokens
 - Ident: Value
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - If
@@ -1884,7 +1884,7 @@ expression: tokens
 - Newline
 - Indent
 - Return
-- OkLiteral
+- Ident: ok
 - Newline
 - Dedent
 - SelfLower
@@ -1942,7 +1942,7 @@ expression: tokens
 - ColonColon
 - Ident: nil
 - LParen
-- OkLiteral
+- Ident: ok
 - RParen
 - Newline
 - Dedent
@@ -2002,7 +2002,7 @@ expression: tokens
 - ColonColon
 - Ident: nil
 - LParen
-- OkLiteral
+- Ident: ok
 - RParen
 - Newline
 - Dedent
@@ -2158,7 +2158,7 @@ expression: tokens
 - RBracket
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - Let
@@ -2211,7 +2211,7 @@ expression: tokens
 - Ident: Opcode
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - Let
@@ -2262,7 +2262,7 @@ expression: tokens
 - I32
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - Let
@@ -2306,7 +2306,7 @@ expression: tokens
 - I64
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - SelfLower
@@ -2342,7 +2342,7 @@ expression: tokens
 - RBracket
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - Let
@@ -2388,7 +2388,7 @@ expression: tokens
 - RBracket
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - Let
@@ -2434,7 +2434,7 @@ expression: tokens
 - RBracket
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - Let
@@ -2480,7 +2480,7 @@ expression: tokens
 - RBracket
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - Let
@@ -2524,7 +2524,7 @@ expression: tokens
 - USize
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - SelfLower
@@ -2558,7 +2558,7 @@ expression: tokens
 - USize
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - SelfLower
@@ -2632,7 +2632,7 @@ expression: tokens
 - USize
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - SelfLower
@@ -2845,7 +2845,7 @@ expression: tokens
 - Ident: Value
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - Pass

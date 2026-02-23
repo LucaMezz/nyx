@@ -11,7 +11,8 @@ items:
         is_effect: false
         receiver: ~
         name: complex_postfix
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params:
           - name: v
@@ -21,12 +22,17 @@ items:
                 mutable: true
                 element_type:
                   Path:
-                    segments:
-                      - Vec
+                    path:
+                      segments:
+                        - Vec
                     generic_args:
                       - I32
         return_types:
-          - Ok
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
       body:
         statements:
           - Let:
@@ -41,10 +47,10 @@ items:
                         Path:
                           segments:
                             - v
-                          generic_args: []
                       field: len
                       is_propagating: false
                   args: []
+                  generic_args: ~
                   is_propagating: false
           - Let:
               annotations: []
@@ -58,14 +64,16 @@ items:
                         Path:
                           segments:
                             - v
-                          generic_args: []
                       field: get
                       is_propagating: false
                   args:
-                    - IntegerLiteral:
-                        base: Decimal
-                        digits: "0"
-                        suffix: ~
+                    - name: ~
+                      value:
+                        IntegerLiteral:
+                          base: Decimal
+                          digits: "0"
+                          suffix: ~
+                  generic_args: ~
                   is_propagating: false
           - Expression:
               Call:
@@ -75,13 +83,15 @@ items:
                       Path:
                         segments:
                           - v
-                        generic_args: []
                     field: push
                     is_propagating: false
                 args:
-                  - IntegerLiteral:
-                      base: Decimal
-                      digits: "42"
-                      suffix: ~
+                  - name: ~
+                    value:
+                      IntegerLiteral:
+                        base: Decimal
+                        digits: "42"
+                        suffix: ~
+                generic_args: ~
                 is_propagating: false
           - Pass

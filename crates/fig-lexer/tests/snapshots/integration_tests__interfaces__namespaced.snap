@@ -3,7 +3,7 @@ source: crates/fig-lexer/tests/integration_tests.rs
 expression: tokens
 ---
 - Interface
-- Std
+- Ident: std
 - ColonColon
 - Ident: io
 - ColonColon
@@ -33,7 +33,7 @@ expression: tokens
 - Newline
 - Dedent
 - Interface
-- Core
+- Ident: core
 - ColonColon
 - Ident: fmt
 - ColonColon
@@ -53,6 +53,6 @@ expression: tokens
 - Ident: Formatter
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Dedent

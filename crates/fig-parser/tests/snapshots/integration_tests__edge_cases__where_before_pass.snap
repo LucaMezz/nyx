@@ -1,0 +1,46 @@
+---
+source: crates/fig-parser/tests/integration_tests.rs
+expression: ast
+---
+items:
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: false
+        receiver: ~
+        name: single_pass_with_where
+        outer_generic_params:
+          - Type:
+              name: T
+              bounds:
+                - Path:
+                    path:
+                      segments:
+                        - Clone
+                    generic_args: []
+              default_type: ~
+        func_generic_params:
+          - Type:
+              name: T
+              bounds: []
+              default_type: ~
+        self_param: ~
+        params:
+          - name: x
+            ty:
+              Path:
+                path:
+                  segments:
+                    - T
+                generic_args: []
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - T
+              generic_args: []
+      body:
+        statements:
+          - Pass

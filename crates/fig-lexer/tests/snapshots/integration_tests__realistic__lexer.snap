@@ -3,7 +3,7 @@ source: crates/fig-lexer/tests/integration_tests.rs
 expression: tokens
 ---
 - Using
-- Core
+- Ident: core
 - ColonColon
 - Ident: memory
 - Newline
@@ -141,7 +141,7 @@ expression: tokens
 - Ident: Token
 - Newline
 - Indent
-- Type
+- Ident: typ
 - Colon
 - Ident: TokenType
 - Newline
@@ -1970,7 +1970,7 @@ expression: tokens
 - SelfLower
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - For
@@ -2099,7 +2099,7 @@ expression: tokens
 - SelfLower
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - For
@@ -2437,7 +2437,7 @@ expression: tokens
 - LParen
 - Newline
 - Indent
-- Type
+- Ident: typ
 - Colon
 - Ident: token_type
 - Comma

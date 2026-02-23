@@ -1,0 +1,158 @@
+---
+source: crates/fig-parser/tests/integration_tests.rs
+expression: ast
+---
+items:
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: false
+        receiver: ~
+        name: add
+        outer_generic_params: []
+        func_generic_params: []
+        self_param: ~
+        params:
+          - name: a
+            ty: I32
+          - name: b
+            ty: I32
+        return_types:
+          - I32
+      body:
+        statements:
+          - Return:
+              BinaryOp:
+                lhs:
+                  Path:
+                    segments:
+                      - a
+                op: Add
+                rhs:
+                  Path:
+                    segments:
+                      - b
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: false
+        receiver: ~
+        name: demo
+        outer_generic_params: []
+        func_generic_params: []
+        self_param: ~
+        params: []
+        return_types:
+          - "Null"
+      body:
+        statements:
+          - Let:
+              annotations: []
+              name: r1
+              ty: ~
+              value:
+                Call:
+                  callee:
+                    Path:
+                      segments:
+                        - add
+                  args:
+                    - name: ~
+                      value:
+                        IntegerLiteral:
+                          base: Decimal
+                          digits: "1"
+                          suffix: ~
+                    - name: ~
+                      value:
+                        IntegerLiteral:
+                          base: Decimal
+                          digits: "2"
+                          suffix: ~
+                  generic_args: ~
+                  is_propagating: false
+          - Let:
+              annotations: []
+              name: r2
+              ty: ~
+              value:
+                Call:
+                  callee:
+                    Path:
+                      segments:
+                        - add
+                  args:
+                    - name: ~
+                      value:
+                        Path:
+                          segments:
+                            - r1
+                    - name: ~
+                      value:
+                        Path:
+                          segments:
+                            - r1
+                  generic_args: ~
+                  is_propagating: false
+          - Let:
+              annotations: []
+              name: r3
+              ty: ~
+              value:
+                Call:
+                  callee:
+                    Path:
+                      segments:
+                        - add
+                  args:
+                    - name: ~
+                      value:
+                        Call:
+                          callee:
+                            Path:
+                              segments:
+                                - add
+                          args:
+                            - name: ~
+                              value:
+                                IntegerLiteral:
+                                  base: Decimal
+                                  digits: "1"
+                                  suffix: ~
+                            - name: ~
+                              value:
+                                IntegerLiteral:
+                                  base: Decimal
+                                  digits: "2"
+                                  suffix: ~
+                          generic_args: ~
+                          is_propagating: false
+                    - name: ~
+                      value:
+                        Call:
+                          callee:
+                            Path:
+                              segments:
+                                - add
+                          args:
+                            - name: ~
+                              value:
+                                IntegerLiteral:
+                                  base: Decimal
+                                  digits: "3"
+                                  suffix: ~
+                            - name: ~
+                              value:
+                                IntegerLiteral:
+                                  base: Decimal
+                                  digits: "4"
+                                  suffix: ~
+                          generic_args: ~
+                          is_propagating: false
+                  generic_args: ~
+                  is_propagating: false
+          - Pass

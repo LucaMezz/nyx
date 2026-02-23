@@ -11,8 +11,9 @@ items:
         - name: Seq
           generic_args:
             - Path:
-                segments:
-                  - T
+                path:
+                  segments:
+                    - T
                 generic_args: []
       name: DEFAULT_CAPACITY
       ty: USize
@@ -29,8 +30,9 @@ items:
         - name: Seq
           generic_args:
             - Path:
-                segments:
-                  - T
+                path:
+                  segments:
+                    - T
                 generic_args: []
       name: GROW_FACTOR
       ty: USize

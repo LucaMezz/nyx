@@ -20,7 +20,7 @@ union TaskResult[T]
 
 struct Task[T]
     id: u64
-    work: *fn() -> T
+    work: *func() -> T
     status: TaskStatus
     result: ?TaskResult[T]
     priority: u8
@@ -72,7 +72,7 @@ func! ThreadPool::spawn_workers(*mut self) -> ok
         pass
     pass
 
-func! ThreadPool::submit[T](*mut self, work: *fn() -> T) -> u64
+func! ThreadPool::submit[T](*mut self, work: *func() -> T) -> u64
     let task_id = self.next_task_id
     self.next_task_id = self.next_task_id + 1
     
@@ -88,7 +88,7 @@ func! ThreadPool::submit[T](*mut self, work: *fn() -> T) -> u64
     
     return task_id
 
-func! ThreadPool::submit_with_priority[T](*mut self, work: *fn() -> T, priority: u8) -> u64
+func! ThreadPool::submit_with_priority[T](*mut self, work: *func() -> T, priority: u8) -> u64
     let task_id = self.next_task_id
     self.next_task_id = self.next_task_id + 1
     
@@ -332,7 +332,7 @@ func! ConditionVariable::notify_one(*mut self) -> ok
 func! ConditionVariable::notify_all(*mut self) -> ok
     pass
 
-func! Thread::spawn[T](func: *fn(*T) -> ok, arg: *T) -> Thread
+func! Thread::spawn[T](fun: *func(*T) -> ok, arg: *T) -> Thread
     return Thread(handle: null)
 
 func Thread::uninitialized() -> Thread

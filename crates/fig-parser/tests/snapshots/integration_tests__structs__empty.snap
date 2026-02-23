@@ -7,7 +7,9 @@ items:
       visibility: Default
       annotations: []
       is_packed: false
-      name: Empty
+      name:
+        segments:
+          - Empty
       generic_params: []
       requires: []
       fields: []

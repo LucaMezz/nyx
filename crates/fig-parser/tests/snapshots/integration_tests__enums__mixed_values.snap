@@ -6,7 +6,9 @@ items:
   - Enum:
       visibility: Default
       annotations: []
-      name: Priority
+      name:
+        segments:
+          - Priority
       representation: ~
       generic_params: []
       requires: []

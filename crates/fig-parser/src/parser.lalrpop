@@ -40,7 +40,7 @@ SourceFileItemNamespace: NamespaceItem = {
 /// `func …` definition (with body) or forward declaration (no body)
 SourceFileItemFunction: NamespaceItem = {
     <h: DeclHead> <sig: FunctionSignatureBase> "NEWLINE" "INDENT" <wc: WhereClause?> <body: Block> "DEDENT"
-        => { let (v, a) = h; let sig = FunctionSignature { visibility: v.unwrap_or_default(), annotations: a, generic_params: merge_where_clause(sig.generic_params, wc.unwrap_or_default()), ..sig }; NamespaceItem::Function(Function { signature: sig, body }) },
+        => { let (v, a) = h; let sig = FunctionSignature { visibility: v.unwrap_or_default(), annotations: a, outer_generic_params: merge_where_clause(sig.outer_generic_params, wc.unwrap_or_default()), ..sig }; NamespaceItem::Function(Function { signature: sig, body }) },
     <h: DeclHead> <sig: FunctionSignatureBase> "NEWLINE"
         => { let (v, a) = h; let sig = FunctionSignature { visibility: v.unwrap_or_default(), annotations: a, ..sig }; NamespaceItem::FunctionDeclaration(FunctionDeclaration { signature: sig }) },
 };
@@ -49,10 +49,10 @@ SourceFileItemFunction: NamespaceItem = {
 
 /// `type Name[T] = Type` (inline) or with a where clause in an indented block
 SourceFileItemTypeAlias: NamespaceItem = {
-    <h: DeclHead> "type" <name: "ident"> <gp: GenericParameterList?> "=" <ty: Type> "NEWLINE"
-        => { let (v, a) = h; NamespaceItem::TypeAlias(TypeAlias { visibility: v.unwrap_or_default(), annotations: a, name, generic_params: gp.unwrap_or_default(), aliased_type: ty }) },
-    <h: DeclHead> "type" <name: "ident"> <gp: GenericParameterList?> "NEWLINE" "INDENT" <wc: WhereClause> "=" <ty: Type> "DEDENT"
-        => { let (v, a) = h; NamespaceItem::TypeAlias(TypeAlias { visibility: v.unwrap_or_default(), annotations: a, name, generic_params: merge_where_clause(gp.unwrap_or_default(), wc), aliased_type: ty }) },
+    <h: DeclHead> "type" <path: Path> <gp: GenericParameterList?> "=" <ty: TopLevelType> "NEWLINE"
+        => { let (v, a) = h; NamespaceItem::TypeAlias(TypeAlias { visibility: v.unwrap_or_default(), annotations: a, name: path, generic_params: gp.unwrap_or_default(), aliased_type: ty }) },
+    <h: DeclHead> "type" <path: Path> <gp: GenericParameterList?> "NEWLINE" "INDENT" <wc: WhereClause> "=" <ty: TopLevelType> "DEDENT"
+        => { let (v, a) = h; NamespaceItem::TypeAlias(TypeAlias { visibility: v.unwrap_or_default(), annotations: a, name: path, generic_params: merge_where_clause(gp.unwrap_or_default(), wc), aliased_type: ty }) },
 };
 
 // ── Nominal data-type items ──────────────────────────────────────────────────
@@ -130,7 +130,7 @@ ConstNamePath: (Vec<GenericParameter>, Vec<ConstPathSegment>, String) = {
 /// automaton tracks these items ONCE instead of N times (once per declaration
 /// alternative).
 DeclHead: (Option<Visibility>, Vec<Annotation>) = {
-    <v: Visibility?> <a: Annotations> => (v, a)
+    <a: Annotations> <v: Visibility?> => (v, a)
 };
 
 Visibility: Visibility = {
@@ -155,20 +155,8 @@ Annotations: Vec<Annotation> = {
 
 pub Expression: Expression = {
     #[precedence(level="13")] #[assoc(side="left")]
-    <e: Expression> "as" <t: Type>
+    <e: Expression> "as" <t: TopLevelType>
         => Expression::Cast(CastExpr { expr: Box::new(e), target_type: Box::new(t) }),
-
-    #[precedence(level="12")] #[assoc(side="left")]
-    <obj: Expression> "." "!" <field: "ident">
-        => Expression::FieldAccess(FieldAccessExpr { object: Box::new(obj), field, is_propagating: true }),
-    <obj: Expression> "." <field: "ident">
-        => Expression::FieldAccess(FieldAccessExpr { object: Box::new(obj), field, is_propagating: false }),
-    <obj: Expression> "::" <member: "ident">
-        => Expression::TypeAccess(TypeAccessExpr { object: Box::new(obj), member }),
-    <callee: Expression> "(" <args: Comma<Expression>> ")"
-        => Expression::Call(CallExpr { callee: Box::new(callee), args, is_propagating: false }),
-    <obj: Expression> "[" <idx: Expression> "]"
-        => Expression::Index(IndexExpr { object: Box::new(obj), index: Box::new(idx) }),
 
     #[precedence(level="11")] #[assoc(side="left")]
     <lhs: Expression> "*" <rhs: Expression>
@@ -227,6 +215,62 @@ pub Expression: Expression = {
         => Expression::BinaryOp(BinaryOpExpr { lhs: Box::new(lhs), op: BinaryOperator::LogicalOr, rhs: Box::new(rhs) }),
 
     #[precedence(level="1")]
+    PostfixExpr,
+};
+
+/// Handles all postfix operators with explicit left-recursion.
+/// This avoids lalrpop's `#[precedence]` state-splitting, which causes the
+/// resulting Expression to get "trapped" at level 12+, preventing lower-level
+/// binary operators (like `+`, `==`) from being applied after a field access
+/// or function call.
+///
+/// Precedence note: `Unary` handles prefix operators and bottoms out at `Atom`.
+/// `PostfixExpr` wraps `Unary` so postfix binds LESS tightly than prefix, i.e.
+/// `-p.x` == `(-p).x` (same behaviour as the previous grammar).
+PostfixExpr: Expression = {
+    // Propagating field access: obj.!field
+    <obj: PostfixExpr> "." "!" <field: "ident">
+        => Expression::FieldAccess(FieldAccessExpr { object: Box::new(obj), field, is_propagating: true }),
+    // Propagating method call: obj.method!(args)  — e.g. `v.push!(42)`
+    // The `!` sits AFTER the field name, just before `(`.
+    // Shift/reduce on `!` after `PostfixExpr "." ident`: resolved by shift (default).
+    <obj: PostfixExpr> "." <field: "ident"> "!" "(" <args: Comma<CallArgument>> ")"
+        => {
+            let callee = Expression::FieldAccess(FieldAccessExpr {
+                object: Box::new(obj), field, is_propagating: false,
+            });
+            Expression::Call(CallExpr { callee: Box::new(callee), args, generic_args: None, is_propagating: true })
+        },
+    // Multi-line propagating method call: obj.method!(\nINDENT\narg1,\narg2\nDEDENT)
+    <obj: PostfixExpr> "." <field: "ident"> "!" "(" "NEWLINE" "INDENT" <args: MultilineCallArgs> "DEDENT" ")"
+        => {
+            let callee = Expression::FieldAccess(FieldAccessExpr {
+                object: Box::new(obj), field, is_propagating: false,
+            });
+            Expression::Call(CallExpr { callee: Box::new(callee), args, generic_args: None, is_propagating: true })
+        },
+    // Regular field access: obj.field
+    <obj: PostfixExpr> "." <field: "ident">
+        => Expression::FieldAccess(FieldAccessExpr { object: Box::new(obj), field, is_propagating: false }),
+    // Type access: obj::member
+    <obj: PostfixExpr> "::" <member: "ident">
+        => Expression::TypeAccess(TypeAccessExpr { object: Box::new(obj), member }),
+    // Regular call: callee(args)
+    <callee: PostfixExpr> "(" <args: Comma<CallArgument>> ")"
+        => Expression::Call(CallExpr { callee: Box::new(callee), args, generic_args: None, is_propagating: false }),
+    // Multi-line call: callee(\nINDENT\narg1,\narg2\nDEDENT)
+    <callee: PostfixExpr> "(" "NEWLINE" "INDENT" <args: MultilineCallArgs> "DEDENT" ")"
+        => Expression::Call(CallExpr { callee: Box::new(callee), args, generic_args: None, is_propagating: false }),
+    // Generic call via turbofish: callee::[GenericArgs](args)
+    <callee: PostfixExpr> "::" <gp: GenericArgumentList> "(" <args: Comma<CallArgument>> ")"
+        => Expression::Call(CallExpr { callee: Box::new(callee), args, generic_args: Some(gp), is_propagating: false }),
+    // Multi-line generic call via turbofish: callee::[GenericArgs](\nINDENT\narg1,\nDEDENT)
+    <callee: PostfixExpr> "::" <gp: GenericArgumentList> "(" "NEWLINE" "INDENT" <args: MultilineCallArgs> "DEDENT" ")"
+        => Expression::Call(CallExpr { callee: Box::new(callee), args, generic_args: Some(gp), is_propagating: false }),
+    // Index: obj[idx]
+    <obj: PostfixExpr> "[" <idx: Expression> "]"
+        => Expression::Index(IndexExpr { object: Box::new(obj), index: Box::new(idx) }),
+    // Base case: prefix-unary and atoms
     Unary,
 };
 
@@ -255,35 +299,72 @@ Atom: Expression = {
     <lit: "string"> => Expression::StringLiteral(lit),
     <raw: "interpstring"> => Expression::InterpolatedString(parse_interp_parts(raw)),
     "null"          => Expression::NullLiteral,
-    "ok"            => Expression::OkLiteral,
     "self"          => Expression::SelfValue,
     "sizeof" "(" <ty: Type> ")"  => Expression::Sizeof(Box::new(ty)),
     "alignof" "(" <ty: Type> ")" => Expression::Alignof(Box::new(ty)),
     "offsetof" "(" <ty: Type> "," <field: "ident"> ")"
         => Expression::Offsetof(OffsetofExpr { ty: Box::new(ty), field }),
-    <last: PathSegment> => Expression::Path(Path { segments: vec![last], generic_args: vec![] }),
+    <last: PathSegment> => Expression::Path(Path { segments: vec![last] }),
     "[" <elements: Comma<Expression>> "]"
         => Expression::ArrayLiteral(ArrayLiteralExpr { elements }),
+    "[" <value: Expression> ";" <count: Expression> "]"
+        => Expression::RepeatArrayLiteral(RepeatArrayExpr { value: Box::new(value), count: Box::new(count) }),
     "(" <expr: Expression> ")" => Expression::Parenthesized(Box::new(expr)),
 };
 
 // ============================================================================
-// Path helpers
+// Call arguments
 // ============================================================================
+
+/// A single argument in a call expression.
+/// Named form:      `name: value`   — used for struct construction and keyword args.
+/// Positional form: `value`         — a plain expression.
+///
+/// LALR(1) disambiguation: after an `ident`, if the lookahead is `:` (Token::Colon)
+/// the parser shifts into the named-argument alternative.  Any other lookahead causes
+/// the `ident` to be reduced through the normal expression chain as a positional arg.
+/// This works without conflict because `:` never appears in the follow set of
+/// `Expression` inside a call argument list (`,` and `)` do, but not `:`).
+CallArgument: CallArgument = {
+    <name: "ident"> ":" <value: Expression> => CallArgument { name: Some(name), value },
+    <value: Expression>                     => CallArgument { name: None,        value },
+};
+
+/// Arguments for a multi-line call expression (written with each arg on its own
+/// indented line).  Token layout inside the call's INDENT…DEDENT block:
+///
+///   arg1, NEWLINE
+///   arg2, NEWLINE
+///   …
+///   lastArg NEWLINE       ← trailing comma optional on every line
+///
+/// Uses right-recursion so the LALR(1) lookahead cleanly distinguishes
+/// between "more args coming" (expression-start token → shift) and
+/// "this is the last arg" (DEDENT → reduce).
+MultilineCallArgs: Vec<CallArgument> = {
+    // arg with trailing comma, followed by more args
+    <arg: CallArgument> "," "NEWLINE" <rest: MultilineCallArgs>
+        => { let mut v = vec![arg]; v.extend(rest); v },
+    // last arg with trailing comma (lookahead: DEDENT)
+    <arg: CallArgument> "," "NEWLINE"
+        => vec![arg],
+    // last arg without trailing comma (lookahead: DEDENT)
+    <arg: CallArgument> "NEWLINE"
+        => vec![arg],
+};
+
+
 
 PathSegment: String = {
     <s: "ident">  => s,
-    "std"   => "std".to_string(),
-    "core"  => "core".to_string(),
-    "alloc" => "alloc".to_string(),
 };
 
 pub Path: Path = {
-    <segments: (<PathSegment> "::")*> <last: PathSegment> <generic_args: GenericArgumentList?>
+    <segments: (<PathSegment> "::")*> <last: PathSegment>
         => {
             let mut s = segments;
             s.push(last);
-            Path::with_generics(s, generic_args.unwrap_or_default())
+            Path { segments: s }
         },
 };
 
@@ -327,31 +408,46 @@ TypeParameterWithDefault: GenericParameter = {
 };
 
 TypeBounds: Vec<Type> = {
-    <mut v: (<Type> "+")*> <last: Type> => { v.push(last); v },
+    <first: TypeBound> => vec![first],
+    <mut v: TypeBounds> "+" <last: TypeBound> => { v.push(last); v },
+};
+
+/// A single bound — no error-union `T ! E` (keeps `!` out of follow(TypeBound)).
+TypeBound: Type = {
+    NullableType,
 };
 
 // ============================================================================
 // Type Parsing
 // ============================================================================
 
-/// Top-level type rule.  The error-union `T ! E` is the outermost form so that
-/// `*T ! E` parses as `(*T) ! E` and `?T ! E` parses as `(?T) ! E`.
+/// General type rule — does NOT include error-union `T ! E`.
+/// This keeps `!` out of the general follow-set and avoids LR(1) conflicts.
 pub Type: Type = {
-    <ok: NonEUType> "!" <err: Path>
-        => Type::ErrorUnion { ok_type: Box::new(ok), err_type: err },
-    NonEUType,
+    "?" <inner: Type>
+        => Type::Nullable(Box::new(inner)),
+    PointerType,
 };
 
-/// All types except the error-union constructor at the top level.
-/// Used by the `as` operator so that `x as T ! E` parses as `(x as T) ! E`.
-NonEUType: Type = {
+/// Top-level type that allows error-union `T ! E`.  Only used in positions
+/// where `!` cannot appear in the follow set (function return types, type-alias
+/// targets), so the shift/reduce conflict with unary `!` never arises.
+pub TopLevelType: Type = {
+    <ok: Type> "!" <err: Type>
+        => Type::ErrorUnion { ok_type: Box::new(ok), err_type: Box::new(err) },
+    Type,
+};
+
+NullableType: Type = {
+    "?" <inner: Type>
+        => Type::Nullable(Box::new(inner)),
     PointerType,
 };
 
 PointerType: Type = {
-    <nullable: "?"?> "*" <mutable: "mut"?> <inner: PointerType>
+    "*" <mutable: "mut"?> <inner: Type>
         => Type::Pointer {
-            nullable: nullable.is_some(),
+            nullable: false,
             mutable: mutable.is_some(),
             element_type: Box::new(inner),
         },
@@ -359,16 +455,29 @@ PointerType: Type = {
 };
 
 SliceArrayType: Type = {
-    "[" <elem: SliceArrayType> ";" <size: Expression> "]"
+    "[" <elem: Type> ";" <size: Expression> "]"
         => Type::Array { element_type: Box::new(elem), size: Some(Box::new(size)) },
-    "[" <elem: SliceArrayType> "]"
+    "[" <elem: Type> "]"
         => Type::Array { element_type: Box::new(elem), size: None },
+    FunctionType,
     PrimitiveType,
     NamedType,
 };
 
+/// Function type: `func(T1, T2) -> R`.
+/// The `->` return-type annotation is optional; if absent, `return_type` is `None`.
+/// Uses `Type` (not `TopLevelType`) for the return to avoid a shift-reduce
+/// conflict on `!` when the function type appears inside a pointer or nullable
+/// type context (e.g. `*func(T) -> ok ! Err` is written as a type alias instead).
+FunctionType: Type = {
+    "func" "(" <params: Comma<Type>> ")" "->" <ret: Type>
+        => Type::Function { param_types: params, return_type: Some(Box::new(ret)) },
+    "func" "(" <params: Comma<Type>> ")"
+        => Type::Function { param_types: params, return_type: None },
+};
+
 NamedType: Type = {
-    <path: Path> => Type::Path(path),
+    <path: Path> <ga: GenericArgumentList?> => Type::Path { path, generic_args: ga.unwrap_or_default() },
 };
 
 pub PrimitiveType: Type = {
@@ -385,9 +494,7 @@ pub PrimitiveType: Type = {
     "f32"   => Type::F32,
     "f64"   => Type::F64,
     "bool"  => Type::Bool,
-    "ok"    => Type::Ok,
     "null"  => Type::Null,
-    "Self"  => Type::SelfType,
 };
 
 // ============================================================================
@@ -419,10 +526,37 @@ Statement: Statement = {
     // ── Simple (no DeclHead prefix) ─────────────────────────────────────────
     "pass" "NEWLINE"
         => Statement::Pass,
+    // ── Assignment (prevented from nesting by being statement-only) ─────────
+    <lhs: Expression> "="   <rhs: Expression> "NEWLINE"
+        => Statement::Expression(Box::new(Expression::Assign(AssignExpr { lhs: Box::new(lhs), op: AssignOperator::Assign,       rhs: Box::new(rhs) }))),
+    <lhs: Expression> "+="  <rhs: Expression> "NEWLINE"
+        => Statement::Expression(Box::new(Expression::Assign(AssignExpr { lhs: Box::new(lhs), op: AssignOperator::AddAssign,    rhs: Box::new(rhs) }))),
+    <lhs: Expression> "-="  <rhs: Expression> "NEWLINE"
+        => Statement::Expression(Box::new(Expression::Assign(AssignExpr { lhs: Box::new(lhs), op: AssignOperator::SubAssign,    rhs: Box::new(rhs) }))),
+    <lhs: Expression> "*="  <rhs: Expression> "NEWLINE"
+        => Statement::Expression(Box::new(Expression::Assign(AssignExpr { lhs: Box::new(lhs), op: AssignOperator::MulAssign,    rhs: Box::new(rhs) }))),
+    <lhs: Expression> "/="  <rhs: Expression> "NEWLINE"
+        => Statement::Expression(Box::new(Expression::Assign(AssignExpr { lhs: Box::new(lhs), op: AssignOperator::DivAssign,    rhs: Box::new(rhs) }))),
+    <lhs: Expression> "%="  <rhs: Expression> "NEWLINE"
+        => Statement::Expression(Box::new(Expression::Assign(AssignExpr { lhs: Box::new(lhs), op: AssignOperator::ModAssign,    rhs: Box::new(rhs) }))),
+    <lhs: Expression> "&="  <rhs: Expression> "NEWLINE"
+        => Statement::Expression(Box::new(Expression::Assign(AssignExpr { lhs: Box::new(lhs), op: AssignOperator::BitAndAssign, rhs: Box::new(rhs) }))),
+    <lhs: Expression> "|="  <rhs: Expression> "NEWLINE"
+        => Statement::Expression(Box::new(Expression::Assign(AssignExpr { lhs: Box::new(lhs), op: AssignOperator::BitOrAssign,  rhs: Box::new(rhs) }))),
+    <lhs: Expression> "^="  <rhs: Expression> "NEWLINE"
+        => Statement::Expression(Box::new(Expression::Assign(AssignExpr { lhs: Box::new(lhs), op: AssignOperator::BitXorAssign, rhs: Box::new(rhs) }))),
+    <lhs: Expression> "<<=" <rhs: Expression> "NEWLINE"
+        => Statement::Expression(Box::new(Expression::Assign(AssignExpr { lhs: Box::new(lhs), op: AssignOperator::ShlAssign,    rhs: Box::new(rhs) }))),
+    <lhs: Expression> ">>=" <rhs: Expression> "NEWLINE"
+        => Statement::Expression(Box::new(Expression::Assign(AssignExpr { lhs: Box::new(lhs), op: AssignOperator::ShrAssign,    rhs: Box::new(rhs) }))),
     <e: Expression> "NEWLINE"
         => Statement::Expression(Box::new(e)),
     "return" <val: Expression> "NEWLINE"
         => Statement::Return(Box::new(val)),
+    "break" "NEWLINE"
+        => Statement::Break,
+    "continue" "NEWLINE"
+        => Statement::Continue,
     <s: IfStatement>    => Statement::If(s),
     <s: ForStatement>   => Statement::For(s),
     <s: WhileStatement> => Statement::While(s),
@@ -444,8 +578,8 @@ Declaration: Statement = {
         => { let (v, a) = h; let (gp, recv, name) = cn; Statement::Const(ConstStatement { visibility: v.unwrap_or_default(), annotations: a, generic_params: gp, receiver: recv, name, ty, value: Box::new(val) }) },
     <h: DeclHead> "using" <path: Path> "NEWLINE"
         => { let (v, a) = h; Statement::Using(UsingStatement { visibility: v.unwrap_or_default(), annotations: a, path }) },
-    <h: DeclHead> "type" <name: "ident"> <gp: GenericParameterList?> "=" <ty: Type> "NEWLINE"
-        => { let (v, a) = h; Statement::TypeAlias(TypeAlias { visibility: v.unwrap_or_default(), annotations: a, name, generic_params: gp.unwrap_or_default(), aliased_type: ty }) },
+    <h: DeclHead> "type" <path: Path> <gp: GenericParameterList?> "=" <ty: TopLevelType> "NEWLINE"
+        => { let (v, a) = h; Statement::TypeAlias(TypeAlias { visibility: v.unwrap_or_default(), annotations: a, name: path, generic_params: gp.unwrap_or_default(), aliased_type: ty }) },
     // namespace (with or without body)
     <h: DeclHead> "namespace" <name: Path> "NEWLINE" "INDENT" <items: Statement*> "DEDENT"
         => { let (v, a) = h; Statement::Namespace(Namespace { visibility: v.unwrap_or_default(), annotations: a, name, items }) },
@@ -462,7 +596,7 @@ Declaration: Statement = {
         => { let (v, a) = h; Statement::Interface(Interface { visibility: v.unwrap_or_default(), annotations: a, ..i }) },
     // function (with body) and forward declaration
     <h: DeclHead> <sig: FunctionSignatureBase> "NEWLINE" "INDENT" <wc: WhereClause?> <body: Block> "DEDENT"
-        => { let (v, a) = h; let sig = FunctionSignature { visibility: v.unwrap_or_default(), annotations: a, generic_params: merge_where_clause(sig.generic_params, wc.unwrap_or_default()), ..sig }; Statement::Function(Function { signature: sig, body }) },
+        => { let (v, a) = h; let sig = FunctionSignature { visibility: v.unwrap_or_default(), annotations: a, outer_generic_params: merge_where_clause(sig.outer_generic_params, wc.unwrap_or_default()), ..sig }; Statement::Function(Function { signature: sig, body }) },
     <h: DeclHead> <sig: FunctionSignatureBase> "NEWLINE"
         => { let (v, a) = h; let sig = FunctionSignature { visibility: v.unwrap_or_default(), annotations: a, ..sig }; Statement::FunctionDeclaration(FunctionDeclaration { signature: sig }) },
 };
@@ -472,34 +606,38 @@ Declaration: Statement = {
 // ============================================================================
 
 IfStatement: IfStatement = {
-    "if" <cond: Expression> "NEWLINE" "INDENT" <body: Block> "DEDENT"
+    "if" <cond: Expression> "NEWLINE" "INDENT" <body: Block1> "DEDENT"
     <elifs: ElifClause*>
     <else_body: ("else" "NEWLINE" "INDENT" <Block> "DEDENT")?>
         => IfStatement { condition: Box::new(cond), then_body: body, elif_clauses: elifs, else_body },
 };
 
 ElifClause: ElifClause = {
-    "elif" <cond: Expression> "NEWLINE" "INDENT" <body: Block> "DEDENT"
+    "elif" <cond: Expression> "NEWLINE" "INDENT" <body: Block1> "DEDENT"
         => ElifClause { condition: Box::new(cond), body },
 };
 
 ForStatement: ForStatement = {
-    "for" <pattern: "ident"> "in" <iterable: Expression> "NEWLINE" "INDENT" <body: Block> "DEDENT"
+    "for" <pattern: "ident"> "in" <iterable: Expression> "NEWLINE" "INDENT" <body: Block1> "DEDENT"
         => ForStatement { pattern, iterable: Box::new(iterable), body },
 };
 
 WhileStatement: WhileStatement = {
-    "while" <cond: Expression> "NEWLINE" "INDENT" <body: Block> "DEDENT"
+    "while" <cond: Expression> "NEWLINE" "INDENT" <body: Block1> "DEDENT"
         => WhileStatement { condition: Box::new(cond), body },
 };
 
 BlockStatement: BlockStatement = {
-    "block" <name: "ident"?> "NEWLINE" "INDENT" <body: Block> "DEDENT"
+    "block" <name: "ident"?> "NEWLINE" "INDENT" <body: Block1> "DEDENT"
         => BlockStatement { name, body },
 };
 
 Block: Block = {
     <stmts: Statement*> => Block { statements: stmts },
+};
+
+Block1: Block = {
+    <stmts: Statement+> => Block { statements: stmts },
 };
 
 // ============================================================================
@@ -508,7 +646,7 @@ Block: Block = {
 
 /// Enum body without visibility/annotations (provided by DeclHead)
 EnumTail: Enum = {
-    "enum" <repr: EnumRepr?> <name: "ident"> <gp: GenericParameterList?>
+    "enum" <repr: EnumRepr?> <path: Path> <gp: GenericParameterList?>
     "NEWLINE" "INDENT"
     <requires: RequiresClause?>
     <wc: WhereClause?>
@@ -517,7 +655,7 @@ EnumTail: Enum = {
         => Enum {
             visibility: Visibility::default(),
             annotations: vec![],
-            name,
+            name: path,
             representation: repr,
             generic_params: merge_where_clause(gp.unwrap_or_default(), wc.unwrap_or_default()),
             requires: requires.unwrap_or_default(),
@@ -544,7 +682,8 @@ EnumVariantEntry: EnumVariant = {
 // ============================================================================
 
 UnionTail: Union = {
-    "union" <name: "ident"> <gp: GenericParameterList?>
+    "union" <path: Path>
+    <gp: GenericParameterList?>
     "NEWLINE" "INDENT"
     <requires: RequiresClause?>
     <wc: WhereClause?>
@@ -553,7 +692,7 @@ UnionTail: Union = {
         => Union {
             visibility: Visibility::default(),
             annotations: vec![],
-            name,
+            name: path,
             generic_params: merge_where_clause(gp.unwrap_or_default(), wc.unwrap_or_default()),
             requires: requires.unwrap_or_default(),
             variants,
@@ -574,7 +713,7 @@ UnionVariantEntry: UnionVariant = {
 // ============================================================================
 
 StructTail: Struct = {
-    <packed: "packed"?> "struct" <name: "ident"> <gp: GenericParameterList?>
+    <packed: "packed"?> "struct" <path: Path> <gp: GenericParameterList?>
     "NEWLINE" "INDENT"
     <requires: RequiresClause?>
     <wc: WhereClause?>
@@ -584,17 +723,17 @@ StructTail: Struct = {
             visibility: Visibility::default(),
             annotations: vec![],
             is_packed: packed.is_some(),
-            name,
+            name: path,
             generic_params: merge_where_clause(gp.unwrap_or_default(), wc.unwrap_or_default()),
             requires: requires.unwrap_or_default(),
             fields,
         },
-    <packed: "packed"?> "struct" <name: "ident"> <gp: GenericParameterList?> "NEWLINE"
+    <packed: "packed"?> "struct" <path: Path> <gp: GenericParameterList?> "NEWLINE"
         => Struct {
             visibility: Visibility::default(),
             annotations: vec![],
             is_packed: packed.is_some(),
-            name,
+            name: path,
             generic_params: gp.unwrap_or_default(),
             requires: vec![],
             fields: vec![],
@@ -607,7 +746,7 @@ pub Struct: Struct = {
 };
 
 StructFieldEntry: StructField = {
-    <name: "ident"> ":" <ty: Type> "NEWLINE" => StructField { name, ty },
+    <h: DeclHead> <name: "ident"> ":" <ty: Type> "NEWLINE" => { let (v, a) = h; StructField { visibility: v.unwrap_or_default(), annotations: a, name, ty } },
 };
 
 // ============================================================================
@@ -622,9 +761,9 @@ FunctionSignatureBase: FunctionSignature = {
     <gp: GenericParameterList?>
     <hd: FunctionNamePath>
     "(" <ps: FunctionParams> ")"
-    <ret: ("->" <Comma<Type>>)?>
+    <ret: ("->" <Comma<TopLevelType>>)?>
         => {
-            let (recv, name) = hd;
+            let (recv, name, fp) = hd;
             let (self_p, params) = ps;
             FunctionSignature {
                 visibility: Visibility::default(),
@@ -633,7 +772,8 @@ FunctionSignatureBase: FunctionSignature = {
                 is_effect: eff.is_some(),
                 receiver: recv,
                 name,
-                generic_params: gp.unwrap_or_default(),
+                outer_generic_params: gp.unwrap_or_default(),
+                func_generic_params: fp,
                 self_param: self_p,
                 params,
                 return_types: ret.unwrap_or_default(),
@@ -648,7 +788,7 @@ pub Function: Function = {
             let sig = FunctionSignature {
                 visibility: v.unwrap_or_default(),
                 annotations: a,
-                generic_params: merge_where_clause(sig.generic_params, wc.unwrap_or_default()),
+                outer_generic_params: merge_where_clause(sig.outer_generic_params, wc.unwrap_or_default()),
                 ..sig
             };
             Function { signature: sig, body }
@@ -664,13 +804,43 @@ pub FunctionDeclaration: FunctionDeclaration = {
         },
 };
 
-FunctionNamePath: (Option<Path>, String) = {
-    <prefix: (<PathSegment> "::")+> <name: PathSegment>
-        => (Some(Path { segments: prefix, generic_args: vec![] }), name),
-    <recv: PathSegment> "." <name: PathSegment>
-        => (Some(Path::simple(recv)), name),
-    <name: PathSegment>
-        => (None, name),
+/// A unified function path segment.  Parses `ident` or `ident[GenericParameterList]`.
+/// Used for ALL positions in `FunctionNamePath`:
+///   - Receiver segments (committed by a trailing `::`)
+///   - The final function-name segment (whose generic args become `func_generic_params`)
+///
+/// Conflict analysis
+/// -----------------
+/// After `PathSegment`, on `[` the parser SHIFTs into `GenericParameterList` (correct for
+/// both positions).  On `::` or `(` it REDUCEs to `FunctionPathSeg` with empty args.  The
+/// resulting shift/reduce is benign and always resolves correctly:
+///   lookahead `::`  → adds this seg to the receiver prefix loop
+///   lookahead `(`   → ends `FunctionNamePath`, this seg is the function name
+FunctionPathSeg: (String, Vec<GenericParameter>) = {
+    <name: PathSegment> <gp: GenericParameterList> => (name, gp),
+    <name: PathSegment>                            => (name, vec![]),
+};
+
+FunctionNamePath: (Option<Vec<GenericPathSegment>>, String, Vec<GenericParameter>) = {
+    // One or more receiver segments each terminated by "::", then the final segment.
+    // e.g. `Vec[T]::push`, `ns::HashMap[K,V]::new[U]`, `a::b::c[X]`
+    <prefix: (<FunctionPathSeg> "::")+ > <last: FunctionPathSeg>
+        => {
+            let (name, fp) = last;
+            let segs: Vec<GenericPathSegment> = prefix.into_iter()
+                .map(|(n, gp)| GenericPathSegment { name: n, generic_args: gp })
+                .collect();
+            (Some(segs), name, fp)
+        },
+    // Dot-notation receiver: `recv[T].method`
+    <base: FunctionPathSeg> "." <name: PathSegment>
+        => {
+            let (bname, bgp) = base;
+            (Some(vec![GenericPathSegment { name: bname, generic_args: bgp }]), name, vec![])
+        },
+    // Simple function name with optional func-level generic params
+    <last: FunctionPathSeg>
+        => { let (name, fp) = last; (None, name, fp) },
 };
 
 FunctionParams: (Option<SelfParameter>, Vec<FunctionParameter>) = {
@@ -698,30 +868,27 @@ FunctionParameter: FunctionParameter = {
 // ============================================================================
 
 InterfaceTail: Interface = {
-    "interface" <name: "ident"> <gp: GenericParameterList?> "NEWLINE"
+    "interface" <path: Path> <gp: GenericParameterList?> "NEWLINE"
         => Interface {
             visibility: Visibility::default(),
             annotations: vec![],
-            name,
+            name: path,
             generic_params: gp.unwrap_or_default(),
             extends: vec![],
-            requires: vec![],
             methods: vec![],
         },
-    "interface" <name: "ident"> <gp: GenericParameterList?>
+    "interface" <path: Path> <gp: GenericParameterList?>
     "NEWLINE" "INDENT"
     <extends: ExtendsClause?>
-    <requires: RequiresClause?>
     <wc: WhereClause?>
     <methods: InterfaceMethod*>
     "DEDENT"
         => Interface {
             visibility: Visibility::default(),
             annotations: vec![],
-            name,
+            name: path,
             generic_params: merge_where_clause(gp.unwrap_or_default(), wc.unwrap_or_default()),
             extends: extends.unwrap_or_default(),
-            requires: requires.unwrap_or_default(),
             methods,
         },
 };
@@ -752,10 +919,10 @@ pub Namespace: Namespace = {
 // ============================================================================
 
 pub TypeAlias: TypeAlias = {
-    <h: DeclHead> "type" <name: "ident"> <gp: GenericParameterList?> "=" <ty: Type>
-        => { let (v, a) = h; TypeAlias { visibility: v.unwrap_or_default(), annotations: a, name, generic_params: gp.unwrap_or_default(), aliased_type: ty } },
-    <h: DeclHead> "type" <name: "ident"> <gp: GenericParameterList?> "NEWLINE" "INDENT" <wc: WhereClause> "=" <ty: Type> "DEDENT"
-        => { let (v, a) = h; TypeAlias { visibility: v.unwrap_or_default(), annotations: a, name, generic_params: merge_where_clause(gp.unwrap_or_default(), wc), aliased_type: ty } },
+    <h: DeclHead> "type" <path: Path> <gp: GenericParameterList?> "=" <ty: TopLevelType>
+        => { let (v, a) = h; TypeAlias { visibility: v.unwrap_or_default(), annotations: a, name: path, generic_params: gp.unwrap_or_default(), aliased_type: ty } },
+    <h: DeclHead> "type" <path: Path> <gp: GenericParameterList?> "NEWLINE" "INDENT" <wc: WhereClause> "=" <ty: TopLevelType> "DEDENT"
+        => { let (v, a) = h; TypeAlias { visibility: v.unwrap_or_default(), annotations: a, name: path, generic_params: merge_where_clause(gp.unwrap_or_default(), wc), aliased_type: ty } },
 };
 
 // ============================================================================
@@ -796,10 +963,8 @@ extern {
         "interface" => Token::Interface,
         "true"      => Token::True,
         "false"     => Token::False,
-        "ok"        => Token::OkLiteral,
         "null"      => Token::Null,
         "self"      => Token::SelfLower,
-        "Self"      => Token::SelfKeyword,
         "if"        => Token::If,
         "else"      => Token::Else,
         "elif"      => Token::Elif,
@@ -812,6 +977,8 @@ extern {
         "extends"   => Token::Extends,
         "namespace" => Token::Namespace,
         "pass"      => Token::Pass,
+        "break"     => Token::Break,
+        "continue"  => Token::Continue,
         "block"     => Token::Block,
         "using"     => Token::Using,
         "extern"    => Token::Extern,
@@ -823,9 +990,6 @@ extern {
         "sizeof"    => Token::Sizeof,
         "alignof"   => Token::Alignof,
         "offsetof"  => Token::Offsetof,
-        "std"       => Token::Std,
-        "core"      => Token::Core,
-        "alloc"     => Token::Alloc,
         "u8"    => Token::U8,
         "u16"   => Token::U16,
         "u32"   => Token::U32,

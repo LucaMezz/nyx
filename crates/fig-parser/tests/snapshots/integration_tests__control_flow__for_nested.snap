@@ -11,13 +11,18 @@ items:
         is_effect: false
         receiver: ~
         name: nested_loops
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params:
           - name: n
             ty: USize
         return_types:
-          - Ok
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
       body:
         statements:
           - For:
@@ -28,16 +33,19 @@ items:
                     Path:
                       segments:
                         - range
-                      generic_args: []
                   args:
-                    - IntegerLiteral:
-                        base: Decimal
-                        digits: "0"
-                        suffix: ~
-                    - Path:
-                        segments:
-                          - n
-                        generic_args: []
+                    - name: ~
+                      value:
+                        IntegerLiteral:
+                          base: Decimal
+                          digits: "0"
+                          suffix: ~
+                    - name: ~
+                      value:
+                        Path:
+                          segments:
+                            - n
+                  generic_args: ~
                   is_propagating: false
               body:
                 statements:
@@ -49,16 +57,19 @@ items:
                             Path:
                               segments:
                                 - range
-                              generic_args: []
                           args:
-                            - IntegerLiteral:
-                                base: Decimal
-                                digits: "0"
-                                suffix: ~
-                            - Path:
-                                segments:
-                                  - n
-                                generic_args: []
+                            - name: ~
+                              value:
+                                IntegerLiteral:
+                                  base: Decimal
+                                  digits: "0"
+                                  suffix: ~
+                            - name: ~
+                              value:
+                                Path:
+                                  segments:
+                                    - n
+                          generic_args: ~
                           is_propagating: false
                       body:
                         statements:

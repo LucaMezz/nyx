@@ -4,7 +4,6 @@ expression: tokens
 ---
 - Func
 - Ident: add
-- ColonColon
 - LBracket
 - Ident: T
 - RBracket

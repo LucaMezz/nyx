@@ -11,7 +11,8 @@ items:
         is_effect: false
         receiver: ~
         name: add
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params:
           - name: a
@@ -28,13 +29,11 @@ items:
                   Path:
                     segments:
                       - a
-                    generic_args: []
                 op: Add
                 rhs:
                   Path:
                     segments:
                       - b
-                    generic_args: []
   - Function:
       signature:
         visibility: Default
@@ -43,7 +42,8 @@ items:
         is_effect: false
         receiver: ~
         name: max3
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params:
           - name: a
@@ -65,7 +65,8 @@ items:
         is_effect: false
         receiver: ~
         name: lerp
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params:
           - name: a
@@ -87,7 +88,8 @@ items:
         is_effect: false
         receiver: ~
         name: clamp
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params:
           - name: val

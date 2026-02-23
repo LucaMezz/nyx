@@ -9,7 +9,6 @@ items:
       name:
         segments:
           - math
-        generic_args: []
       items:
         - FunctionDeclaration:
             signature:
@@ -19,7 +18,8 @@ items:
               is_effect: false
               receiver: ~
               name: add
-              generic_params: []
+              outer_generic_params: []
+              func_generic_params: []
               self_param: ~
               params:
                 - name: a
@@ -36,7 +36,8 @@ items:
               is_effect: false
               receiver: ~
               name: sub
-              generic_params: []
+              outer_generic_params: []
+              func_generic_params: []
               self_param: ~
               params:
                 - name: a
@@ -53,7 +54,8 @@ items:
               is_effect: false
               receiver: ~
               name: mul
-              generic_params: []
+              outer_generic_params: []
+              func_generic_params: []
               self_param: ~
               params:
                 - name: a
@@ -70,7 +72,8 @@ items:
               is_effect: false
               receiver: ~
               name: div
-              generic_params: []
+              outer_generic_params: []
+              func_generic_params: []
               self_param: ~
               params:
                 - name: a

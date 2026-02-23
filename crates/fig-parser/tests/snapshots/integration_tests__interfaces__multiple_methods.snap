@@ -6,14 +6,15 @@ items:
   - Interface:
       visibility: Default
       annotations: []
-      name: Display
+      name:
+        segments:
+          - Display
       generic_params:
         - Type:
             name: T
             bounds: []
             default_type: ~
       extends: []
-      requires: []
       methods:
         - visibility: Default
           annotations: []
@@ -21,15 +22,17 @@ items:
           is_effect: false
           receiver: ~
           name: display
-          generic_params: []
+          outer_generic_params: []
+          func_generic_params: []
           self_param:
             is_pointer: true
             is_mutable: false
           params: []
           return_types:
             - Path:
-                segments:
-                  - T
+                path:
+                  segments:
+                    - T
                 generic_args: []
         - visibility: Default
           annotations: []
@@ -37,7 +40,8 @@ items:
           is_effect: false
           receiver: ~
           name: to_string
-          generic_params: []
+          outer_generic_params: []
+          func_generic_params: []
           self_param:
             is_pointer: true
             is_mutable: false
@@ -52,7 +56,8 @@ items:
           is_effect: false
           receiver: ~
           name: format
-          generic_params: []
+          outer_generic_params: []
+          func_generic_params: []
           self_param:
             is_pointer: true
             is_mutable: false

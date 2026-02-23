@@ -6,7 +6,9 @@ items:
   - Enum:
       visibility: Default
       annotations: []
-      name: SmallEnum
+      name:
+        segments:
+          - SmallEnum
       representation: U8
       generic_params: []
       requires: []
@@ -32,7 +34,9 @@ items:
   - Enum:
       visibility: Default
       annotations: []
-      name: MediumEnum
+      name:
+        segments:
+          - MediumEnum
       representation: U16
       generic_params: []
       requires: []
@@ -52,7 +56,9 @@ items:
   - Enum:
       visibility: Default
       annotations: []
-      name: SignedEnum
+      name:
+        segments:
+          - SignedEnum
       representation: I32
       generic_params: []
       requires: []

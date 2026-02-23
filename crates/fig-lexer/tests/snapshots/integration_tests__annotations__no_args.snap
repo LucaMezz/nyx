@@ -34,7 +34,7 @@ expression: tokens
 - LParen
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - Pass
@@ -48,7 +48,7 @@ expression: tokens
 - LParen
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - Pass

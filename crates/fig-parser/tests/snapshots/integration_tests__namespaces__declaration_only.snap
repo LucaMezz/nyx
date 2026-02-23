@@ -9,18 +9,15 @@ items:
       name:
         segments:
           - core
-        generic_args: []
   - NamespaceDeclaration:
       visibility: Default
       annotations: []
       name:
         segments:
           - std
-        generic_args: []
   - NamespaceDeclaration:
       visibility: Default
       annotations: []
       name:
         segments:
           - math
-        generic_args: []

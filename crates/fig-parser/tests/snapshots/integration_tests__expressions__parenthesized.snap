@@ -11,7 +11,8 @@ items:
         is_effect: false
         receiver: ~
         name: paren_ops
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params:
           - name: a
@@ -21,7 +22,11 @@ items:
           - name: c
             ty: I32
         return_types:
-          - Ok
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
       body:
         statements:
           - Let:
@@ -63,13 +68,11 @@ items:
                           Path:
                             segments:
                               - a
-                            generic_args: []
                         op: Add
                         rhs:
                           Path:
                             segments:
                               - b
-                            generic_args: []
                   op: Multiply
                   rhs:
                     Parenthesized:
@@ -78,13 +81,11 @@ items:
                           Path:
                             segments:
                               - a
-                            generic_args: []
                         op: Subtract
                         rhs:
                           Path:
                             segments:
                               - b
-                            generic_args: []
           - Let:
               annotations: []
               name: c
@@ -101,19 +102,16 @@ items:
                                 Path:
                                   segments:
                                     - a
-                                  generic_args: []
                               op: Add
                               rhs:
                                 Path:
                                   segments:
                                     - b
-                                  generic_args: []
                         op: Multiply
                         rhs:
                           Path:
                             segments:
                               - c
-                            generic_args: []
                   op: Subtract
                   rhs:
                     IntegerLiteral:

@@ -11,16 +11,21 @@ items:
             - Path:
                 segments:
                   - C
-                generic_args: []
       is_packed: false
-      name: CCompatible
+      name:
+        segments:
+          - CCompatible
       generic_params: []
       requires: []
       fields:
         - name: a
           ty: I32
+          visibility: Default
+          annotations: []
         - name: b
           ty: I32
+          visibility: Default
+          annotations: []
   - Struct:
       visibility: Default
       annotations:
@@ -31,7 +36,9 @@ items:
                 digits: "16"
                 suffix: ~
       is_packed: false
-      name: AlignedData
+      name:
+        segments:
+          - AlignedData
       generic_params: []
       requires: []
       fields:
@@ -44,6 +51,8 @@ items:
                   base: Decimal
                   digits: "16"
                   suffix: ~
+          visibility: Default
+          annotations: []
   - FunctionDeclaration:
       signature:
         visibility: Default
@@ -55,7 +64,8 @@ items:
         is_effect: false
         receiver: ~
         name: c_malloc
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params:
           - name: size

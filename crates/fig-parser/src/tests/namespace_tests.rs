@@ -15,7 +15,7 @@ fn test_simple_namespace() {
     assert_eq!(namespace.items.len(), 1);
 
     if let Statement::TypeAlias(ta) = &namespace.items[0] {
-        assert_eq!(ta.name, "Alias");
+        assert_eq!(ta.name.segments[0], "Alias");
         assert_eq!(ta.aliased_type, Type::I32);
     } else {
         panic!("Expected type alias item");
@@ -35,7 +35,7 @@ fn test_namespace_with_struct() {
     assert_eq!(namespace.items.len(), 1);
 
     if let Statement::Struct(s) = &namespace.items[0] {
-        assert_eq!(s.name, "Point");
+        assert_eq!(s.name.segments[0], "Point");
         assert_eq!(s.fields.len(), 2);
     } else {
         panic!("Expected struct item");
@@ -56,7 +56,7 @@ fn test_namespace_with_enum() {
     assert_eq!(namespace.items.len(), 1);
 
     if let Statement::Enum(e) = &namespace.items[0] {
-        assert_eq!(e.name, "Color");
+        assert_eq!(e.name.segments[0], "Color");
         assert_eq!(e.variants.len(), 3);
     } else {
         panic!("Expected enum item");
@@ -76,7 +76,7 @@ fn test_namespace_with_union() {
     assert_eq!(namespace.items.len(), 1);
 
     if let Statement::Union(u) = &namespace.items[0] {
-        assert_eq!(u.name, "Value");
+        assert_eq!(u.name.segments[0], "Value");
         assert_eq!(u.variants.len(), 2);
     } else {
         panic!("Expected union item");
@@ -95,7 +95,7 @@ fn test_namespace_with_interface() {
     assert_eq!(namespace.items.len(), 1);
 
     if let Statement::Interface(iface) = &namespace.items[0] {
-        assert_eq!(iface.name, "Printable");
+        assert_eq!(iface.name.segments[0], "Printable");
         assert_eq!(iface.methods.len(), 1);
     } else {
         panic!("Expected interface item");

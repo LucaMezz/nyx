@@ -11,11 +11,16 @@ items:
         is_effect: false
         receiver: ~
         name: setup_long
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params: []
         return_types:
-          - Ok
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
       body:
         statements:
           - Let:
@@ -36,7 +41,8 @@ items:
         is_effect: false
         receiver: ~
         name: a_very_long_function_name_that_is_quite_descriptive
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params:
           - name: a_very_long_parameter_name
@@ -49,4 +55,3 @@ items:
               Path:
                 segments:
                   - a_very_long_parameter_name
-                generic_args: []

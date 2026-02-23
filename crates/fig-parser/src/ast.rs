@@ -12,24 +12,24 @@ use serde::Serialize;
 pub struct Path {
     /// Segments of the path, e.g. `["std", "Vec"]`
     pub segments: Vec<String>,
-    /// Generic arguments at the end of the path, e.g. `[T, U]` in `Vec[T, U]`
-    pub generic_args: Vec<Type>,
 }
 
 impl Path {
+    /// Convenience constructor for a single-segment path, e.g. `Path::simple("Vec")`.
     pub fn simple(name: String) -> Self {
-        Path {
-            segments: vec![name],
-            generic_args: vec![],
-        }
+        Path { segments: vec![name] }
     }
+}
 
-    pub fn with_generics(segments: Vec<String>, generic_args: Vec<Type>) -> Self {
-        Path {
-            segments,
-            generic_args,
-        }
-    }
+/// A single path segment in a function receiver or final function name, optionally with generic
+/// parameters. e.g. `Vec[T]` in `func Vec[T]::push(...)`, or `add[U]` in `func Vec[T]::add[U](...)`.
+/// Generic args here are always `GenericParameter` (simple identifiers or bounded identifiers)
+/// since this position is always a declaration context.
+#[derive(Debug, Clone, PartialEq, Serialize)]
+pub struct GenericPathSegment {
+    pub name: String,
+    /// Generic parameters declared at this segment position.
+    pub generic_args: Vec<GenericParameter>,
 }
 
 /// Visibility modifier
@@ -86,6 +86,8 @@ pub enum Expression {
 
     // ── Composite literals ──
     ArrayLiteral(ArrayLiteralExpr),
+    /// `[value; count]` — a fixed-size array filled with repeated copies of `value`
+    RepeatArrayLiteral(RepeatArrayExpr),
     InterpolatedString(Vec<InterpolatedPart>),
 
     // ── Arithmetic / logical / bitwise ──
@@ -120,6 +122,13 @@ pub struct ArrayLiteralExpr {
     pub elements: Vec<Expression>,
 }
 
+/// `[value; count]` — fills a fixed-size array with `count` copies of `value`.
+#[derive(Debug, Clone, PartialEq, Serialize)]
+pub struct RepeatArrayExpr {
+    pub value: Box<Expression>,
+    pub count: Box<Expression>,
+}
+
 /// A segment of an interpolated string
 #[derive(Debug, Clone, PartialEq, Serialize)]
 pub enum InterpolatedPart {
@@ -146,11 +155,21 @@ pub struct TypeAccessExpr {
     pub member: String,
 }
 
+/// A single argument in a function or constructor call.
+/// Named form: `name: value` (used for struct construction and keyword args).
+/// Positional form: `value`.
+#[derive(Debug, Clone, PartialEq, Serialize)]
+pub struct CallArgument {
+    pub name: Option<String>,
+    pub value: Expression,
+}
+
 /// `callee(args)` or `callee!(args)`
 #[derive(Debug, Clone, PartialEq, Serialize)]
 pub struct CallExpr {
     pub callee: Box<Expression>,
-    pub args: Vec<Expression>,
+    pub args: Vec<CallArgument>,
+    pub generic_args: Option<Vec<Type>>,
     pub is_propagating: bool,
 }
 
@@ -179,10 +198,11 @@ pub struct OffsetofExpr {
 // Assignment Operations
 // ============================================================================
 
+#[derive(Debug, Clone, PartialEq, Serialize)]
 pub struct AssignExpr {
-    lhs: Box<Expression>,
-    op: AssignOperator,
-    rhs: Box<Expression>,
+    pub lhs: Box<Expression>,
+    pub op: AssignOperator,
+    pub rhs: Box<Expression>,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize)]
@@ -289,7 +309,7 @@ pub enum Type {
     },
 
     /// Named / path type, e.g. `Vec[T]`, `std::HashMap[K, V]`
-    Path(Path),
+    Path { path: Path, generic_args: Vec<Type> },
 
     /// Array `[T; N]` or slice `[T]`
     Array {
@@ -298,13 +318,27 @@ pub enum Type {
         size: Option<Box<Expression>>,
     },
 
+    /// Nullable type: `?T` — the value is either `T` or `null`.
+    Nullable(Box<Type>),
+
     /// Error-union type `T ! E` — the value is either `T` (ok) or an error of type `E`.
     /// Precedence: `*T ! E` = `(*T) ! E`, `?T ! E` = `(?T) ! E`.
     ErrorUnion {
         /// The success type (left-hand side of `!`)
         ok_type: Box<Type>,
         /// The error type (right-hand side of `!`), always a named path
-        err_type: Path,
+        err_type: Box<Type>,
+    },
+
+    /// Function type: `func(T1, T2) -> R` or `fn(T1) -> R`.
+    /// Both `func` and `fn` keywords produce this same node.
+    /// Used in pointer-to-function positions, e.g. `*func(u8, u8) -> bool`.
+    Function {
+        /// Types of the parameters (positional only; no names in a function type).
+        param_types: Vec<Type>,
+        /// Return type.  `None` means the function type has no declared return
+        /// (the language may implicitly treat it as `ok`).
+        return_type: Option<Box<Type>>,
     },
 }
 
@@ -333,7 +367,7 @@ pub enum GenericParameter {
 pub struct TypeAlias {
     pub visibility: Visibility,
     pub annotations: Vec<Annotation>,
-    pub name: String,
+    pub name: Path,
     /// Combined generic params (bounds merged from param list + where clause)
     pub generic_params: Vec<GenericParameter>,
     pub aliased_type: Type,
@@ -347,7 +381,7 @@ pub struct TypeAlias {
 pub struct Enum {
     pub visibility: Visibility,
     pub annotations: Vec<Annotation>,
-    pub name: String,
+    pub name: Path,
     /// Optional underlying representation, e.g. `enum[u8] MyEnum`
     pub representation: Option<Type>,
     /// Combined generic params (bounds merged from param list + where clause)
@@ -371,7 +405,7 @@ pub struct EnumVariant {
 pub struct Union {
     pub visibility: Visibility,
     pub annotations: Vec<Annotation>,
-    pub name: String,
+    pub name: Path,
     /// Combined generic params
     pub generic_params: Vec<GenericParameter>,
     /// `requires` clause
@@ -394,7 +428,7 @@ pub struct Struct {
     pub visibility: Visibility,
     pub annotations: Vec<Annotation>,
     pub is_packed: bool,
-    pub name: String,
+    pub name: Path,
     /// Combined generic params
     pub generic_params: Vec<GenericParameter>,
     /// `requires` clause
@@ -406,6 +440,8 @@ pub struct Struct {
 pub struct StructField {
     pub name: String,
     pub ty: Type,
+    pub visibility: Visibility,
+    pub annotations: Vec<Annotation>,
 }
 
 // ============================================================================
@@ -431,11 +467,13 @@ pub struct FunctionSignature {
     pub is_extern: bool,
     /// `func!` – error-propagating function
     pub is_effect: bool,
-    /// Receiver type for method implementations, e.g. `Vec` in `Vec::new`
-    pub receiver: Option<Path>,
+    /// Receiver path segments for method implementations, e.g. `[Vec[T]]` in `func Vec[T]::push`.
+    /// Each segment may carry generic arguments, e.g. `HashMap[K, V]::new`.
+    pub receiver: Option<Vec<GenericPathSegment>>,
     pub name: String,
     /// Combined generic params (bounds merged from param list + where clause)
-    pub generic_params: Vec<GenericParameter>,
+    pub outer_generic_params: Vec<GenericParameter>,
+    pub func_generic_params: Vec<GenericParameter>,
     pub self_param: Option<SelfParameter>,
     pub params: Vec<FunctionParameter>,
     pub return_types: Vec<Type>,
@@ -460,13 +498,11 @@ pub struct Block {
 pub struct Interface {
     pub visibility: Visibility,
     pub annotations: Vec<Annotation>,
-    pub name: String,
+    pub name: Path,
     /// Combined generic params
     pub generic_params: Vec<GenericParameter>,
     /// `extends` clause
     pub extends: Vec<Type>,
-    /// `requires` clause
-    pub requires: Vec<Type>,
     pub methods: Vec<FunctionSignature>,
 }
 
@@ -532,6 +568,10 @@ pub enum NamespaceItem {
 pub enum Statement {
     /// `pass`
     Pass,
+    /// `break`
+    Break,
+    /// `continue`
+    Continue,
     /// standalone expression
     Expression(Box<Expression>),
     /// `let name: Type = value`

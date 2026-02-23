@@ -6,7 +6,9 @@ items:
   - Union:
       visibility: Default
       annotations: []
-      name: IntOrFloat
+      name:
+        segments:
+          - IntOrFloat
       generic_params: []
       requires: []
       variants:

@@ -10,7 +10,6 @@ items:
         segments:
           - std
           - io
-        generic_args: []
   - Using:
       visibility: Default
       annotations: []
@@ -18,7 +17,6 @@ items:
         segments:
           - core
           - mem
-        generic_args: []
   - Using:
       visibility: Default
       annotations: []
@@ -26,7 +24,6 @@ items:
         segments:
           - alloc
           - global
-        generic_args: []
   - Function:
       signature:
         visibility: Default
@@ -35,11 +32,16 @@ items:
         is_effect: false
         receiver: ~
         name: builtin_ns
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params: []
         return_types:
-          - Ok
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
       body:
         statements:
           - Let:
@@ -52,7 +54,6 @@ items:
                     Path:
                       segments:
                         - std
-                      generic_args: []
                   member: VERSION
           - Let:
               annotations: []
@@ -64,7 +65,6 @@ items:
                     Path:
                       segments:
                         - core
-                      generic_args: []
                   member: ARCH
           - Let:
               annotations: []
@@ -78,12 +78,14 @@ items:
                         Path:
                           segments:
                             - alloc
-                          generic_args: []
                       member: allocate
                   args:
-                    - IntegerLiteral:
-                        base: Decimal
-                        digits: "64"
-                        suffix: ~
+                    - name: ~
+                      value:
+                        IntegerLiteral:
+                          base: Decimal
+                          digits: "64"
+                          suffix: ~
+                  generic_args: ~
                   is_propagating: false
           - Pass

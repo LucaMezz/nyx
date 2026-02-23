@@ -1,0 +1,87 @@
+---
+source: crates/fig-parser/tests/integration_tests.rs
+expression: ast
+---
+items:
+  - Struct:
+      visibility: Default
+      annotations: []
+      is_packed: false
+      name:
+        segments:
+          - Node
+      generic_params: []
+      requires: []
+      fields:
+        - name: value
+          ty: I32
+          visibility: Default
+          annotations: []
+        - name: next
+          ty:
+            Nullable:
+              Pointer:
+                nullable: false
+                mutable: false
+                element_type:
+                  Path:
+                    path:
+                      segments:
+                        - Node
+                    generic_args: []
+          visibility: Default
+          annotations: []
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: false
+        receiver:
+          - name: Node
+            generic_args: []
+        name: has_next
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: false
+        params: []
+        return_types:
+          - Bool
+      body:
+        statements:
+          - Return:
+              BinaryOp:
+                lhs:
+                  FieldAccess:
+                    object: SelfValue
+                    field: next
+                    is_propagating: false
+                op: NotEqual
+                rhs: NullLiteral
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: false
+        receiver:
+          - name: Node
+            generic_args: []
+        name: get_value
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: false
+        params: []
+        return_types:
+          - I32
+      body:
+        statements:
+          - Return:
+              FieldAccess:
+                object: SelfValue
+                field: value
+                is_propagating: false

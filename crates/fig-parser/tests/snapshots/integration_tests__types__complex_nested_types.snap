@@ -1,0 +1,68 @@
+---
+source: crates/fig-parser/tests/integration_tests.rs
+expression: ast
+---
+items:
+  - TypeAlias:
+      visibility: Default
+      annotations: []
+      name:
+        segments:
+          - DoubleRaw
+      generic_params: []
+      aliased_type:
+        Pointer:
+          nullable: false
+          mutable: true
+          element_type:
+            Pointer:
+              nullable: false
+              mutable: true
+              element_type: U8
+  - TypeAlias:
+      visibility: Default
+      annotations: []
+      name:
+        segments:
+          - OptPtrToSlice
+      generic_params: []
+      aliased_type:
+        Nullable:
+          Pointer:
+            nullable: false
+            mutable: false
+            element_type:
+              Array:
+                element_type: U8
+                size: ~
+  - TypeAlias:
+      visibility: Default
+      annotations: []
+      name:
+        segments:
+          - SliceOfOptInts
+      generic_params: []
+      aliased_type:
+        Array:
+          element_type:
+            Nullable: I32
+          size: ~
+  - TypeAlias:
+      visibility: Default
+      annotations: []
+      name:
+        segments:
+          - PtrToArray
+      generic_params: []
+      aliased_type:
+        Pointer:
+          nullable: false
+          mutable: false
+          element_type:
+            Array:
+              element_type: U8
+              size:
+                IntegerLiteral:
+                  base: Decimal
+                  digits: "32"
+                  suffix: ~

@@ -7,12 +7,16 @@ items:
       visibility: Default
       annotations: []
       is_packed: false
-      name: Counter
+      name:
+        segments:
+          - Counter
       generic_params: []
       requires: []
       fields:
         - name: count
           ty: I32
+          visibility: Default
+          annotations: []
   - Function:
       signature:
         visibility: Default
@@ -20,17 +24,21 @@ items:
         is_extern: false
         is_effect: false
         receiver:
-          segments:
-            - Counter
-          generic_args: []
+          - name: Counter
+            generic_args: []
         name: increment
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param:
           is_pointer: true
           is_mutable: true
         params: []
         return_types:
-          - Ok
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
       body:
         statements:
           - Pass
@@ -41,11 +49,11 @@ items:
         is_extern: false
         is_effect: false
         receiver:
-          segments:
-            - Counter
-          generic_args: []
+          - name: Counter
+            generic_args: []
         name: get
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param:
           is_pointer: true
           is_mutable: false
@@ -63,7 +71,8 @@ items:
         is_effect: false
         receiver: ~
         name: use_counter
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params:
           - name: c
@@ -73,11 +82,16 @@ items:
                 mutable: true
                 element_type:
                   Path:
-                    segments:
-                      - Counter
+                    path:
+                      segments:
+                        - Counter
                     generic_args: []
         return_types:
-          - Ok
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
       body:
         statements:
           - Expression:
@@ -88,10 +102,10 @@ items:
                       Path:
                         segments:
                           - c
-                        generic_args: []
                     field: increment
                     is_propagating: false
                 args: []
+                generic_args: ~
                 is_propagating: false
           - Let:
               annotations: []
@@ -105,9 +119,9 @@ items:
                         Path:
                           segments:
                             - c
-                          generic_args: []
                       field: get
                       is_propagating: false
                   args: []
+                  generic_args: ~
                   is_propagating: false
           - Pass

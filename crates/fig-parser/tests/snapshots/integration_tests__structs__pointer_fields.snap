@@ -7,12 +7,16 @@ items:
       visibility: Default
       annotations: []
       is_packed: false
-      name: Node
+      name:
+        segments:
+          - Node
       generic_params: []
       requires: []
       fields:
         - name: data
           ty: I32
+          visibility: Default
+          annotations: []
         - name: next
           ty:
             Pointer:
@@ -20,36 +24,51 @@ items:
               mutable: true
               element_type:
                 Path:
-                  segments:
-                    - Node
+                  path:
+                    segments:
+                      - Node
                   generic_args: []
+          visibility: Default
+          annotations: []
   - Struct:
       visibility: Default
       annotations: []
       is_packed: false
-      name: Tree
+      name:
+        segments:
+          - Tree
       generic_params: []
       requires: []
       fields:
         - name: value
           ty: I32
+          visibility: Default
+          annotations: []
         - name: left
           ty:
-            Pointer:
-              nullable: true
-              mutable: false
-              element_type:
-                Path:
-                  segments:
-                    - Tree
-                  generic_args: []
+            Nullable:
+              Pointer:
+                nullable: false
+                mutable: false
+                element_type:
+                  Path:
+                    path:
+                      segments:
+                        - Tree
+                    generic_args: []
+          visibility: Default
+          annotations: []
         - name: right
           ty:
-            Pointer:
-              nullable: true
-              mutable: false
-              element_type:
-                Path:
-                  segments:
-                    - Tree
-                  generic_args: []
+            Nullable:
+              Pointer:
+                nullable: false
+                mutable: false
+                element_type:
+                  Path:
+                    path:
+                      segments:
+                        - Tree
+                    generic_args: []
+          visibility: Default
+          annotations: []

@@ -1,7 +1,7 @@
 // Comprehensive tests for Struct, Enum, and Union parsing
 
 fn path_type_name(ty: &crate::ast::Type) -> &str {
-    if let crate::ast::Type::Path(p) = ty { &p.segments[0] } else { panic!("Expected path type") }
+    if let crate::ast::Type::Path { path: p, .. } = ty { &p.segments[0] } else { panic!("Expected path type") }
 }
 fn bound_name(ty: &crate::ast::Type) -> &str { path_type_name(ty) }
 
@@ -15,7 +15,7 @@ mod struct_tests {
     fn test_simple_struct() {
         let input = "struct Point\n    x: i32\n    y: i32\n";
         let s = parser::StructParser::new().parse(Lexer::new(input)).unwrap();
-        assert_eq!(s.name, "Point");
+        assert_eq!(s.name.segments[0], "Point");
         assert_eq!(s.fields.len(), 2);
         assert_eq!(s.generic_params.len(), 0);
         assert_eq!(s.requires.len(), 0);
@@ -30,7 +30,7 @@ mod struct_tests {
     fn test_struct_with_generic_params() {
         let input = "struct Container[T]\n    value: T\n";
         let s = parser::StructParser::new().parse(Lexer::new(input)).unwrap();
-        assert_eq!(s.name, "Container");
+        assert_eq!(s.name.segments[0], "Container");
         assert_eq!(s.generic_params.len(), 1);
         assert_eq!(s.fields.len(), 1);
 
@@ -129,12 +129,14 @@ mod struct_tests {
         let s = parser::StructParser::new().parse(Lexer::new(input)).unwrap();
         assert_eq!(s.fields.len(), 3);
 
-        // pointer: ?*i32
+        // pointer: ?*i32  →  Nullable(Pointer { nullable: false, .. })
         let ty0 = s.fields[0].ty.clone();
-        if let Type::Pointer { element_type, nullable, mutable } = ty0 {
-            assert!(nullable);
-            assert!(!mutable);
-            assert_eq!(*element_type, Type::I32);
+        if let Type::Nullable(inner) = ty0 {
+            if let Type::Pointer { element_type, nullable, mutable } = *inner {
+                assert!(!nullable);
+                assert!(!mutable);
+                assert_eq!(*element_type, Type::I32);
+            } else { panic!("Expected Pointer inside Nullable"); }
         } else { panic!("Expected nullable pointer"); }
 
         // array: [u8]
@@ -171,7 +173,7 @@ mod enum_tests {
     fn test_simple_enum() {
         let input = "enum Color\n    Red\n    Green\n    Blue\n";
         let e = parser::EnumParser::new().parse(Lexer::new(input)).unwrap();
-        assert_eq!(e.name, "Color");
+        assert_eq!(e.name.segments[0], "Color");
         assert_eq!(e.variants.len(), 3);
         assert_eq!(e.generic_params.len(), 0);
         assert_eq!(e.requires.len(), 0);
@@ -187,7 +189,7 @@ mod enum_tests {
     fn test_enum_with_representation() {
         let input = "enum[u8] Color\n    Red\n    Green\n    Blue\n";
         let e = parser::EnumParser::new().parse(Lexer::new(input)).unwrap();
-        assert_eq!(e.name, "Color");
+        assert_eq!(e.name.segments[0], "Color");
         assert_eq!(e.variants.len(), 3);
         assert_eq!(e.representation, Some(Type::U8));
     }
@@ -196,7 +198,7 @@ mod enum_tests {
     fn test_enum_with_i32_representation() {
         let input = "enum[i32] Status\n    Ok = 0\n    Error = 1\n    Pending = 2\n";
         let e = parser::EnumParser::new().parse(Lexer::new(input)).unwrap();
-        assert_eq!(e.name, "Status");
+        assert_eq!(e.name.segments[0], "Status");
         assert_eq!(e.representation, Some(Type::I32));
         assert_eq!(e.variants.len(), 3);
     }
@@ -232,7 +234,7 @@ mod enum_tests {
     fn test_enum_with_generic_params() {
         let input = "enum Option[T]\n    Some\n    None\n";
         let e = parser::EnumParser::new().parse(Lexer::new(input)).unwrap();
-        assert_eq!(e.name, "Option");
+        assert_eq!(e.name.segments[0], "Option");
         assert_eq!(e.generic_params.len(), 1);
         if let GenericParameter::Type { name, bounds, .. } = &e.generic_params[0] {
             assert_eq!(name, "T");
@@ -313,7 +315,7 @@ mod union_tests {
     fn test_simple_union() {
         let input = "union Value\n    int_val: i32\n    float_val: f32\n";
         let u = parser::UnionParser::new().parse(Lexer::new(input)).unwrap();
-        assert_eq!(u.name, "Value");
+        assert_eq!(u.name.segments[0], "Value");
         assert_eq!(u.variants.len(), 2);
         assert_eq!(u.generic_params.len(), 0);
         assert_eq!(u.requires.len(), 0);
@@ -328,7 +330,7 @@ mod union_tests {
     fn test_union_with_generic_params() {
         let input = "union Container[T]\n    value: T\n    pointer: *T\n";
         let u = parser::UnionParser::new().parse(Lexer::new(input)).unwrap();
-        assert_eq!(u.name, "Container");
+        assert_eq!(u.name.segments[0], "Container");
         assert_eq!(u.generic_params.len(), 1);
         if let GenericParameter::Type { name, bounds, .. } = &u.generic_params[0] {
             assert_eq!(name, "T"); assert_eq!(bounds.len(), 0);
@@ -394,9 +396,12 @@ mod union_tests {
             assert!(size.is_none()); assert_eq!(*element_type, Type::U8);
         } else { panic!("Expected slice"); }
 
+        // ?*mut bool  →  Nullable(Pointer { nullable: false, mutable: true, .. })
         let ty2 = u.variants[2].ty.clone();
-        if let Type::Pointer { element_type, nullable, mutable } = ty2 {
-            assert_eq!(*element_type, Type::Bool); assert!(nullable); assert!(mutable);
+        if let Type::Nullable(inner) = ty2 {
+            if let Type::Pointer { element_type, nullable, mutable } = *inner {
+                assert_eq!(*element_type, Type::Bool); assert!(!nullable); assert!(mutable);
+            } else { panic!("Expected Pointer inside Nullable"); }
         } else { panic!("Expected nullable mutable pointer"); }
     }
 

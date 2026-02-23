@@ -1,0 +1,104 @@
+---
+source: crates/fig-parser/tests/integration_tests.rs
+expression: ast
+---
+items:
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: false
+        receiver: ~
+        name: zip
+        outer_generic_params:
+          - Type:
+              name: A
+              bounds:
+                - Path:
+                    path:
+                      segments:
+                        - Into
+                    generic_args:
+                      - Path:
+                          path:
+                            segments:
+                              - C
+                          generic_args: []
+              default_type: ~
+          - Type:
+              name: B
+              bounds:
+                - Path:
+                    path:
+                      segments:
+                        - Into
+                    generic_args:
+                      - Path:
+                          path:
+                            segments:
+                              - C
+                          generic_args: []
+              default_type: ~
+          - Type:
+              name: C
+              bounds:
+                - Path:
+                    path:
+                      segments:
+                        - From
+                    generic_args:
+                      - Path:
+                          path:
+                            segments:
+                              - A
+                          generic_args: []
+                - Path:
+                    path:
+                      segments:
+                        - From
+                    generic_args:
+                      - Path:
+                          path:
+                            segments:
+                              - B
+                          generic_args: []
+              default_type: ~
+        func_generic_params:
+          - Type:
+              name: A
+              bounds: []
+              default_type: ~
+          - Type:
+              name: B
+              bounds: []
+              default_type: ~
+          - Type:
+              name: C
+              bounds: []
+              default_type: ~
+        self_param: ~
+        params:
+          - name: a
+            ty:
+              Path:
+                path:
+                  segments:
+                    - A
+                generic_args: []
+          - name: b
+            ty:
+              Path:
+                path:
+                  segments:
+                    - B
+                generic_args: []
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - C
+              generic_args: []
+      body:
+        statements:
+          - Pass

@@ -1,0 +1,3434 @@
+---
+source: crates/fig-parser/tests/integration_tests.rs
+expression: ast
+---
+items:
+  - Using:
+      visibility: Default
+      annotations: []
+      path:
+        segments:
+          - core
+          - memory
+  - Using:
+      visibility: Default
+      annotations: []
+      path:
+        segments:
+          - std
+          - sync
+  - Const:
+      visibility: Default
+      annotations: []
+      generic_params: []
+      receiver: []
+      name: DEFAULT_WORKER_COUNT
+      ty: USize
+      value:
+        IntegerLiteral:
+          base: Decimal
+          digits: "4"
+          suffix: ~
+  - Const:
+      visibility: Default
+      annotations: []
+      generic_params: []
+      receiver: []
+      name: MAX_QUEUE_SIZE
+      ty: USize
+      value:
+        IntegerLiteral:
+          base: Decimal
+          digits: "1024"
+          suffix: ~
+  - Enum:
+      visibility: Default
+      annotations: []
+      name:
+        segments:
+          - TaskStatus
+      representation: ~
+      generic_params: []
+      requires: []
+      variants:
+        - name: PENDING
+          value: ~
+        - name: RUNNING
+          value: ~
+        - name: COMPLETED
+          value: ~
+        - name: FAILED
+          value: ~
+        - name: CANCELLED
+          value: ~
+  - Union:
+      visibility: Default
+      annotations: []
+      name:
+        segments:
+          - TaskResult
+      generic_params:
+        - Type:
+            name: T
+            bounds: []
+            default_type: ~
+      requires: []
+      variants:
+        - name: ok
+          ty:
+            Path:
+              path:
+                segments:
+                  - T
+              generic_args: []
+        - name: err
+          ty:
+            Array:
+              element_type: U8
+              size: ~
+        - name: cancelled
+          ty:
+            Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
+  - Struct:
+      visibility: Default
+      annotations: []
+      is_packed: false
+      name:
+        segments:
+          - Task
+      generic_params:
+        - Type:
+            name: T
+            bounds: []
+            default_type: ~
+      requires: []
+      fields:
+        - name: id
+          ty: U64
+          visibility: Default
+          annotations: []
+        - name: work
+          ty:
+            Pointer:
+              nullable: false
+              mutable: false
+              element_type:
+                Function:
+                  param_types: []
+                  return_type:
+                    Path:
+                      path:
+                        segments:
+                          - T
+                      generic_args: []
+          visibility: Default
+          annotations: []
+        - name: status
+          ty:
+            Path:
+              path:
+                segments:
+                  - TaskStatus
+              generic_args: []
+          visibility: Default
+          annotations: []
+        - name: result
+          ty:
+            Nullable:
+              Path:
+                path:
+                  segments:
+                    - TaskResult
+                generic_args:
+                  - Path:
+                      path:
+                        segments:
+                          - T
+                      generic_args: []
+          visibility: Default
+          annotations: []
+        - name: priority
+          ty: U8
+          visibility: Default
+          annotations: []
+  - Struct:
+      visibility: Default
+      annotations: []
+      is_packed: false
+      name:
+        segments:
+          - TaskQueue
+      generic_params:
+        - Type:
+            name: T
+            bounds: []
+            default_type: ~
+      requires: []
+      fields:
+        - name: tasks
+          ty:
+            Pointer:
+              nullable: false
+              mutable: true
+              element_type:
+                Path:
+                  path:
+                    segments:
+                      - Task
+                  generic_args:
+                    - Path:
+                        path:
+                          segments:
+                            - T
+                        generic_args: []
+          visibility: Default
+          annotations: []
+        - name: head
+          ty: USize
+          visibility: Default
+          annotations: []
+        - name: tail
+          ty: USize
+          visibility: Default
+          annotations: []
+        - name: size
+          ty: USize
+          visibility: Default
+          annotations: []
+        - name: capacity
+          ty: USize
+          visibility: Default
+          annotations: []
+        - name: lock
+          ty:
+            Path:
+              path:
+                segments:
+                  - Mutex
+              generic_args: []
+          visibility: Default
+          annotations: []
+        - name: condition
+          ty:
+            Path:
+              path:
+                segments:
+                  - ConditionVariable
+              generic_args: []
+          visibility: Default
+          annotations: []
+  - Struct:
+      visibility: Default
+      annotations: []
+      is_packed: false
+      name:
+        segments:
+          - Worker
+      generic_params: []
+      requires: []
+      fields:
+        - name: id
+          ty: USize
+          visibility: Default
+          annotations: []
+        - name: thread
+          ty:
+            Path:
+              path:
+                segments:
+                  - Thread
+              generic_args: []
+          visibility: Default
+          annotations: []
+        - name: pool
+          ty:
+            Pointer:
+              nullable: false
+              mutable: true
+              element_type:
+                Path:
+                  path:
+                    segments:
+                      - ThreadPool
+                  generic_args: []
+          visibility: Default
+          annotations: []
+        - name: running
+          ty: Bool
+          visibility: Default
+          annotations: []
+  - Struct:
+      visibility: Export
+      annotations: []
+      is_packed: false
+      name:
+        segments:
+          - ThreadPool
+      generic_params: []
+      requires: []
+      fields:
+        - name: workers
+          ty:
+            Pointer:
+              nullable: false
+              mutable: true
+              element_type:
+                Path:
+                  path:
+                    segments:
+                      - Worker
+                  generic_args: []
+          visibility: Default
+          annotations: []
+        - name: worker_count
+          ty: USize
+          visibility: Default
+          annotations: []
+        - name: task_queue
+          ty:
+            Path:
+              path:
+                segments:
+                  - TaskQueue
+              generic_args:
+                - Path:
+                    path:
+                      segments:
+                        - ok
+                    generic_args: []
+          visibility: Default
+          annotations: []
+        - name: shutdown
+          ty: Bool
+          visibility: Default
+          annotations: []
+        - name: next_task_id
+          ty: U64
+          visibility: Default
+          annotations: []
+        - name: completed_tasks
+          ty: USize
+          visibility: Default
+          annotations: []
+        - name: failed_tasks
+          ty: USize
+          visibility: Default
+          annotations: []
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: ThreadPool
+            generic_args: []
+        name: new
+        outer_generic_params: []
+        func_generic_params: []
+        self_param: ~
+        params:
+          - name: worker_count
+            ty: USize
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - ThreadPool
+              generic_args: []
+      body:
+        statements:
+          - Mut:
+              annotations: []
+              name: pool
+              ty: ~
+              value:
+                Call:
+                  callee:
+                    Path:
+                      segments:
+                        - ThreadPool
+                  args:
+                    - name: workers
+                      value: NullLiteral
+                    - name: worker_count
+                      value:
+                        Path:
+                          segments:
+                            - worker_count
+                    - name: task_queue
+                      value:
+                        Call:
+                          callee:
+                            TypeAccess:
+                              object:
+                                Index:
+                                  object:
+                                    Path:
+                                      segments:
+                                        - TaskQueue
+                                  index:
+                                    Path:
+                                      segments:
+                                        - ok
+                              member: new
+                          args:
+                            - name: ~
+                              value:
+                                Path:
+                                  segments:
+                                    - MAX_QUEUE_SIZE
+                          generic_args: ~
+                          is_propagating: false
+                    - name: shutdown
+                      value:
+                        BooleanLiteral: false
+                    - name: next_task_id
+                      value:
+                        IntegerLiteral:
+                          base: Decimal
+                          digits: "0"
+                          suffix: ~
+                    - name: completed_tasks
+                      value:
+                        IntegerLiteral:
+                          base: Decimal
+                          digits: "0"
+                          suffix: ~
+                    - name: failed_tasks
+                      value:
+                        IntegerLiteral:
+                          base: Decimal
+                          digits: "0"
+                          suffix: ~
+                  generic_args: ~
+                  is_propagating: false
+          - Expression:
+              Call:
+                callee:
+                  FieldAccess:
+                    object:
+                      Path:
+                        segments:
+                          - pool
+                    field: spawn_workers
+                    is_propagating: false
+                args: []
+                generic_args: ~
+                is_propagating: false
+          - Return:
+              Path:
+                segments:
+                  - pool
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: ThreadPool
+            generic_args: []
+        name: default
+        outer_generic_params: []
+        func_generic_params: []
+        self_param: ~
+        params: []
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - ThreadPool
+              generic_args: []
+      body:
+        statements:
+          - Return:
+              Call:
+                callee:
+                  TypeAccess:
+                    object:
+                      Path:
+                        segments:
+                          - ThreadPool
+                    member: new
+                args:
+                  - name: ~
+                    value:
+                      Path:
+                        segments:
+                          - DEFAULT_WORKER_COUNT
+                generic_args: ~
+                is_propagating: false
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: ThreadPool
+            generic_args: []
+        name: spawn_workers
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params: []
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
+      body:
+        statements:
+          - For:
+              pattern: i
+              iterable:
+                Call:
+                  callee:
+                    Path:
+                      segments:
+                        - range
+                  args:
+                    - name: ~
+                      value:
+                        IntegerLiteral:
+                          base: Decimal
+                          digits: "0"
+                          suffix: ~
+                    - name: ~
+                      value:
+                        FieldAccess:
+                          object: SelfValue
+                          field: worker_count
+                          is_propagating: false
+                  generic_args: ~
+                  is_propagating: false
+              body:
+                statements:
+                  - Let:
+                      annotations: []
+                      name: worker
+                      ty: ~
+                      value:
+                        Call:
+                          callee:
+                            TypeAccess:
+                              object:
+                                Path:
+                                  segments:
+                                    - Worker
+                              member: new
+                          args:
+                            - name: ~
+                              value:
+                                Path:
+                                  segments:
+                                    - i
+                            - name: ~
+                              value: SelfValue
+                          generic_args: ~
+                          is_propagating: false
+                  - Pass
+          - Pass
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: ThreadPool
+            generic_args: []
+        name: submit
+        outer_generic_params: []
+        func_generic_params:
+          - Type:
+              name: T
+              bounds: []
+              default_type: ~
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params:
+          - name: work
+            ty:
+              Pointer:
+                nullable: false
+                mutable: false
+                element_type:
+                  Function:
+                    param_types: []
+                    return_type:
+                      Path:
+                        path:
+                          segments:
+                            - T
+                        generic_args: []
+        return_types:
+          - U64
+      body:
+        statements:
+          - Let:
+              annotations: []
+              name: task_id
+              ty: ~
+              value:
+                FieldAccess:
+                  object: SelfValue
+                  field: next_task_id
+                  is_propagating: false
+          - Expression:
+              Assign:
+                lhs:
+                  FieldAccess:
+                    object: SelfValue
+                    field: next_task_id
+                    is_propagating: false
+                op: Assign
+                rhs:
+                  BinaryOp:
+                    lhs:
+                      FieldAccess:
+                        object: SelfValue
+                        field: next_task_id
+                        is_propagating: false
+                    op: Add
+                    rhs:
+                      IntegerLiteral:
+                        base: Decimal
+                        digits: "1"
+                        suffix: ~
+          - Let:
+              annotations: []
+              name: task
+              ty: ~
+              value:
+                Call:
+                  callee:
+                    Index:
+                      object:
+                        Path:
+                          segments:
+                            - Task
+                      index:
+                        Path:
+                          segments:
+                            - T
+                  args:
+                    - name: id
+                      value:
+                        Path:
+                          segments:
+                            - task_id
+                    - name: work
+                      value:
+                        Path:
+                          segments:
+                            - work
+                    - name: status
+                      value:
+                        TypeAccess:
+                          object:
+                            Path:
+                              segments:
+                                - TaskStatus
+                          member: PENDING
+                    - name: result
+                      value: NullLiteral
+                    - name: priority
+                      value:
+                        IntegerLiteral:
+                          base: Decimal
+                          digits: "0"
+                          suffix: ~
+                  generic_args: ~
+                  is_propagating: false
+          - Expression:
+              Call:
+                callee:
+                  FieldAccess:
+                    object:
+                      FieldAccess:
+                        object: SelfValue
+                        field: task_queue
+                        is_propagating: false
+                    field: enqueue
+                    is_propagating: false
+                args:
+                  - name: ~
+                    value:
+                      Path:
+                        segments:
+                          - task
+                generic_args: ~
+                is_propagating: false
+          - Return:
+              Path:
+                segments:
+                  - task_id
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: ThreadPool
+            generic_args: []
+        name: submit_with_priority
+        outer_generic_params: []
+        func_generic_params:
+          - Type:
+              name: T
+              bounds: []
+              default_type: ~
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params:
+          - name: work
+            ty:
+              Pointer:
+                nullable: false
+                mutable: false
+                element_type:
+                  Function:
+                    param_types: []
+                    return_type:
+                      Path:
+                        path:
+                          segments:
+                            - T
+                        generic_args: []
+          - name: priority
+            ty: U8
+        return_types:
+          - U64
+      body:
+        statements:
+          - Let:
+              annotations: []
+              name: task_id
+              ty: ~
+              value:
+                FieldAccess:
+                  object: SelfValue
+                  field: next_task_id
+                  is_propagating: false
+          - Expression:
+              Assign:
+                lhs:
+                  FieldAccess:
+                    object: SelfValue
+                    field: next_task_id
+                    is_propagating: false
+                op: Assign
+                rhs:
+                  BinaryOp:
+                    lhs:
+                      FieldAccess:
+                        object: SelfValue
+                        field: next_task_id
+                        is_propagating: false
+                    op: Add
+                    rhs:
+                      IntegerLiteral:
+                        base: Decimal
+                        digits: "1"
+                        suffix: ~
+          - Let:
+              annotations: []
+              name: task
+              ty: ~
+              value:
+                Call:
+                  callee:
+                    Index:
+                      object:
+                        Path:
+                          segments:
+                            - Task
+                      index:
+                        Path:
+                          segments:
+                            - T
+                  args:
+                    - name: id
+                      value:
+                        Path:
+                          segments:
+                            - task_id
+                    - name: work
+                      value:
+                        Path:
+                          segments:
+                            - work
+                    - name: status
+                      value:
+                        TypeAccess:
+                          object:
+                            Path:
+                              segments:
+                                - TaskStatus
+                          member: PENDING
+                    - name: result
+                      value: NullLiteral
+                    - name: priority
+                      value:
+                        Path:
+                          segments:
+                            - priority
+                  generic_args: ~
+                  is_propagating: false
+          - Expression:
+              Call:
+                callee:
+                  FieldAccess:
+                    object:
+                      FieldAccess:
+                        object: SelfValue
+                        field: task_queue
+                        is_propagating: false
+                    field: enqueue_priority
+                    is_propagating: false
+                args:
+                  - name: ~
+                    value:
+                      Path:
+                        segments:
+                          - task
+                  - name: ~
+                    value:
+                      Path:
+                        segments:
+                          - priority
+                generic_args: ~
+                is_propagating: false
+          - Return:
+              Path:
+                segments:
+                  - task_id
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: ThreadPool
+            generic_args: []
+        name: wait_for_task
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params:
+          - name: task_id
+            ty: U64
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
+      body:
+        statements:
+          - For:
+              pattern: i
+              iterable:
+                Call:
+                  callee:
+                    Path:
+                      segments:
+                        - range
+                  args:
+                    - name: ~
+                      value:
+                        IntegerLiteral:
+                          base: Decimal
+                          digits: "0"
+                          suffix: ~
+                    - name: ~
+                      value:
+                        IntegerLiteral:
+                          base: Decimal
+                          digits: "10000"
+                          suffix: ~
+                  generic_args: ~
+                  is_propagating: false
+              body:
+                statements:
+                  - Let:
+                      annotations: []
+                      name: status
+                      ty: ~
+                      value:
+                        Call:
+                          callee:
+                            FieldAccess:
+                              object: SelfValue
+                              field: get_task_status
+                              is_propagating: false
+                          args:
+                            - name: ~
+                              value:
+                                Path:
+                                  segments:
+                                    - task_id
+                          generic_args: ~
+                          is_propagating: false
+                  - If:
+                      condition:
+                        BinaryOp:
+                          lhs:
+                            BinaryOp:
+                              lhs:
+                                BinaryOp:
+                                  lhs:
+                                    Path:
+                                      segments:
+                                        - status
+                                  op: Equal
+                                  rhs:
+                                    BinaryOp:
+                                      lhs:
+                                        TypeAccess:
+                                          object:
+                                            Path:
+                                              segments:
+                                                - TaskStatus
+                                          member: COMPLETED
+                                      op: LogicalOr
+                                      rhs:
+                                        Path:
+                                          segments:
+                                            - status
+                              op: Equal
+                              rhs:
+                                BinaryOp:
+                                  lhs:
+                                    TypeAccess:
+                                      object:
+                                        Path:
+                                          segments:
+                                            - TaskStatus
+                                      member: FAILED
+                                  op: LogicalOr
+                                  rhs:
+                                    Path:
+                                      segments:
+                                        - status
+                          op: Equal
+                          rhs:
+                            TypeAccess:
+                              object:
+                                Path:
+                                  segments:
+                                    - TaskStatus
+                              member: CANCELLED
+                      then_body:
+                        statements:
+                          - Return:
+                              Path:
+                                segments:
+                                  - ok
+                      elif_clauses: []
+                      else_body: ~
+                  - Expression:
+                      Call:
+                        callee:
+                          Path:
+                            segments:
+                              - thread_sleep
+                        args:
+                          - name: ~
+                            value:
+                              IntegerLiteral:
+                                base: Decimal
+                                digits: "10"
+                                suffix: ~
+                        generic_args: ~
+                        is_propagating: false
+          - Pass
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: false
+        receiver:
+          - name: ThreadPool
+            generic_args: []
+        name: get_task_status
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: false
+        params:
+          - name: task_id
+            ty: U64
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - TaskStatus
+              generic_args: []
+      body:
+        statements:
+          - Return:
+              TypeAccess:
+                object:
+                  Path:
+                    segments:
+                      - TaskStatus
+                member: PENDING
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: ThreadPool
+            generic_args: []
+        name: cancel_task
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params:
+          - name: task_id
+            ty: U64
+        return_types:
+          - Bool
+      body:
+        statements:
+          - Return:
+              BooleanLiteral: false
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: ThreadPool
+            generic_args: []
+        name: shutdown
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params: []
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
+      body:
+        statements:
+          - Expression:
+              Assign:
+                lhs:
+                  FieldAccess:
+                    object: SelfValue
+                    field: shutdown
+                    is_propagating: false
+                op: Assign
+                rhs:
+                  BooleanLiteral: true
+          - Expression:
+              Call:
+                callee:
+                  FieldAccess:
+                    object:
+                      FieldAccess:
+                        object: SelfValue
+                        field: task_queue
+                        is_propagating: false
+                    field: notify_all
+                    is_propagating: false
+                args: []
+                generic_args: ~
+                is_propagating: false
+          - For:
+              pattern: i
+              iterable:
+                Call:
+                  callee:
+                    Path:
+                      segments:
+                        - range
+                  args:
+                    - name: ~
+                      value:
+                        IntegerLiteral:
+                          base: Decimal
+                          digits: "0"
+                          suffix: ~
+                    - name: ~
+                      value:
+                        FieldAccess:
+                          object: SelfValue
+                          field: worker_count
+                          is_propagating: false
+                  generic_args: ~
+                  is_propagating: false
+              body:
+                statements:
+                  - Let:
+                      annotations: []
+                      name: worker
+                      ty: ~
+                      value:
+                        Index:
+                          object:
+                            FieldAccess:
+                              object:
+                                UnaryOp:
+                                  op: AddressOf
+                                  operand: SelfValue
+                              field: workers
+                              is_propagating: false
+                          index:
+                            Path:
+                              segments:
+                                - i
+                  - Expression:
+                      Call:
+                        callee:
+                          FieldAccess:
+                            object:
+                              Path:
+                                segments:
+                                  - worker
+                            field: join
+                            is_propagating: false
+                        args: []
+                        generic_args: ~
+                        is_propagating: false
+          - Pass
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: ThreadPool
+            generic_args: []
+        name: shutdown_now
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params: []
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
+      body:
+        statements:
+          - Expression:
+              Assign:
+                lhs:
+                  FieldAccess:
+                    object: SelfValue
+                    field: shutdown
+                    is_propagating: false
+                op: Assign
+                rhs:
+                  BooleanLiteral: true
+          - Expression:
+              Call:
+                callee:
+                  FieldAccess:
+                    object:
+                      FieldAccess:
+                        object: SelfValue
+                        field: task_queue
+                        is_propagating: false
+                    field: clear
+                    is_propagating: false
+                args: []
+                generic_args: ~
+                is_propagating: false
+          - Expression:
+              Call:
+                callee:
+                  FieldAccess:
+                    object:
+                      FieldAccess:
+                        object: SelfValue
+                        field: task_queue
+                        is_propagating: false
+                    field: notify_all
+                    is_propagating: false
+                args: []
+                generic_args: ~
+                is_propagating: false
+          - For:
+              pattern: i
+              iterable:
+                Call:
+                  callee:
+                    Path:
+                      segments:
+                        - range
+                  args:
+                    - name: ~
+                      value:
+                        IntegerLiteral:
+                          base: Decimal
+                          digits: "0"
+                          suffix: ~
+                    - name: ~
+                      value:
+                        FieldAccess:
+                          object: SelfValue
+                          field: worker_count
+                          is_propagating: false
+                  generic_args: ~
+                  is_propagating: false
+              body:
+                statements:
+                  - Let:
+                      annotations: []
+                      name: worker
+                      ty: ~
+                      value:
+                        Index:
+                          object:
+                            FieldAccess:
+                              object:
+                                UnaryOp:
+                                  op: AddressOf
+                                  operand: SelfValue
+                              field: workers
+                              is_propagating: false
+                          index:
+                            Path:
+                              segments:
+                                - i
+                  - Expression:
+                      Call:
+                        callee:
+                          FieldAccess:
+                            object:
+                              Path:
+                                segments:
+                                  - worker
+                            field: join
+                            is_propagating: false
+                        args: []
+                        generic_args: ~
+                        is_propagating: false
+          - Pass
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: false
+        receiver:
+          - name: ThreadPool
+            generic_args: []
+        name: is_idle
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: false
+        params: []
+        return_types:
+          - Bool
+      body:
+        statements:
+          - Return:
+              Call:
+                callee:
+                  FieldAccess:
+                    object:
+                      FieldAccess:
+                        object: SelfValue
+                        field: task_queue
+                        is_propagating: false
+                    field: is_empty
+                    is_propagating: false
+                args: []
+                generic_args: ~
+                is_propagating: false
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: false
+        receiver:
+          - name: ThreadPool
+            generic_args: []
+        name: active_count
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: false
+        params: []
+        return_types:
+          - USize
+      body:
+        statements:
+          - Mut:
+              annotations: []
+              name: count
+              ty: USize
+              value:
+                IntegerLiteral:
+                  base: Decimal
+                  digits: "0"
+                  suffix: ~
+          - For:
+              pattern: i
+              iterable:
+                Call:
+                  callee:
+                    Path:
+                      segments:
+                        - range
+                  args:
+                    - name: ~
+                      value:
+                        IntegerLiteral:
+                          base: Decimal
+                          digits: "0"
+                          suffix: ~
+                    - name: ~
+                      value:
+                        FieldAccess:
+                          object: SelfValue
+                          field: worker_count
+                          is_propagating: false
+                  generic_args: ~
+                  is_propagating: false
+              body:
+                statements:
+                  - Let:
+                      annotations: []
+                      name: worker
+                      ty: ~
+                      value:
+                        Index:
+                          object:
+                            FieldAccess:
+                              object:
+                                UnaryOp:
+                                  op: AddressOf
+                                  operand: SelfValue
+                              field: workers
+                              is_propagating: false
+                          index:
+                            Path:
+                              segments:
+                                - i
+                  - If:
+                      condition:
+                        FieldAccess:
+                          object:
+                            Path:
+                              segments:
+                                - worker
+                          field: running
+                          is_propagating: false
+                      then_body:
+                        statements:
+                          - Expression:
+                              Assign:
+                                lhs:
+                                  Path:
+                                    segments:
+                                      - count
+                                op: Assign
+                                rhs:
+                                  BinaryOp:
+                                    lhs:
+                                      Path:
+                                        segments:
+                                          - count
+                                    op: Add
+                                    rhs:
+                                      IntegerLiteral:
+                                        base: Decimal
+                                        digits: "1"
+                                        suffix: ~
+                      elif_clauses: []
+                      else_body: ~
+          - Return:
+              Path:
+                segments:
+                  - count
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: false
+        receiver:
+          - name: ThreadPool
+            generic_args: []
+        name: queue_size
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: false
+        params: []
+        return_types:
+          - USize
+      body:
+        statements:
+          - Return:
+              FieldAccess:
+                object:
+                  FieldAccess:
+                    object: SelfValue
+                    field: task_queue
+                    is_propagating: false
+                field: size
+                is_propagating: false
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: false
+        receiver:
+          - name: ThreadPool
+            generic_args: []
+        name: stats
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: false
+        params: []
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - PoolStats
+              generic_args: []
+      body:
+        statements:
+          - Return:
+              Call:
+                callee:
+                  Path:
+                    segments:
+                      - PoolStats
+                args:
+                  - name: worker_count
+                    value:
+                      FieldAccess:
+                        object: SelfValue
+                        field: worker_count
+                        is_propagating: false
+                  - name: active_workers
+                    value:
+                      Call:
+                        callee:
+                          FieldAccess:
+                            object: SelfValue
+                            field: active_count
+                            is_propagating: false
+                        args: []
+                        generic_args: ~
+                        is_propagating: false
+                  - name: queued_tasks
+                    value:
+                      Call:
+                        callee:
+                          FieldAccess:
+                            object: SelfValue
+                            field: queue_size
+                            is_propagating: false
+                        args: []
+                        generic_args: ~
+                        is_propagating: false
+                  - name: completed_tasks
+                    value:
+                      FieldAccess:
+                        object: SelfValue
+                        field: completed_tasks
+                        is_propagating: false
+                  - name: failed_tasks
+                    value:
+                      FieldAccess:
+                        object: SelfValue
+                        field: failed_tasks
+                        is_propagating: false
+                generic_args: ~
+                is_propagating: false
+  - Struct:
+      visibility: Default
+      annotations: []
+      is_packed: false
+      name:
+        segments:
+          - PoolStats
+      generic_params: []
+      requires: []
+      fields:
+        - name: worker_count
+          ty: USize
+          visibility: Default
+          annotations: []
+        - name: active_workers
+          ty: USize
+          visibility: Default
+          annotations: []
+        - name: queued_tasks
+          ty: USize
+          visibility: Default
+          annotations: []
+        - name: completed_tasks
+          ty: USize
+          visibility: Default
+          annotations: []
+        - name: failed_tasks
+          ty: USize
+          visibility: Default
+          annotations: []
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: Worker
+            generic_args: []
+        name: new
+        outer_generic_params: []
+        func_generic_params: []
+        self_param: ~
+        params:
+          - name: id
+            ty: USize
+          - name: pool
+            ty:
+              Pointer:
+                nullable: false
+                mutable: true
+                element_type:
+                  Path:
+                    path:
+                      segments:
+                        - ThreadPool
+                    generic_args: []
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - Worker
+              generic_args: []
+      body:
+        statements:
+          - Mut:
+              annotations: []
+              name: worker
+              ty: ~
+              value:
+                Call:
+                  callee:
+                    Path:
+                      segments:
+                        - Worker
+                  args:
+                    - name: id
+                      value:
+                        Path:
+                          segments:
+                            - id
+                    - name: thread
+                      value:
+                        Call:
+                          callee:
+                            TypeAccess:
+                              object:
+                                Path:
+                                  segments:
+                                    - Thread
+                              member: uninitialized
+                          args: []
+                          generic_args: ~
+                          is_propagating: false
+                    - name: pool
+                      value:
+                        Path:
+                          segments:
+                            - pool
+                    - name: running
+                      value:
+                        BooleanLiteral: false
+                  generic_args: ~
+                  is_propagating: false
+          - Expression:
+              Assign:
+                lhs:
+                  FieldAccess:
+                    object:
+                      Path:
+                        segments:
+                          - worker
+                    field: thread
+                    is_propagating: false
+                op: Assign
+                rhs:
+                  Call:
+                    callee:
+                      TypeAccess:
+                        object:
+                          Path:
+                            segments:
+                              - Thread
+                        member: spawn
+                    args:
+                      - name: ~
+                        value:
+                          Path:
+                            segments:
+                              - worker_main
+                      - name: ~
+                        value:
+                          UnaryOp:
+                            op: AddressOf
+                            operand:
+                              Path:
+                                segments:
+                                  - worker
+                    generic_args: ~
+                    is_propagating: false
+          - Return:
+              Path:
+                segments:
+                  - worker
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver: ~
+        name: worker_main
+        outer_generic_params: []
+        func_generic_params: []
+        self_param: ~
+        params:
+          - name: worker
+            ty:
+              Pointer:
+                nullable: false
+                mutable: false
+                element_type:
+                  Path:
+                    path:
+                      segments:
+                        - Worker
+                    generic_args: []
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
+      body:
+        statements:
+          - For:
+              pattern: i
+              iterable:
+                Call:
+                  callee:
+                    Path:
+                      segments:
+                        - range
+                  args:
+                    - name: ~
+                      value:
+                        IntegerLiteral:
+                          base: Decimal
+                          digits: "0"
+                          suffix: ~
+                    - name: ~
+                      value:
+                        IntegerLiteral:
+                          base: Decimal
+                          digits: "1000000"
+                          suffix: ~
+                  generic_args: ~
+                  is_propagating: false
+              body:
+                statements:
+                  - If:
+                      condition:
+                        FieldAccess:
+                          object:
+                            FieldAccess:
+                              object:
+                                Path:
+                                  segments:
+                                    - worker
+                              field: pool
+                              is_propagating: false
+                          field: shutdown
+                          is_propagating: false
+                      then_body:
+                        statements:
+                          - Break
+                      elif_clauses: []
+                      else_body: ~
+                  - Let:
+                      annotations: []
+                      name: task
+                      ty: ~
+                      value:
+                        Call:
+                          callee:
+                            FieldAccess:
+                              object:
+                                FieldAccess:
+                                  object:
+                                    FieldAccess:
+                                      object:
+                                        Path:
+                                          segments:
+                                            - worker
+                                      field: pool
+                                      is_propagating: false
+                                  field: task_queue
+                                  is_propagating: false
+                              field: dequeue
+                              is_propagating: false
+                          args: []
+                          generic_args: ~
+                          is_propagating: false
+                  - If:
+                      condition:
+                        BinaryOp:
+                          lhs:
+                            Path:
+                              segments:
+                                - task
+                          op: Equal
+                          rhs: NullLiteral
+                      then_body:
+                        statements:
+                          - Continue
+                      elif_clauses: []
+                      else_body: ~
+                  - Expression:
+                      Assign:
+                        lhs:
+                          FieldAccess:
+                            object:
+                              Path:
+                                segments:
+                                  - worker
+                            field: running
+                            is_propagating: false
+                        op: Assign
+                        rhs:
+                          BooleanLiteral: true
+                  - Expression:
+                      Assign:
+                        lhs:
+                          FieldAccess:
+                            object:
+                              Path:
+                                segments:
+                                  - task
+                            field: status
+                            is_propagating: false
+                        op: Assign
+                        rhs:
+                          TypeAccess:
+                            object:
+                              Path:
+                                segments:
+                                  - TaskStatus
+                            member: RUNNING
+                  - Let:
+                      annotations: []
+                      name: result
+                      ty: ~
+                      value:
+                        Call:
+                          callee:
+                            Parenthesized:
+                              FieldAccess:
+                                object:
+                                  Path:
+                                    segments:
+                                      - task
+                                field: work
+                                is_propagating: false
+                          args: []
+                          generic_args: ~
+                          is_propagating: false
+                  - Expression:
+                      Assign:
+                        lhs:
+                          FieldAccess:
+                            object:
+                              Path:
+                                segments:
+                                  - task
+                            field: status
+                            is_propagating: false
+                        op: Assign
+                        rhs:
+                          TypeAccess:
+                            object:
+                              Path:
+                                segments:
+                                  - TaskStatus
+                            member: COMPLETED
+                  - Expression:
+                      Assign:
+                        lhs:
+                          FieldAccess:
+                            object:
+                              Path:
+                                segments:
+                                  - task
+                            field: result
+                            is_propagating: false
+                        op: Assign
+                        rhs:
+                          Call:
+                            callee:
+                              TypeAccess:
+                                object:
+                                  Index:
+                                    object:
+                                      Path:
+                                        segments:
+                                          - TaskResult
+                                    index:
+                                      Path:
+                                        segments:
+                                          - ok
+                                member: ok
+                            args:
+                              - name: ~
+                                value:
+                                  Path:
+                                    segments:
+                                      - result
+                            generic_args: ~
+                            is_propagating: false
+                  - Expression:
+                      Assign:
+                        lhs:
+                          FieldAccess:
+                            object:
+                              FieldAccess:
+                                object:
+                                  Path:
+                                    segments:
+                                      - worker
+                                field: pool
+                                is_propagating: false
+                            field: completed_tasks
+                            is_propagating: false
+                        op: Assign
+                        rhs:
+                          BinaryOp:
+                            lhs:
+                              FieldAccess:
+                                object:
+                                  FieldAccess:
+                                    object:
+                                      Path:
+                                        segments:
+                                          - worker
+                                    field: pool
+                                    is_propagating: false
+                                field: completed_tasks
+                                is_propagating: false
+                            op: Add
+                            rhs:
+                              IntegerLiteral:
+                                base: Decimal
+                                digits: "1"
+                                suffix: ~
+                  - Expression:
+                      Assign:
+                        lhs:
+                          FieldAccess:
+                            object:
+                              Path:
+                                segments:
+                                  - worker
+                            field: running
+                            is_propagating: false
+                        op: Assign
+                        rhs:
+                          BooleanLiteral: false
+          - Pass
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: Worker
+            generic_args: []
+        name: join
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params: []
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
+      body:
+        statements:
+          - Expression:
+              Call:
+                callee:
+                  FieldAccess:
+                    object:
+                      FieldAccess:
+                        object: SelfValue
+                        field: thread
+                        is_propagating: false
+                    field: join
+                    is_propagating: false
+                args: []
+                generic_args: ~
+                is_propagating: false
+          - Pass
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: TaskQueue
+            generic_args:
+              - Type:
+                  name: T
+                  bounds: []
+                  default_type: ~
+        name: new
+        outer_generic_params: []
+        func_generic_params: []
+        self_param: ~
+        params:
+          - name: capacity
+            ty: USize
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - TaskQueue
+              generic_args:
+                - Path:
+                    path:
+                      segments:
+                        - T
+                    generic_args: []
+      body:
+        statements:
+          - Return:
+              Call:
+                callee:
+                  Index:
+                    object:
+                      Path:
+                        segments:
+                          - TaskQueue
+                    index:
+                      Path:
+                        segments:
+                          - T
+                args:
+                  - name: tasks
+                    value: NullLiteral
+                  - name: head
+                    value:
+                      IntegerLiteral:
+                        base: Decimal
+                        digits: "0"
+                        suffix: ~
+                  - name: tail
+                    value:
+                      IntegerLiteral:
+                        base: Decimal
+                        digits: "0"
+                        suffix: ~
+                  - name: size
+                    value:
+                      IntegerLiteral:
+                        base: Decimal
+                        digits: "0"
+                        suffix: ~
+                  - name: capacity
+                    value:
+                      Path:
+                        segments:
+                          - capacity
+                  - name: lock
+                    value:
+                      Call:
+                        callee:
+                          TypeAccess:
+                            object:
+                              Path:
+                                segments:
+                                  - Mutex
+                            member: new
+                        args: []
+                        generic_args: ~
+                        is_propagating: false
+                  - name: condition
+                    value:
+                      Call:
+                        callee:
+                          TypeAccess:
+                            object:
+                              Path:
+                                segments:
+                                  - ConditionVariable
+                            member: new
+                        args: []
+                        generic_args: ~
+                        is_propagating: false
+                generic_args: ~
+                is_propagating: false
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: TaskQueue
+            generic_args:
+              - Type:
+                  name: T
+                  bounds: []
+                  default_type: ~
+        name: enqueue
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params:
+          - name: task
+            ty:
+              Path:
+                path:
+                  segments:
+                    - Task
+                generic_args:
+                  - Path:
+                      path:
+                        segments:
+                          - T
+                      generic_args: []
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
+      body:
+        statements:
+          - Expression:
+              Call:
+                callee:
+                  FieldAccess:
+                    object:
+                      FieldAccess:
+                        object: SelfValue
+                        field: lock
+                        is_propagating: false
+                    field: acquire
+                    is_propagating: false
+                args: []
+                generic_args: ~
+                is_propagating: false
+          - For:
+              pattern: i
+              iterable:
+                Call:
+                  callee:
+                    Path:
+                      segments:
+                        - range
+                  args:
+                    - name: ~
+                      value:
+                        IntegerLiteral:
+                          base: Decimal
+                          digits: "0"
+                          suffix: ~
+                    - name: ~
+                      value:
+                        IntegerLiteral:
+                          base: Decimal
+                          digits: "1000"
+                          suffix: ~
+                  generic_args: ~
+                  is_propagating: false
+              body:
+                statements:
+                  - If:
+                      condition:
+                        BinaryOp:
+                          lhs:
+                            FieldAccess:
+                              object: SelfValue
+                              field: size
+                              is_propagating: false
+                          op: LessThan
+                          rhs:
+                            FieldAccess:
+                              object: SelfValue
+                              field: capacity
+                              is_propagating: false
+                      then_body:
+                        statements:
+                          - Break
+                      elif_clauses: []
+                      else_body: ~
+                  - Expression:
+                      Call:
+                        callee:
+                          FieldAccess:
+                            object:
+                              FieldAccess:
+                                object: SelfValue
+                                field: condition
+                                is_propagating: false
+                            field: wait
+                            is_propagating: false
+                        args:
+                          - name: ~
+                            value:
+                              FieldAccess:
+                                object:
+                                  UnaryOp:
+                                    op: AddressOf
+                                    operand: SelfValue
+                                field: lock
+                                is_propagating: false
+                        generic_args: ~
+                        is_propagating: false
+          - Expression:
+              Assign:
+                lhs:
+                  Index:
+                    object:
+                      FieldAccess:
+                        object: SelfValue
+                        field: tasks
+                        is_propagating: false
+                    index:
+                      FieldAccess:
+                        object: SelfValue
+                        field: tail
+                        is_propagating: false
+                op: Assign
+                rhs:
+                  Path:
+                    segments:
+                      - task
+          - Expression:
+              Assign:
+                lhs:
+                  FieldAccess:
+                    object: SelfValue
+                    field: tail
+                    is_propagating: false
+                op: Assign
+                rhs:
+                  BinaryOp:
+                    lhs:
+                      Parenthesized:
+                        BinaryOp:
+                          lhs:
+                            FieldAccess:
+                              object: SelfValue
+                              field: tail
+                              is_propagating: false
+                          op: Add
+                          rhs:
+                            IntegerLiteral:
+                              base: Decimal
+                              digits: "1"
+                              suffix: ~
+                    op: Modulo
+                    rhs:
+                      FieldAccess:
+                        object: SelfValue
+                        field: capacity
+                        is_propagating: false
+          - Expression:
+              Assign:
+                lhs:
+                  FieldAccess:
+                    object: SelfValue
+                    field: size
+                    is_propagating: false
+                op: Assign
+                rhs:
+                  BinaryOp:
+                    lhs:
+                      FieldAccess:
+                        object: SelfValue
+                        field: size
+                        is_propagating: false
+                    op: Add
+                    rhs:
+                      IntegerLiteral:
+                        base: Decimal
+                        digits: "1"
+                        suffix: ~
+          - Expression:
+              Call:
+                callee:
+                  FieldAccess:
+                    object:
+                      FieldAccess:
+                        object: SelfValue
+                        field: condition
+                        is_propagating: false
+                    field: notify_one
+                    is_propagating: false
+                args: []
+                generic_args: ~
+                is_propagating: false
+          - Expression:
+              Call:
+                callee:
+                  FieldAccess:
+                    object:
+                      FieldAccess:
+                        object: SelfValue
+                        field: lock
+                        is_propagating: false
+                    field: release
+                    is_propagating: false
+                args: []
+                generic_args: ~
+                is_propagating: false
+          - Pass
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: TaskQueue
+            generic_args:
+              - Type:
+                  name: T
+                  bounds: []
+                  default_type: ~
+        name: enqueue_priority
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params:
+          - name: task
+            ty:
+              Path:
+                path:
+                  segments:
+                    - Task
+                generic_args:
+                  - Path:
+                      path:
+                        segments:
+                          - T
+                      generic_args: []
+          - name: priority
+            ty: U8
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
+      body:
+        statements:
+          - Expression:
+              Call:
+                callee:
+                  FieldAccess:
+                    object:
+                      FieldAccess:
+                        object: SelfValue
+                        field: lock
+                        is_propagating: false
+                    field: acquire
+                    is_propagating: false
+                args: []
+                generic_args: ~
+                is_propagating: false
+          - For:
+              pattern: i
+              iterable:
+                Call:
+                  callee:
+                    Path:
+                      segments:
+                        - range
+                  args:
+                    - name: ~
+                      value:
+                        IntegerLiteral:
+                          base: Decimal
+                          digits: "0"
+                          suffix: ~
+                    - name: ~
+                      value:
+                        IntegerLiteral:
+                          base: Decimal
+                          digits: "1000"
+                          suffix: ~
+                  generic_args: ~
+                  is_propagating: false
+              body:
+                statements:
+                  - If:
+                      condition:
+                        BinaryOp:
+                          lhs:
+                            FieldAccess:
+                              object: SelfValue
+                              field: size
+                              is_propagating: false
+                          op: LessThan
+                          rhs:
+                            FieldAccess:
+                              object: SelfValue
+                              field: capacity
+                              is_propagating: false
+                      then_body:
+                        statements:
+                          - Break
+                      elif_clauses: []
+                      else_body: ~
+                  - Expression:
+                      Call:
+                        callee:
+                          FieldAccess:
+                            object:
+                              FieldAccess:
+                                object: SelfValue
+                                field: condition
+                                is_propagating: false
+                            field: wait
+                            is_propagating: false
+                        args:
+                          - name: ~
+                            value:
+                              FieldAccess:
+                                object:
+                                  UnaryOp:
+                                    op: AddressOf
+                                    operand: SelfValue
+                                field: lock
+                                is_propagating: false
+                        generic_args: ~
+                        is_propagating: false
+          - Let:
+              annotations: []
+              name: insert_pos
+              ty: ~
+              value:
+                Call:
+                  callee:
+                    FieldAccess:
+                      object: SelfValue
+                      field: find_insert_position
+                      is_propagating: false
+                  args:
+                    - name: ~
+                      value:
+                        Path:
+                          segments:
+                            - priority
+                  generic_args: ~
+                  is_propagating: false
+          - Expression:
+              Call:
+                callee:
+                  FieldAccess:
+                    object: SelfValue
+                    field: insert_at
+                    is_propagating: false
+                args:
+                  - name: ~
+                    value:
+                      Path:
+                        segments:
+                          - task
+                  - name: ~
+                    value:
+                      Path:
+                        segments:
+                          - insert_pos
+                generic_args: ~
+                is_propagating: false
+          - Expression:
+              Call:
+                callee:
+                  FieldAccess:
+                    object:
+                      FieldAccess:
+                        object: SelfValue
+                        field: condition
+                        is_propagating: false
+                    field: notify_one
+                    is_propagating: false
+                args: []
+                generic_args: ~
+                is_propagating: false
+          - Expression:
+              Call:
+                callee:
+                  FieldAccess:
+                    object:
+                      FieldAccess:
+                        object: SelfValue
+                        field: lock
+                        is_propagating: false
+                    field: release
+                    is_propagating: false
+                args: []
+                generic_args: ~
+                is_propagating: false
+          - Pass
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: TaskQueue
+            generic_args:
+              - Type:
+                  name: T
+                  bounds: []
+                  default_type: ~
+        name: dequeue
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params: []
+        return_types:
+          - Nullable:
+              Pointer:
+                nullable: false
+                mutable: true
+                element_type:
+                  Path:
+                    path:
+                      segments:
+                        - Task
+                    generic_args:
+                      - Path:
+                          path:
+                            segments:
+                              - T
+                          generic_args: []
+      body:
+        statements:
+          - Expression:
+              Call:
+                callee:
+                  FieldAccess:
+                    object:
+                      FieldAccess:
+                        object: SelfValue
+                        field: lock
+                        is_propagating: false
+                    field: acquire
+                    is_propagating: false
+                args: []
+                generic_args: ~
+                is_propagating: false
+          - For:
+              pattern: i
+              iterable:
+                Call:
+                  callee:
+                    Path:
+                      segments:
+                        - range
+                  args:
+                    - name: ~
+                      value:
+                        IntegerLiteral:
+                          base: Decimal
+                          digits: "0"
+                          suffix: ~
+                    - name: ~
+                      value:
+                        IntegerLiteral:
+                          base: Decimal
+                          digits: "1000"
+                          suffix: ~
+                  generic_args: ~
+                  is_propagating: false
+              body:
+                statements:
+                  - If:
+                      condition:
+                        BinaryOp:
+                          lhs:
+                            FieldAccess:
+                              object: SelfValue
+                              field: size
+                              is_propagating: false
+                          op: GreaterThan
+                          rhs:
+                            IntegerLiteral:
+                              base: Decimal
+                              digits: "0"
+                              suffix: ~
+                      then_body:
+                        statements:
+                          - Break
+                      elif_clauses: []
+                      else_body: ~
+                  - Expression:
+                      Call:
+                        callee:
+                          FieldAccess:
+                            object:
+                              FieldAccess:
+                                object: SelfValue
+                                field: condition
+                                is_propagating: false
+                            field: wait_timeout
+                            is_propagating: false
+                        args:
+                          - name: ~
+                            value:
+                              FieldAccess:
+                                object:
+                                  UnaryOp:
+                                    op: AddressOf
+                                    operand: SelfValue
+                                field: lock
+                                is_propagating: false
+                          - name: ~
+                            value:
+                              IntegerLiteral:
+                                base: Decimal
+                                digits: "100"
+                                suffix: ~
+                        generic_args: ~
+                        is_propagating: false
+          - If:
+              condition:
+                BinaryOp:
+                  lhs:
+                    FieldAccess:
+                      object: SelfValue
+                      field: size
+                      is_propagating: false
+                  op: Equal
+                  rhs:
+                    IntegerLiteral:
+                      base: Decimal
+                      digits: "0"
+                      suffix: ~
+              then_body:
+                statements:
+                  - Expression:
+                      Call:
+                        callee:
+                          FieldAccess:
+                            object:
+                              FieldAccess:
+                                object: SelfValue
+                                field: lock
+                                is_propagating: false
+                            field: release
+                            is_propagating: false
+                        args: []
+                        generic_args: ~
+                        is_propagating: false
+                  - Return: NullLiteral
+              elif_clauses: []
+              else_body: ~
+          - Let:
+              annotations: []
+              name: task
+              ty: ~
+              value:
+                Index:
+                  object:
+                    FieldAccess:
+                      object:
+                        UnaryOp:
+                          op: AddressOf
+                          operand: SelfValue
+                      field: tasks
+                      is_propagating: false
+                  index:
+                    FieldAccess:
+                      object: SelfValue
+                      field: head
+                      is_propagating: false
+          - Expression:
+              Assign:
+                lhs:
+                  FieldAccess:
+                    object: SelfValue
+                    field: head
+                    is_propagating: false
+                op: Assign
+                rhs:
+                  BinaryOp:
+                    lhs:
+                      Parenthesized:
+                        BinaryOp:
+                          lhs:
+                            FieldAccess:
+                              object: SelfValue
+                              field: head
+                              is_propagating: false
+                          op: Add
+                          rhs:
+                            IntegerLiteral:
+                              base: Decimal
+                              digits: "1"
+                              suffix: ~
+                    op: Modulo
+                    rhs:
+                      FieldAccess:
+                        object: SelfValue
+                        field: capacity
+                        is_propagating: false
+          - Expression:
+              Assign:
+                lhs:
+                  FieldAccess:
+                    object: SelfValue
+                    field: size
+                    is_propagating: false
+                op: Assign
+                rhs:
+                  BinaryOp:
+                    lhs:
+                      FieldAccess:
+                        object: SelfValue
+                        field: size
+                        is_propagating: false
+                    op: Subtract
+                    rhs:
+                      IntegerLiteral:
+                        base: Decimal
+                        digits: "1"
+                        suffix: ~
+          - Expression:
+              Call:
+                callee:
+                  FieldAccess:
+                    object:
+                      FieldAccess:
+                        object: SelfValue
+                        field: condition
+                        is_propagating: false
+                    field: notify_one
+                    is_propagating: false
+                args: []
+                generic_args: ~
+                is_propagating: false
+          - Expression:
+              Call:
+                callee:
+                  FieldAccess:
+                    object:
+                      FieldAccess:
+                        object: SelfValue
+                        field: lock
+                        is_propagating: false
+                    field: release
+                    is_propagating: false
+                args: []
+                generic_args: ~
+                is_propagating: false
+          - Return:
+              Path:
+                segments:
+                  - task
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: false
+        receiver:
+          - name: TaskQueue
+            generic_args:
+              - Type:
+                  name: T
+                  bounds: []
+                  default_type: ~
+        name: is_empty
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: false
+        params: []
+        return_types:
+          - Bool
+      body:
+        statements:
+          - Return:
+              BinaryOp:
+                lhs:
+                  FieldAccess:
+                    object: SelfValue
+                    field: size
+                    is_propagating: false
+                op: Equal
+                rhs:
+                  IntegerLiteral:
+                    base: Decimal
+                    digits: "0"
+                    suffix: ~
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: false
+        receiver:
+          - name: TaskQueue
+            generic_args:
+              - Type:
+                  name: T
+                  bounds: []
+                  default_type: ~
+        name: is_full
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: false
+        params: []
+        return_types:
+          - Bool
+      body:
+        statements:
+          - Return:
+              BinaryOp:
+                lhs:
+                  FieldAccess:
+                    object: SelfValue
+                    field: size
+                    is_propagating: false
+                op: GreaterThanOrEqual
+                rhs:
+                  FieldAccess:
+                    object: SelfValue
+                    field: capacity
+                    is_propagating: false
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: TaskQueue
+            generic_args:
+              - Type:
+                  name: T
+                  bounds: []
+                  default_type: ~
+        name: clear
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params: []
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
+      body:
+        statements:
+          - Expression:
+              Call:
+                callee:
+                  FieldAccess:
+                    object:
+                      FieldAccess:
+                        object: SelfValue
+                        field: lock
+                        is_propagating: false
+                    field: acquire
+                    is_propagating: false
+                args: []
+                generic_args: ~
+                is_propagating: false
+          - Expression:
+              Assign:
+                lhs:
+                  FieldAccess:
+                    object: SelfValue
+                    field: head
+                    is_propagating: false
+                op: Assign
+                rhs:
+                  IntegerLiteral:
+                    base: Decimal
+                    digits: "0"
+                    suffix: ~
+          - Expression:
+              Assign:
+                lhs:
+                  FieldAccess:
+                    object: SelfValue
+                    field: tail
+                    is_propagating: false
+                op: Assign
+                rhs:
+                  IntegerLiteral:
+                    base: Decimal
+                    digits: "0"
+                    suffix: ~
+          - Expression:
+              Assign:
+                lhs:
+                  FieldAccess:
+                    object: SelfValue
+                    field: size
+                    is_propagating: false
+                op: Assign
+                rhs:
+                  IntegerLiteral:
+                    base: Decimal
+                    digits: "0"
+                    suffix: ~
+          - Expression:
+              Call:
+                callee:
+                  FieldAccess:
+                    object:
+                      FieldAccess:
+                        object: SelfValue
+                        field: lock
+                        is_propagating: false
+                    field: release
+                    is_propagating: false
+                args: []
+                generic_args: ~
+                is_propagating: false
+          - Pass
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: TaskQueue
+            generic_args:
+              - Type:
+                  name: T
+                  bounds: []
+                  default_type: ~
+        name: notify_all
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params: []
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
+      body:
+        statements:
+          - Expression:
+              Call:
+                callee:
+                  FieldAccess:
+                    object:
+                      FieldAccess:
+                        object: SelfValue
+                        field: condition
+                        is_propagating: false
+                    field: notify_all
+                    is_propagating: false
+                args: []
+                generic_args: ~
+                is_propagating: false
+          - Pass
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: false
+        receiver:
+          - name: TaskQueue
+            generic_args:
+              - Type:
+                  name: T
+                  bounds: []
+                  default_type: ~
+        name: find_insert_position
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: false
+        params:
+          - name: priority
+            ty: U8
+        return_types:
+          - USize
+      body:
+        statements:
+          - Return:
+              IntegerLiteral:
+                base: Decimal
+                digits: "0"
+                suffix: ~
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: TaskQueue
+            generic_args:
+              - Type:
+                  name: T
+                  bounds: []
+                  default_type: ~
+        name: insert_at
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params:
+          - name: task
+            ty:
+              Path:
+                path:
+                  segments:
+                    - Task
+                generic_args:
+                  - Path:
+                      path:
+                        segments:
+                          - T
+                      generic_args: []
+          - name: pos
+            ty: USize
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
+      body:
+        statements:
+          - Pass
+  - Struct:
+      visibility: Default
+      annotations: []
+      is_packed: false
+      name:
+        segments:
+          - Mutex
+      generic_params: []
+      requires: []
+      fields:
+        - name: handle
+          ty:
+            Pointer:
+              nullable: false
+              mutable: true
+              element_type: U8
+          visibility: Default
+          annotations: []
+  - Struct:
+      visibility: Default
+      annotations: []
+      is_packed: false
+      name:
+        segments:
+          - ConditionVariable
+      generic_params: []
+      requires: []
+      fields:
+        - name: handle
+          ty:
+            Pointer:
+              nullable: false
+              mutable: true
+              element_type: U8
+          visibility: Default
+          annotations: []
+  - Struct:
+      visibility: Default
+      annotations: []
+      is_packed: false
+      name:
+        segments:
+          - Thread
+      generic_params: []
+      requires: []
+      fields:
+        - name: handle
+          ty:
+            Pointer:
+              nullable: false
+              mutable: true
+              element_type: U8
+          visibility: Default
+          annotations: []
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: Mutex
+            generic_args: []
+        name: new
+        outer_generic_params: []
+        func_generic_params: []
+        self_param: ~
+        params: []
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - Mutex
+              generic_args: []
+      body:
+        statements:
+          - Return:
+              Call:
+                callee:
+                  Path:
+                    segments:
+                      - Mutex
+                args:
+                  - name: handle
+                    value: NullLiteral
+                generic_args: ~
+                is_propagating: false
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: Mutex
+            generic_args: []
+        name: acquire
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params: []
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
+      body:
+        statements:
+          - Pass
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: Mutex
+            generic_args: []
+        name: release
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params: []
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
+      body:
+        statements:
+          - Pass
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: ConditionVariable
+            generic_args: []
+        name: new
+        outer_generic_params: []
+        func_generic_params: []
+        self_param: ~
+        params: []
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - ConditionVariable
+              generic_args: []
+      body:
+        statements:
+          - Return:
+              Call:
+                callee:
+                  Path:
+                    segments:
+                      - ConditionVariable
+                args:
+                  - name: handle
+                    value: NullLiteral
+                generic_args: ~
+                is_propagating: false
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: ConditionVariable
+            generic_args: []
+        name: wait
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params:
+          - name: mutex
+            ty:
+              Pointer:
+                nullable: false
+                mutable: false
+                element_type:
+                  Path:
+                    path:
+                      segments:
+                        - Mutex
+                    generic_args: []
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
+      body:
+        statements:
+          - Pass
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: ConditionVariable
+            generic_args: []
+        name: wait_timeout
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params:
+          - name: mutex
+            ty:
+              Pointer:
+                nullable: false
+                mutable: false
+                element_type:
+                  Path:
+                    path:
+                      segments:
+                        - Mutex
+                    generic_args: []
+          - name: timeout_ms
+            ty: U32
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
+      body:
+        statements:
+          - Pass
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: ConditionVariable
+            generic_args: []
+        name: notify_one
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params: []
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
+      body:
+        statements:
+          - Pass
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: ConditionVariable
+            generic_args: []
+        name: notify_all
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params: []
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
+      body:
+        statements:
+          - Pass
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: Thread
+            generic_args: []
+        name: spawn
+        outer_generic_params: []
+        func_generic_params:
+          - Type:
+              name: T
+              bounds: []
+              default_type: ~
+        self_param: ~
+        params:
+          - name: fun
+            ty:
+              Pointer:
+                nullable: false
+                mutable: false
+                element_type:
+                  Function:
+                    param_types:
+                      - Pointer:
+                          nullable: false
+                          mutable: false
+                          element_type:
+                            Path:
+                              path:
+                                segments:
+                                  - T
+                              generic_args: []
+                    return_type:
+                      Path:
+                        path:
+                          segments:
+                            - ok
+                        generic_args: []
+          - name: arg
+            ty:
+              Pointer:
+                nullable: false
+                mutable: false
+                element_type:
+                  Path:
+                    path:
+                      segments:
+                        - T
+                    generic_args: []
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - Thread
+              generic_args: []
+      body:
+        statements:
+          - Return:
+              Call:
+                callee:
+                  Path:
+                    segments:
+                      - Thread
+                args:
+                  - name: handle
+                    value: NullLiteral
+                generic_args: ~
+                is_propagating: false
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: false
+        receiver:
+          - name: Thread
+            generic_args: []
+        name: uninitialized
+        outer_generic_params: []
+        func_generic_params: []
+        self_param: ~
+        params: []
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - Thread
+              generic_args: []
+      body:
+        statements:
+          - Return:
+              Call:
+                callee:
+                  Path:
+                    segments:
+                      - Thread
+                args:
+                  - name: handle
+                    value: NullLiteral
+                generic_args: ~
+                is_propagating: false
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: Thread
+            generic_args: []
+        name: join
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params: []
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
+      body:
+        statements:
+          - Pass
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver: ~
+        name: thread_sleep
+        outer_generic_params: []
+        func_generic_params: []
+        self_param: ~
+        params:
+          - name: ms
+            ty: U32
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
+      body:
+        statements:
+          - Pass

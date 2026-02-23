@@ -21,12 +21,14 @@ items:
         - name: Either
           generic_args:
             - Path:
-                segments:
-                  - U
+                path:
+                  segments:
+                    - U
                 generic_args: []
             - Path:
-                segments:
-                  - V
+                path:
+                  segments:
+                    - V
                 generic_args: []
       name: DEFAULT
       ty: U32
@@ -49,8 +51,9 @@ items:
         - name: Option
           generic_args:
             - Path:
-                segments:
-                  - T
+                path:
+                  segments:
+                    - T
                 generic_args: []
       name: A_CONST_VALUE
       ty: Bool

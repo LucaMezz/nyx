@@ -7,47 +7,71 @@ items:
       visibility: Public
       annotations: []
       is_packed: false
-      name: PublicPoint
+      name:
+        segments:
+          - PublicPoint
       generic_params: []
       requires: []
       fields:
         - name: x
           ty: F64
+          visibility: Default
+          annotations: []
         - name: y
           ty: F64
+          visibility: Default
+          annotations: []
   - Struct:
       visibility: Export
       annotations: []
       is_packed: false
-      name: ExportedRect
+      name:
+        segments:
+          - ExportedRect
       generic_params: []
       requires: []
       fields:
         - name: x
           ty: F64
+          visibility: Default
+          annotations: []
         - name: y
           ty: F64
+          visibility: Default
+          annotations: []
         - name: w
           ty: F64
+          visibility: Default
+          annotations: []
         - name: h
           ty: F64
+          visibility: Default
+          annotations: []
   - Struct:
       visibility: Private
       annotations: []
       is_packed: false
-      name: PrivateNode
+      name:
+        segments:
+          - PrivateNode
       generic_params: []
       requires: []
       fields:
         - name: data
           ty: I32
+          visibility: Default
+          annotations: []
         - name: next
           ty:
-            Pointer:
-              nullable: true
-              mutable: false
-              element_type:
-                Path:
-                  segments:
-                    - PrivateNode
-                  generic_args: []
+            Nullable:
+              Pointer:
+                nullable: false
+                mutable: false
+                element_type:
+                  Path:
+                    path:
+                      segments:
+                        - PrivateNode
+                    generic_args: []
+          visibility: Default
+          annotations: []

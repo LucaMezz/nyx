@@ -40,7 +40,7 @@ func! SlabAllocator::new() -> SlabAllocator
 
 func! SlabAllocator::create_cache(*mut self, object_size: usize) -> *mut SlabCache
     let cache = SlabCache::new(object_size)
-    return &mut self.cache
+    return &self.cache
 
 func! SlabAllocator::allocate(*mut self, cache: *mut SlabCache) -> ?*mut u8
     let slab = cache.get_partial_slab()
@@ -76,7 +76,7 @@ func! SlabAllocator::allocate_slab(*mut self, object_size: usize) -> ?*mut Slab
     let slab = Slab::new(memory, SLAB_SIZE, object_size)
     self.slabs.push(slab)
     
-    return &mut self.slabs[self.slabs.len - 1]
+    return &self.slabs[self.slabs.len - 1]
 
 func! SlabAllocator::allocate_from_slab(*mut self, slab: *mut Slab) -> ?*mut u8
     if slab.free_list == null
@@ -107,7 +107,7 @@ func SlabAllocator::find_slab_for_pointer(*self, ptr: *mut u8) -> ?*mut Slab
         let ptr_addr = ptr as usize
         
         if ptr_addr >= slab_start && ptr_addr < slab_end
-            return &mut self.slabs[i]
+            return &self.slabs[i]
     
     return null
 
@@ -194,9 +194,9 @@ func! SlabCache::update_slab_state(*mut self, slab: *mut Slab) -> ok
     pass
 
 func! SlabCache::remove_from_all_lists(*mut self, slab: *mut Slab) -> ok
-    self.remove_from_list(&mut self.partial_slabs, slab)
-    self.remove_from_list(&mut self.full_slabs, slab)
-    self.remove_from_list(&mut self.free_slabs, slab)
+    self.remove_from_list(&self.partial_slabs, slab)
+    self.remove_from_list(&self.full_slabs, slab)
+    self.remove_from_list(&self.free_slabs, slab)
     pass
 
 func! SlabCache::remove_from_list(*mut self, list: *mut [*mut Slab], slab: *mut Slab) -> ok

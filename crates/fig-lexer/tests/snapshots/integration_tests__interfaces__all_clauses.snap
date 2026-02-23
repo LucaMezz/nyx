@@ -25,12 +25,6 @@ expression: tokens
 - Ident: Sized
 - Newline
 - Dedent
-- Requires
-- Newline
-- Indent
-- Ident: Allocator
-- Newline
-- Dedent
 - Func
 - Ident: draw
 - LParen
@@ -38,7 +32,7 @@ expression: tokens
 - SelfLower
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Func
 - Ident: resize
@@ -56,7 +50,7 @@ expression: tokens
 - Ident: T
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Func
 - Ident: bounding_box

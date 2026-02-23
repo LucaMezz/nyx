@@ -131,12 +131,70 @@ impl PrettyPrinter {
     }
 
     fn format_path_inline(path: &Path) -> String {
-        let base = path.segments.join("::");
-        if path.generic_args.is_empty() {
-            base
-        } else {
-            let args: Vec<String> = path.generic_args.iter().map(|t| format!("{}", t)).collect();
-            format!("{}[{}]", base, args.join(", "))
+        path.segments.join("::")
+    }
+
+    fn format_receiver_inline(segs: &[GenericPathSegment]) -> String {
+        segs.iter()
+            .map(|seg| {
+                if seg.generic_args.is_empty() {
+                    seg.name.clone()
+                } else {
+                    let args: Vec<String> = seg.generic_args.iter()
+                        .map(Self::format_generic_param_brief)
+                        .collect();
+                    format!("{}[{}]", seg.name, args.join(", "))
+                }
+            })
+            .collect::<Vec<_>>()
+            .join("::")
+    }
+
+    fn format_generic_param_brief(gp: &GenericParameter) -> String {
+        match gp {
+            GenericParameter::Type { name, bounds, .. } if bounds.is_empty() => name.clone(),
+            GenericParameter::Type { name, bounds, .. } => {
+                let bs: Vec<String> = bounds.iter().map(Self::format_type_brief).collect();
+                format!("{}: {}", name, bs.join(" + "))
+            },
+            GenericParameter::Const { name, ty } =>
+                format!("const {}: {}", name, Self::format_type_brief(ty)),
+        }
+    }
+
+    fn format_type_brief(ty: &Type) -> String {
+        match ty {
+            Type::U8 => "u8".into(), Type::U16 => "u16".into(), Type::U32 => "u32".into(),
+            Type::U64 => "u64".into(), Type::USize => "usize".into(),
+            Type::I8 => "i8".into(), Type::I16 => "i16".into(), Type::I32 => "i32".into(),
+            Type::I64 => "i64".into(), Type::ISize => "isize".into(),
+            Type::F32 => "f32".into(), Type::F64 => "f64".into(),
+            Type::Bool => "bool".into(), Type::Null => "null".into(), Type::Ok => "ok".into(),
+            Type::SelfType => "Self".into(),
+            Type::Path { path, generic_args } if generic_args.is_empty() =>
+                Self::format_path_inline(path),
+            Type::Path { path, generic_args } => {
+                let args: Vec<String> = generic_args.iter().map(Self::format_type_brief).collect();
+                format!("{}[{}]", Self::format_path_inline(path), args.join(", "))
+            },
+            Type::Nullable(inner) => format!("?{}", Self::format_type_brief(inner)),
+            Type::Pointer { nullable: _, mutable, element_type } => {
+                let m = if *mutable { "*mut " } else { "*" };
+                format!("{}{}", m, Self::format_type_brief(element_type))
+            },
+            Type::Array { element_type, size: None } =>
+                format!("[{}]", Self::format_type_brief(element_type)),
+            Type::Array { element_type, size: Some(_) } =>
+                format!("[{}; ...]", Self::format_type_brief(element_type)),
+            Type::ErrorUnion { ok_type, err_type } =>
+                format!("{}!{}", Self::format_type_brief(ok_type), Self::format_type_brief(err_type)),
+            Type::Function { param_types, return_type } => {
+                let params: Vec<String> = param_types.iter().map(Self::format_type_brief).collect();
+                match return_type {
+                    Some(r) => format!("func({}) -> {}", params.join(", "), Self::format_type_brief(r)),
+                    None    => format!("func({})", params.join(", ")),
+                }
+            },
         }
     }
 
@@ -265,6 +323,19 @@ impl PrettyPrinter {
                 }
                 self.indent_level -= 1;
             }
+            Expression::RepeatArrayLiteral(arr) => {
+                writeln!(output, "{}RepeatArrayLiteral", p).unwrap();
+                self.indent_level += 1;
+                writeln!(output, "{}value:", self.indent()).unwrap();
+                self.indent_level += 1;
+                self.format_expression(&arr.value, output, true);
+                self.indent_level -= 1;
+                writeln!(output, "{}count:", self.indent()).unwrap();
+                self.indent_level += 1;
+                self.format_expression(&arr.count, output, true);
+                self.indent_level -= 1;
+                self.indent_level -= 1;
+            }
             Expression::BinaryOp(op) => {
                 writeln!(output, "{}BinaryOp: {:?}", p, op.op).unwrap();
                 self.indent_level += 1;
@@ -316,7 +387,16 @@ impl PrettyPrinter {
                     writeln!(output, "{}args:", self.indent()).unwrap();
                     self.indent_level += 1;
                     for (i, a) in call.args.iter().enumerate() {
-                        self.format_expression(a, output, i == call.args.len() - 1);
+                        let is_last = i == call.args.len() - 1;
+                        if let Some(ref name) = a.name {
+                            let pp = self.prefix(is_last);
+                            writeln!(output, "{}Arg[{}]:", pp, name).unwrap();
+                            self.indent_level += 1;
+                            self.format_expression(&a.value, output, true);
+                            self.indent_level -= 1;
+                        } else {
+                            self.format_expression(&a.value, output, is_last);
+                        }
                     }
                     self.indent_level -= 1;
                 }
@@ -370,6 +450,18 @@ impl PrettyPrinter {
                 self.format_expression(inner, output, true);
                 self.indent_level -= 1;
             }
+            Expression::Assign(assign) => {
+                writeln!(output, "{}Assign: {:?}", p, assign.op).unwrap();
+                self.indent_level += 1;
+                writeln!(output, "{}lhs:", self.indent()).unwrap();
+                self.indent_level += 1;
+                self.format_expression(&assign.lhs, output, true);
+                self.indent_level -= 1;
+                writeln!(output, "{}rhs:", self.indent()).unwrap();
+                self.indent_level += 1;
+                self.format_expression(&assign.rhs, output, true);
+                self.indent_level -= 2;
+            }
         }
     }
 
@@ -406,8 +498,17 @@ impl PrettyPrinter {
                 self.format_type(element_type, output, true);
                 self.indent_level -= 2;
             }
-            Type::Path(path) => {
+            Type::Path { path, generic_args } => {
                 writeln!(output, "{}Type: Path({})", p, Self::format_path_inline(path)).unwrap();
+                if !generic_args.is_empty() {
+                    self.indent_level += 1;
+                    writeln!(output, "{}generic_args:", self.indent()).unwrap();
+                    self.indent_level += 1;
+                    for (i, arg) in generic_args.iter().enumerate() {
+                        self.format_type(arg, output, i == generic_args.len() - 1);
+                    }
+                    self.indent_level -= 2;
+                }
             }
             Type::Array { element_type, size } => {
                 writeln!(output, "{}Type: Array", p).unwrap();
@@ -422,6 +523,12 @@ impl PrettyPrinter {
                 self.format_type(element_type, output, true);
                 self.indent_level -= 2;
             }
+            Type::Nullable(inner) => {
+                writeln!(output, "{}Type: Nullable (?)", p).unwrap();
+                self.indent_level += 1;
+                self.format_type(inner, output, true);
+                self.indent_level -= 1;
+            }
             Type::ErrorUnion { ok_type, err_type } => {
                 writeln!(output, "{}Type: ErrorUnion (!)", p).unwrap();
                 self.indent_level += 1;
@@ -429,7 +536,29 @@ impl PrettyPrinter {
                 self.indent_level += 1;
                 self.format_type(ok_type, output, true);
                 self.indent_level -= 1;
-                writeln!(output, "{}err_type: {}", self.indent(), Self::format_path_inline(err_type)).unwrap();
+                writeln!(output, "{}err_type:", self.indent()).unwrap();
+                self.indent_level += 1;
+                self.format_type(err_type, output, true);
+                self.indent_level -= 1;
+            }
+            Type::Function { param_types, return_type } => {
+                writeln!(output, "{}Type: Function ({} param(s))", p, param_types.len()).unwrap();
+                self.indent_level += 1;
+                if !param_types.is_empty() {
+                    writeln!(output, "{}params:", self.indent()).unwrap();
+                    self.indent_level += 1;
+                    let last = param_types.len() - 1;
+                    for (i, pt) in param_types.iter().enumerate() {
+                        self.format_type(pt, output, i == last);
+                    }
+                    self.indent_level -= 1;
+                }
+                if let Some(ret) = return_type {
+                    writeln!(output, "{}return_type:", self.indent()).unwrap();
+                    self.indent_level += 1;
+                    self.format_type(ret, output, true);
+                    self.indent_level -= 1;
+                }
                 self.indent_level -= 1;
             }
         }
@@ -478,7 +607,7 @@ impl PrettyPrinter {
 
     fn format_type_alias(&mut self, ta: &TypeAlias, output: &mut String) {
         let vis = Self::format_visibility_inline(&ta.visibility);
-        writeln!(output, "TypeAlias: {}{}", vis, ta.name).unwrap();
+        writeln!(output, "TypeAlias: {}{}", vis, Self::format_path_inline(&ta.name)).unwrap();
         self.indent_level += 1;
         self.format_annotations_section(&ta.annotations, output);
         self.format_generic_params_section(&ta.generic_params, output);
@@ -494,7 +623,7 @@ impl PrettyPrinter {
 
     fn format_enum(&mut self, e: &Enum, output: &mut String) {
         let vis = Self::format_visibility_inline(&e.visibility);
-        writeln!(output, "Enum: {}{}", vis, e.name).unwrap();
+        writeln!(output, "Enum: {}{}", vis, Self::format_path_inline(&e.name)).unwrap();
         self.indent_level += 1;
         self.format_annotations_section(&e.annotations, output);
         if let Some(repr) = &e.representation {
@@ -531,7 +660,7 @@ impl PrettyPrinter {
 
     fn format_union(&mut self, u: &Union, output: &mut String) {
         let vis = Self::format_visibility_inline(&u.visibility);
-        writeln!(output, "Union: {}{}", vis, u.name).unwrap();
+        writeln!(output, "Union: {}{}", vis, Self::format_path_inline(&u.name)).unwrap();
         self.indent_level += 1;
         self.format_annotations_section(&u.annotations, output);
         self.format_generic_params_section(&u.generic_params, output);
@@ -562,7 +691,7 @@ impl PrettyPrinter {
     fn format_struct(&mut self, s: &Struct, output: &mut String) {
         let vis = Self::format_visibility_inline(&s.visibility);
         let packed = if s.is_packed { "packed " } else { "" };
-        writeln!(output, "Struct: {}{}{}", vis, packed, s.name).unwrap();
+        writeln!(output, "Struct: {}{}{}", vis, packed, Self::format_path_inline(&s.name)).unwrap();
         self.indent_level += 1;
         self.format_annotations_section(&s.annotations, output);
         self.format_generic_params_section(&s.generic_params, output);
@@ -615,12 +744,15 @@ impl PrettyPrinter {
         let ext = if sig.is_extern { "extern " } else { "" };
         let eff = if sig.is_effect { "func! " } else { "func " };
         let receiver = sig.receiver.as_ref()
-            .map(|r| format!("{}::", Self::format_path_inline(r)))
+            .map(|segs| format!("{}::", Self::format_receiver_inline(segs)))
             .unwrap_or_default();
         writeln!(output, "FunctionSignature: {}{}{}{}{}", vis, ext, eff, receiver, sig.name).unwrap();
         self.indent_level += 1;
         self.format_annotations_section(&sig.annotations, output);
-        self.format_generic_params_section(&sig.generic_params, output);
+        self.format_generic_params_section(&sig.outer_generic_params, output);
+        if !sig.func_generic_params.is_empty() {
+            self.format_generic_params_section(&sig.func_generic_params, output);
+        }
         if let Some(sp) = &sig.self_param {
             let m = if sp.is_mutable   { "mut " }     else { "" };
             let ptr = if sp.is_pointer { "pointer " } else { "" };
@@ -680,6 +812,12 @@ impl PrettyPrinter {
         match stmt {
             Statement::Pass => {
                 writeln!(output, "{}Pass", p).unwrap();
+            }
+            Statement::Break => {
+                writeln!(output, "{}Break", p).unwrap();
+            }
+            Statement::Continue => {
+                writeln!(output, "{}Continue", p).unwrap();
             }
             Statement::Expression(e) => {
                 writeln!(output, "{}Expression:", p).unwrap();
@@ -856,7 +994,7 @@ impl PrettyPrinter {
 
     fn format_interface(&mut self, iface: &Interface, output: &mut String) {
         let vis = Self::format_visibility_inline(&iface.visibility);
-        writeln!(output, "Interface: {}{}", vis, iface.name).unwrap();
+        writeln!(output, "Interface: {}{}", vis, Self::format_path_inline(&iface.name)).unwrap();
         self.indent_level += 1;
         self.format_annotations_section(&iface.annotations, output);
         self.format_generic_params_section(&iface.generic_params, output);
@@ -865,19 +1003,6 @@ impl PrettyPrinter {
             self.indent_level += 1;
             for (i, t) in iface.extends.iter().enumerate() {
                 self.format_type(t, output, i == iface.extends.len() - 1);
-            }
-            self.indent_level -= 1;
-        }
-        self.format_requires_section(&iface.requires, output);
-        if !iface.methods.is_empty() {
-            writeln!(output, "{}methods:", self.indent()).unwrap();
-            self.indent_level += 1;
-            for (i, m) in iface.methods.iter().enumerate() {
-                let p = self.prefix(i == iface.methods.len() - 1);
-                writeln!(output, "{}Method:", p).unwrap();
-                self.indent_level += 1;
-                self.format_function_signature(m, output);
-                self.indent_level -= 1;
             }
             self.indent_level -= 1;
         }
@@ -1144,7 +1269,6 @@ mod tests {
     fn test_print_path_qualified() {
         let expr = Expression::Path(Path {
             segments: vec!["std".to_string(), "Vec".to_string()],
-            generic_args: vec![],
         });
         assert!(print_expression(&expr).contains("Path: std::Vec"));
     }
@@ -1206,7 +1330,11 @@ mod tests {
     fn test_print_call() {
         let expr = Expression::Call(CallExpr {
             callee: Box::new(Expression::Path(Path::simple("foo".to_string()))),
-            args: vec![int_lit("1"), int_lit("2")],
+            args: vec![
+                CallArgument { name: None, value: int_lit("1") },
+                CallArgument { name: None, value: int_lit("2") },
+            ],
+            generic_args: Some(vec![Type::I32]),
             is_propagating: false,
         });
         let out = print_expression(&expr);
@@ -1220,6 +1348,7 @@ mod tests {
         let expr = Expression::Call(CallExpr {
             callee: Box::new(Expression::Path(Path::simple("try_foo".to_string()))),
             args: vec![],
+            generic_args: None,
             is_propagating: true,
         });
         assert!(print_expression(&expr).contains("Call!"));
@@ -1264,7 +1393,7 @@ mod tests {
     #[test]
     fn test_print_offsetof() {
         let expr = Expression::Offsetof(OffsetofExpr {
-            ty: Box::new(Type::Path(Path::simple("MyStruct".to_string()))),
+            ty: Box::new(Type::Path { path: Path::simple("MyStruct".to_string()), generic_args: vec![] }),
             field: "x".to_string(),
         });
         assert!(print_expression(&expr).contains("Offsetof: .x"));
@@ -1369,7 +1498,7 @@ mod tests {
 
     #[test]
     fn test_print_path_type() {
-        let ty = Type::Path(Path::simple("MyStruct".to_string()));
+        let ty = Type::Path { path: Path::simple("MyStruct".to_string()), generic_args: vec![] };
         let out = PrettyPrinter::new().print_type(&ty);
         assert!(out.contains("Type: Path(MyStruct)"));
     }
@@ -1412,7 +1541,7 @@ mod tests {
     fn test_print_type_param_with_bounds() {
         let p = GenericParameter::Type {
             name: "T".to_string(),
-            bounds: vec![Type::Path(Path::simple("Display".to_string()))],
+            bounds: vec![Type::Path { path: Path::simple("Display".to_string()), generic_args: vec![] }],
             default_type: None,
         };
         let out = PrettyPrinter::new().print_generic_parameter(&p);
@@ -1496,7 +1625,7 @@ mod tests {
         let stmt = Statement::Using(UsingStatement {
             visibility: Visibility::Default,
             annotations: vec![],
-            path: Path { segments: vec!["std".to_string(), "io".to_string()], generic_args: vec![] },
+            path: Path { segments: vec!["std".to_string(), "io".to_string()] },
         });
         let out = PrettyPrinter::new().print_statement(&stmt);
         assert!(out.contains("Using: std::io"));
@@ -1560,12 +1689,12 @@ mod tests {
             visibility: Visibility::Public,
             annotations: vec![],
             is_packed: false,
-            name: "Point".to_string(),
+            name: Path::simple("Point".to_string()),
             generic_params: vec![],
             requires: vec![],
             fields: vec![
-                StructField { name: "x".to_string(), ty: Type::F32 },
-                StructField { name: "y".to_string(), ty: Type::F32 },
+                StructField { name: "x".to_string(), ty: Type::F32, visibility: Visibility::Default, annotations: vec![] },
+                StructField { name: "y".to_string(), ty: Type::F32, visibility: Visibility::Default, annotations: vec![] },
             ],
         };
         let out = print_struct(&s);
@@ -1580,7 +1709,7 @@ mod tests {
             visibility: Visibility::Default,
             annotations: vec![],
             is_packed: true,
-            name: "Header".to_string(),
+            name: Path::simple("Header".to_string()),
             generic_params: vec![],
             requires: vec![],
             fields: vec![],
@@ -1593,7 +1722,7 @@ mod tests {
         let e = Enum {
             visibility: Visibility::Default,
             annotations: vec![],
-            name: "Color".to_string(),
+            name: Path::simple("Color".to_string()),
             representation: None,
             generic_params: vec![],
             requires: vec![],
@@ -1613,7 +1742,7 @@ mod tests {
         let u = Union {
             visibility: Visibility::Default,
             annotations: vec![],
-            name: "Val".to_string(),
+            name: Path::simple("Val".to_string()),
             generic_params: vec![],
             requires: vec![],
             variants: vec![
@@ -1631,10 +1760,9 @@ mod tests {
         let iface = Interface {
             visibility: Visibility::Public,
             annotations: vec![],
-            name: "Display".to_string(),
+            name: Path::simple("Display".to_string()),
             generic_params: vec![],
             extends: vec![],
-            requires: vec![],
             methods: vec![],
         };
         let out = print_interface(&iface);
@@ -1646,7 +1774,7 @@ mod tests {
         let ns = Namespace {
             visibility: Visibility::Default,
             annotations: vec![],
-            name: Path { segments: vec!["mylib".to_string()], generic_args: vec![] },
+            name: Path { segments: vec!["mylib".to_string()] },
             items: vec![],
         };
         let out = print_namespace(&ns);

@@ -11,14 +11,19 @@ items:
             - Path:
                 segments:
                   - C
-                generic_args: []
             - StringLiteral: hello world
       is_packed: true
-      name: CPacked
+      name:
+        segments:
+          - CPacked
       generic_params: []
       requires: []
       fields:
         - name: a
           ty: U8
+          visibility: Default
+          annotations: []
         - name: b
           ty: I32
+          visibility: Default
+          annotations: []

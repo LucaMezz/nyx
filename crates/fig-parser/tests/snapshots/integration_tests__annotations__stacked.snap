@@ -17,11 +17,16 @@ items:
         is_effect: false
         receiver: ~
         name: multi_annotated
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params: []
         return_types:
-          - Ok
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
       body:
         statements:
           - Pass
@@ -35,11 +40,14 @@ items:
             - Path:
                 segments:
                   - C
-                generic_args: []
       is_packed: false
-      name: OldStruct
+      name:
+        segments:
+          - OldStruct
       generic_params: []
       requires: []
       fields:
         - name: x
           ty: I32
+          visibility: Default
+          annotations: []

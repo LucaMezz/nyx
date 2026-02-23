@@ -1,0 +1,78 @@
+---
+source: crates/fig-parser/tests/integration_tests.rs
+expression: ast
+---
+items:
+  - Interface:
+      visibility: Default
+      annotations: []
+      name:
+        segments:
+          - std
+          - io
+          - Read
+      generic_params: []
+      extends: []
+      methods:
+        - visibility: Default
+          annotations: []
+          is_extern: false
+          is_effect: true
+          receiver: ~
+          name: read
+          outer_generic_params: []
+          func_generic_params: []
+          self_param:
+            is_pointer: true
+            is_mutable: true
+          params:
+            - name: buf
+              ty:
+                Pointer:
+                  nullable: false
+                  mutable: true
+                  element_type: U8
+            - name: len
+              ty: USize
+          return_types:
+            - USize
+  - Interface:
+      visibility: Default
+      annotations: []
+      name:
+        segments:
+          - core
+          - fmt
+          - Display
+      generic_params: []
+      extends: []
+      methods:
+        - visibility: Default
+          annotations: []
+          is_extern: false
+          is_effect: false
+          receiver: ~
+          name: fmt
+          outer_generic_params: []
+          func_generic_params: []
+          self_param:
+            is_pointer: true
+            is_mutable: false
+          params:
+            - name: f
+              ty:
+                Pointer:
+                  nullable: false
+                  mutable: true
+                  element_type:
+                    Path:
+                      path:
+                        segments:
+                          - Formatter
+                      generic_args: []
+          return_types:
+            - Path:
+                path:
+                  segments:
+                    - ok
+                generic_args: []

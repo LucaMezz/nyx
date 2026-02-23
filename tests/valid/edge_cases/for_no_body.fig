@@ -1,4 +1,0 @@
-// Edge case: for loop with no body (body-less for)
-// According to grammar, body is optional for for_loop
-func no_body_for(data: [i32]) -> ok
-    for item in data

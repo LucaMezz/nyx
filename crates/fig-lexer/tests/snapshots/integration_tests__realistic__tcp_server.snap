@@ -3,12 +3,12 @@ source: crates/fig-lexer/tests/integration_tests.rs
 expression: tokens
 ---
 - Using
-- Core
+- Ident: core
 - ColonColon
 - Ident: memory
 - Newline
 - Using
-- Std
+- Ident: std
 - ColonColon
 - Ident: io
 - Newline
@@ -82,19 +82,19 @@ expression: tokens
 - Indent
 - Ident: connection_refused
 - Colon
-- OkLiteral
+- Ident: ok
 - Newline
 - Ident: timeout
 - Colon
-- OkLiteral
+- Ident: ok
 - Newline
 - Ident: reset
 - Colon
-- OkLiteral
+- Ident: ok
 - Newline
 - Ident: would_block
 - Colon
-- OkLiteral
+- Ident: ok
 - Newline
 - Ident: invalid_address
 - Colon
@@ -114,7 +114,7 @@ expression: tokens
 - RBracket
 - Newline
 - Indent
-- OkLiteral
+- Ident: ok
 - Colon
 - Ident: T
 - Newline
@@ -360,7 +360,7 @@ expression: tokens
 - Ident: Socket
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
 - Ident: socket
 - RParen
@@ -383,7 +383,7 @@ expression: tokens
 - Arrow
 - Ident: SocketResult
 - LBracket
-- OkLiteral
+- Ident: ok
 - RBracket
 - Newline
 - Indent
@@ -408,7 +408,7 @@ expression: tokens
 - Return
 - Ident: SocketResult
 - LBracket
-- OkLiteral
+- Ident: ok
 - RBracket
 - ColonColon
 - Ident: err
@@ -425,12 +425,12 @@ expression: tokens
 - Return
 - Ident: SocketResult
 - LBracket
-- OkLiteral
+- Ident: ok
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
-- OkLiteral
+- Ident: ok
 - RParen
 - Newline
 - Dedent
@@ -451,7 +451,7 @@ expression: tokens
 - Arrow
 - Ident: SocketResult
 - LBracket
-- OkLiteral
+- Ident: ok
 - RBracket
 - Newline
 - Indent
@@ -478,7 +478,7 @@ expression: tokens
 - Return
 - Ident: SocketResult
 - LBracket
-- OkLiteral
+- Ident: ok
 - RBracket
 - ColonColon
 - Ident: err
@@ -495,12 +495,12 @@ expression: tokens
 - Return
 - Ident: SocketResult
 - LBracket
-- OkLiteral
+- Ident: ok
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
-- OkLiteral
+- Ident: ok
 - RParen
 - Newline
 - Dedent
@@ -602,7 +602,7 @@ expression: tokens
 - Ident: Socket
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
 - Ident: socket
 - RParen
@@ -625,7 +625,7 @@ expression: tokens
 - Arrow
 - Ident: SocketResult
 - LBracket
-- OkLiteral
+- Ident: ok
 - RBracket
 - Newline
 - Indent
@@ -650,7 +650,7 @@ expression: tokens
 - Return
 - Ident: SocketResult
 - LBracket
-- OkLiteral
+- Ident: ok
 - RBracket
 - ColonColon
 - Ident: err
@@ -659,7 +659,7 @@ expression: tokens
 - ColonColon
 - Ident: connection_refused
 - LParen
-- OkLiteral
+- Ident: ok
 - RParen
 - RParen
 - Newline
@@ -667,12 +667,12 @@ expression: tokens
 - Return
 - Ident: SocketResult
 - LBracket
-- OkLiteral
+- Ident: ok
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
-- OkLiteral
+- Ident: ok
 - RParen
 - Newline
 - Dedent
@@ -751,7 +751,7 @@ expression: tokens
 - USize
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
 - Ident: bytes_sent
 - As
@@ -829,7 +829,7 @@ expression: tokens
 - USize
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
 - Ident: bytes_read
 - As
@@ -854,7 +854,7 @@ expression: tokens
 - Arrow
 - Ident: SocketResult
 - LBracket
-- OkLiteral
+- Ident: ok
 - RBracket
 - Newline
 - Indent
@@ -888,19 +888,19 @@ expression: tokens
 - Return
 - Ident: SocketResult
 - LBracket
-- OkLiteral
+- Ident: ok
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
-- OkLiteral
+- Ident: ok
 - RParen
 - Newline
 - Dedent
 - Return
 - Ident: SocketResult
 - LBracket
-- OkLiteral
+- Ident: ok
 - RBracket
 - ColonColon
 - Ident: err
@@ -925,7 +925,7 @@ expression: tokens
 - SelfLower
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - If
@@ -995,7 +995,7 @@ expression: tokens
 - Eq
 - Ident: socket_result
 - Dot
-- OkLiteral
+- Ident: ok
 - Newline
 - Ident: socket
 - Dot
@@ -1047,7 +1047,7 @@ expression: tokens
 - Ident: TcpListener
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
 - Ident: listener
 - RParen
@@ -1086,7 +1086,7 @@ expression: tokens
 - Eq
 - Ident: socket_result
 - Dot
-- OkLiteral
+- Ident: ok
 - Newline
 - Let
 - Ident: peer_addr
@@ -1135,7 +1135,7 @@ expression: tokens
 - Ident: TcpStream
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
 - Ident: stream
 - RParen
@@ -1172,7 +1172,7 @@ expression: tokens
 - Arrow
 - Ident: SocketResult
 - LBracket
-- OkLiteral
+- Ident: ok
 - RBracket
 - Newline
 - Indent
@@ -1229,7 +1229,7 @@ expression: tokens
 - Eq
 - Ident: socket_result
 - Dot
-- OkLiteral
+- Ident: ok
 - Newline
 - Ident: socket
 - Dot
@@ -1278,7 +1278,7 @@ expression: tokens
 - Ident: TcpStream
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
 - Ident: stream
 - RParen
@@ -1405,7 +1405,7 @@ expression: tokens
 - SelfLower
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - SelfLower
@@ -1451,7 +1451,7 @@ expression: tokens
 - Eq
 - Ident: listener_result
 - Dot
-- OkLiteral
+- Ident: ok
 - Newline
 - Let
 - Ident: server
@@ -1489,7 +1489,7 @@ expression: tokens
 - Ident: TcpServer
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
 - Ident: server
 - RParen
@@ -1506,7 +1506,7 @@ expression: tokens
 - SelfLower
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - SelfLower
@@ -1585,7 +1585,7 @@ expression: tokens
 - SelfLower
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - For
@@ -1642,7 +1642,7 @@ expression: tokens
 - Colon
 - Ident: stream_result
 - Dot
-- OkLiteral
+- Ident: ok
 - Comma
 - Newline
 - Ident: buffer
@@ -1694,7 +1694,7 @@ expression: tokens
 - SelfLower
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - Mut
@@ -1767,7 +1767,7 @@ expression: tokens
 - If
 - Ident: bytes_result
 - Dot
-- OkLiteral
+- Ident: ok
 - Gt
 - IntegerLiteral:
     base: Decimal
@@ -1785,7 +1785,7 @@ expression: tokens
 - Plus
 - Ident: bytes_result
 - Dot
-- OkLiteral
+- Ident: ok
 - Newline
 - Ident: conn
 - Dot
@@ -1893,7 +1893,7 @@ expression: tokens
 - Ident: TcpConnection
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - Let
@@ -1928,7 +1928,7 @@ expression: tokens
 - SelfLower
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - SelfLower
@@ -2284,7 +2284,7 @@ expression: tokens
 - I32
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - Pass
@@ -2355,7 +2355,7 @@ expression: tokens
 - U32
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - Pass

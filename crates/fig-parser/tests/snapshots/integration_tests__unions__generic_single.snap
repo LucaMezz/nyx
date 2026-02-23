@@ -6,7 +6,9 @@ items:
   - Union:
       visibility: Default
       annotations: []
-      name: Option
+      name:
+        segments:
+          - Option
       generic_params:
         - Type:
             name: T
@@ -17,8 +19,14 @@ items:
         - name: some
           ty:
             Path:
-              segments:
-                - T
+              path:
+                segments:
+                  - T
               generic_args: []
         - name: none
-          ty: Ok
+          ty:
+            Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []

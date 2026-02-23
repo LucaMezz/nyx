@@ -3,7 +3,7 @@
 // AST snapshots are stored in .snap.yml files using insta
 
 use datatest_stable::Utf8Path;
-use fig_parser::{Lexer, SourceFileParser};
+use fig_parser::{format_parse_error, DiagnosticError, Lexer, SourceFileParser};
 
 fn parser_test(path: &Utf8Path, contents: String) -> datatest_stable::Result<()> {
     let lexer = Lexer::new(&contents);
@@ -15,7 +15,9 @@ fn parser_test(path: &Utf8Path, contents: String) -> datatest_stable::Result<()>
     // Assert that parsing succeeded
     let ast = match result {
         Ok(ast) => ast,
-        Err(e) => return Err(format!("Parse error in {}: {:?}", path, e).into()),
+        Err(e) => {
+            return Err(Box::new(DiagnosticError(format_parse_error(path.as_str(), &contents, &e))))
+        }
     };
 
     // Create snapshot name from the test path

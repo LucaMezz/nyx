@@ -6,7 +6,9 @@ items:
   - Enum:
       visibility: Default
       annotations: []
-      name: Direction
+      name:
+        segments:
+          - Direction
       representation: ~
       generic_params: []
       requires: []

@@ -8,14 +8,14 @@ use crate::{
 };
 
 fn bound_name(ty: &Type) -> &str {
-    if let Type::Path(p) = ty { &p.segments[0] } else { panic!("Expected path type as bound") }
+    if let Type::Path { path: p, .. } = ty { &p.segments[0] } else { panic!("Expected path type as bound") }
 }
 
 #[test]
 fn test_simple_type_alias() {
     let input = "type MyInt = i32";
     let ta = parser::TypeAliasParser::new().parse(Lexer::new(input)).unwrap();
-    assert_eq!(ta.name, "MyInt");
+    assert_eq!(ta.name.segments[0], "MyInt");
     assert_eq!(ta.generic_params.len(), 0);
     assert_eq!(ta.aliased_type, Type::I32);
 }
@@ -24,7 +24,7 @@ fn test_simple_type_alias() {
 fn test_type_alias_with_generic_params() {
     let input = "type MyVec[T] = [T]";
     let ta = parser::TypeAliasParser::new().parse(Lexer::new(input)).unwrap();
-    assert_eq!(ta.name, "MyVec");
+    assert_eq!(ta.name.segments[0], "MyVec");
     assert_eq!(ta.generic_params.len(), 1);
 
     if let GenericParameter::Type { name, bounds, .. } = &ta.generic_params[0] {
@@ -37,7 +37,7 @@ fn test_type_alias_with_generic_params() {
     if let Type::Array { element_type, size } = &ta.aliased_type {
         assert!(size.is_none());
         // element type is T (a path type)
-        assert!(matches!(element_type.as_ref(), Type::Path(_)));
+        assert!(matches!(element_type.as_ref(), Type::Path { .. }));
     } else {
         panic!("Expected slice type");
     }
@@ -47,7 +47,7 @@ fn test_type_alias_with_generic_params() {
 fn test_type_alias_with_bounded_generic() {
     let input = "type MyPtr[T: Copy] = *T";
     let ta = parser::TypeAliasParser::new().parse(Lexer::new(input)).unwrap();
-    assert_eq!(ta.name, "MyPtr");
+    assert_eq!(ta.name.segments[0], "MyPtr");
     assert_eq!(ta.generic_params.len(), 1);
 
     if let GenericParameter::Type { name, bounds, .. } = &ta.generic_params[0] {
@@ -93,7 +93,7 @@ fn test_type_alias_with_where_clause() {
     // where-clause is merged into generic_params
     let input = "type MyResult[T, E]\n    where\n        T: Clone\n        E: Copy\n    = i32";
     let ta = parser::TypeAliasParser::new().parse(Lexer::new(input)).unwrap();
-    assert_eq!(ta.name, "MyResult");
+    assert_eq!(ta.name.segments[0], "MyResult");
     // T and E appear in generic_params with bounds merged in
     assert_eq!(ta.generic_params.len(), 2);
 
@@ -153,7 +153,7 @@ fn test_type_alias_pointer_type() {
     if let Type::Pointer { nullable, mutable, element_type } = ta.aliased_type {
         assert!(!nullable);
         assert!(!mutable);
-        assert!(matches!(*element_type, Type::Path(_)));
+        assert!(matches!(*element_type, Type::Path { .. }));
     } else {
         panic!("Expected pointer type");
     }
@@ -189,8 +189,8 @@ fn test_type_alias_error_union() {
     let ta = parser::TypeAliasParser::new().parse(Lexer::new(input)).unwrap();
     if let Type::ErrorUnion { ok_type, err_type } = ta.aliased_type {
         // ok_type is the path T
-        assert!(matches!(*ok_type, Type::Path(_)));
-        assert_eq!(err_type.segments[0], "IoError");
+        assert!(matches!(*ok_type, Type::Path { .. }));
+        if let Type::Path { path, .. } = *err_type { assert_eq!(path.segments[0], "IoError"); } else { panic!("Expected Path type for err_type"); }
     } else {
         panic!("Expected ErrorUnion type");
     }

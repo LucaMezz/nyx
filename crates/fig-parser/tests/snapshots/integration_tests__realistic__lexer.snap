@@ -1,0 +1,4342 @@
+---
+source: crates/fig-parser/tests/integration_tests.rs
+expression: ast
+---
+items:
+  - Using:
+      visibility: Default
+      annotations: []
+      path:
+        segments:
+          - core
+          - memory
+  - Enum:
+      visibility: Default
+      annotations: []
+      name:
+        segments:
+          - TokenType
+      representation: ~
+      generic_params: []
+      requires: []
+      variants:
+        - name: EOF
+          value: ~
+        - name: IDENTIFIER
+          value: ~
+        - name: INTEGER
+          value: ~
+        - name: FLOAT
+          value: ~
+        - name: STRING
+          value: ~
+        - name: CHAR
+          value: ~
+        - name: "TRUE"
+          value: ~
+        - name: "FALSE"
+          value: ~
+        - name: IF
+          value: ~
+        - name: ELIF
+          value: ~
+        - name: ELSE
+          value: ~
+        - name: FOR
+          value: ~
+        - name: WHILE
+          value: ~
+        - name: BREAK
+          value: ~
+        - name: CONTINUE
+          value: ~
+        - name: RETURN
+          value: ~
+        - name: FUNC
+          value: ~
+        - name: STRUCT
+          value: ~
+        - name: ENUM
+          value: ~
+        - name: UNION
+          value: ~
+        - name: INTERFACE
+          value: ~
+        - name: LET
+          value: ~
+        - name: MUT
+          value: ~
+        - name: CONST
+          value: ~
+        - name: USING
+          value: ~
+        - name: EXPORT
+          value: ~
+        - name: PUBLIC
+          value: ~
+        - name: PRIVATE
+          value: ~
+        - name: LPAREN
+          value: ~
+        - name: RPAREN
+          value: ~
+        - name: LBRACE
+          value: ~
+        - name: RBRACE
+          value: ~
+        - name: LBRACKET
+          value: ~
+        - name: RBRACKET
+          value: ~
+        - name: COMMA
+          value: ~
+        - name: SEMICOLON
+          value: ~
+        - name: COLON
+          value: ~
+        - name: DOT
+          value: ~
+        - name: ARROW
+          value: ~
+        - name: PLUS
+          value: ~
+        - name: MINUS
+          value: ~
+        - name: STAR
+          value: ~
+        - name: SLASH
+          value: ~
+        - name: PERCENT
+          value: ~
+        - name: AMPERSAND
+          value: ~
+        - name: PIPE
+          value: ~
+        - name: CARET
+          value: ~
+        - name: TILDE
+          value: ~
+        - name: BANG
+          value: ~
+        - name: EQ
+          value: ~
+        - name: NE
+          value: ~
+        - name: LT
+          value: ~
+        - name: LE
+          value: ~
+        - name: GT
+          value: ~
+        - name: GE
+          value: ~
+        - name: AND
+          value: ~
+        - name: OR
+          value: ~
+        - name: ASSIGN
+          value: ~
+        - name: PLUS_ASSIGN
+          value: ~
+        - name: MINUS_ASSIGN
+          value: ~
+        - name: STAR_ASSIGN
+          value: ~
+        - name: SLASH_ASSIGN
+          value: ~
+  - Struct:
+      visibility: Export
+      annotations: []
+      is_packed: false
+      name:
+        segments:
+          - Token
+      generic_params: []
+      requires: []
+      fields:
+        - name: typ
+          ty:
+            Path:
+              path:
+                segments:
+                  - TokenType
+              generic_args: []
+          visibility: Default
+          annotations: []
+        - name: lexeme
+          ty:
+            Array:
+              element_type: U8
+              size: ~
+          visibility: Default
+          annotations: []
+        - name: line
+          ty: USize
+          visibility: Default
+          annotations: []
+        - name: column
+          ty: USize
+          visibility: Default
+          annotations: []
+        - name: offset
+          ty: USize
+          visibility: Default
+          annotations: []
+  - Struct:
+      visibility: Export
+      annotations: []
+      is_packed: false
+      name:
+        segments:
+          - Lexer
+      generic_params: []
+      requires: []
+      fields:
+        - name: source
+          ty:
+            Array:
+              element_type: U8
+              size: ~
+          visibility: Default
+          annotations: []
+        - name: position
+          ty: USize
+          visibility: Default
+          annotations: []
+        - name: line
+          ty: USize
+          visibility: Default
+          annotations: []
+        - name: column
+          ty: USize
+          visibility: Default
+          annotations: []
+        - name: token_start
+          ty: USize
+          visibility: Default
+          annotations: []
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: Lexer
+            generic_args: []
+        name: new
+        outer_generic_params: []
+        func_generic_params: []
+        self_param: ~
+        params:
+          - name: source
+            ty:
+              Array:
+                element_type: U8
+                size: ~
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - Lexer
+              generic_args: []
+      body:
+        statements:
+          - Return:
+              Call:
+                callee:
+                  Path:
+                    segments:
+                      - Lexer
+                args:
+                  - name: source
+                    value:
+                      Path:
+                        segments:
+                          - source
+                  - name: position
+                    value:
+                      IntegerLiteral:
+                        base: Decimal
+                        digits: "0"
+                        suffix: ~
+                  - name: line
+                    value:
+                      IntegerLiteral:
+                        base: Decimal
+                        digits: "1"
+                        suffix: ~
+                  - name: column
+                    value:
+                      IntegerLiteral:
+                        base: Decimal
+                        digits: "1"
+                        suffix: ~
+                  - name: token_start
+                    value:
+                      IntegerLiteral:
+                        base: Decimal
+                        digits: "0"
+                        suffix: ~
+                generic_args: ~
+                is_propagating: false
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: Lexer
+            generic_args: []
+        name: next_token
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params: []
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - Token
+              generic_args: []
+      body:
+        statements:
+          - Expression:
+              Call:
+                callee:
+                  FieldAccess:
+                    object: SelfValue
+                    field: skip_whitespace
+                    is_propagating: false
+                args: []
+                generic_args: ~
+                is_propagating: false
+          - If:
+              condition:
+                Call:
+                  callee:
+                    FieldAccess:
+                      object: SelfValue
+                      field: is_eof
+                      is_propagating: false
+                  args: []
+                  generic_args: ~
+                  is_propagating: false
+              then_body:
+                statements:
+                  - Return:
+                      Call:
+                        callee:
+                          FieldAccess:
+                            object: SelfValue
+                            field: make_token
+                            is_propagating: false
+                        args:
+                          - name: ~
+                            value:
+                              TypeAccess:
+                                object:
+                                  Path:
+                                    segments:
+                                      - TokenType
+                                member: EOF
+                        generic_args: ~
+                        is_propagating: false
+              elif_clauses: []
+              else_body: ~
+          - Expression:
+              Assign:
+                lhs:
+                  FieldAccess:
+                    object: SelfValue
+                    field: token_start
+                    is_propagating: false
+                op: Assign
+                rhs:
+                  FieldAccess:
+                    object: SelfValue
+                    field: position
+                    is_propagating: false
+          - Let:
+              annotations: []
+              name: ch
+              ty: ~
+              value:
+                Call:
+                  callee:
+                    FieldAccess:
+                      object: SelfValue
+                      field: advance
+                      is_propagating: false
+                  args: []
+                  generic_args: ~
+                  is_propagating: false
+          - If:
+              condition:
+                Call:
+                  callee:
+                    Path:
+                      segments:
+                        - is_alpha
+                  args:
+                    - name: ~
+                      value:
+                        Path:
+                          segments:
+                            - ch
+                  generic_args: ~
+                  is_propagating: false
+              then_body:
+                statements:
+                  - Return:
+                      Call:
+                        callee:
+                          FieldAccess:
+                            object: SelfValue
+                            field: identifier
+                            is_propagating: false
+                        args: []
+                        generic_args: ~
+                        is_propagating: false
+              elif_clauses: []
+              else_body: ~
+          - If:
+              condition:
+                Call:
+                  callee:
+                    Path:
+                      segments:
+                        - is_digit
+                  args:
+                    - name: ~
+                      value:
+                        Path:
+                          segments:
+                            - ch
+                  generic_args: ~
+                  is_propagating: false
+              then_body:
+                statements:
+                  - Return:
+                      Call:
+                        callee:
+                          FieldAccess:
+                            object: SelfValue
+                            field: number
+                            is_propagating: false
+                        args: []
+                        generic_args: ~
+                        is_propagating: false
+              elif_clauses: []
+              else_body: ~
+          - If:
+              condition:
+                BinaryOp:
+                  lhs:
+                    Path:
+                      segments:
+                        - ch
+                  op: Equal
+                  rhs:
+                    IntegerLiteral:
+                      base: Decimal
+                      digits: "34"
+                      suffix: ~
+              then_body:
+                statements:
+                  - Return:
+                      Call:
+                        callee:
+                          FieldAccess:
+                            object: SelfValue
+                            field: string_literal
+                            is_propagating: false
+                        args: []
+                        generic_args: ~
+                        is_propagating: false
+              elif_clauses: []
+              else_body: ~
+          - If:
+              condition:
+                BinaryOp:
+                  lhs:
+                    Path:
+                      segments:
+                        - ch
+                  op: Equal
+                  rhs:
+                    IntegerLiteral:
+                      base: Decimal
+                      digits: "39"
+                      suffix: ~
+              then_body:
+                statements:
+                  - Return:
+                      Call:
+                        callee:
+                          FieldAccess:
+                            object: SelfValue
+                            field: char_literal
+                            is_propagating: false
+                        args: []
+                        generic_args: ~
+                        is_propagating: false
+              elif_clauses: []
+              else_body: ~
+          - If:
+              condition:
+                BinaryOp:
+                  lhs:
+                    Path:
+                      segments:
+                        - ch
+                  op: Equal
+                  rhs:
+                    IntegerLiteral:
+                      base: Decimal
+                      digits: "40"
+                      suffix: ~
+              then_body:
+                statements:
+                  - Return:
+                      Call:
+                        callee:
+                          FieldAccess:
+                            object: SelfValue
+                            field: make_token
+                            is_propagating: false
+                        args:
+                          - name: ~
+                            value:
+                              TypeAccess:
+                                object:
+                                  Path:
+                                    segments:
+                                      - TokenType
+                                member: LPAREN
+                        generic_args: ~
+                        is_propagating: false
+              elif_clauses: []
+              else_body: ~
+          - If:
+              condition:
+                BinaryOp:
+                  lhs:
+                    Path:
+                      segments:
+                        - ch
+                  op: Equal
+                  rhs:
+                    IntegerLiteral:
+                      base: Decimal
+                      digits: "41"
+                      suffix: ~
+              then_body:
+                statements:
+                  - Return:
+                      Call:
+                        callee:
+                          FieldAccess:
+                            object: SelfValue
+                            field: make_token
+                            is_propagating: false
+                        args:
+                          - name: ~
+                            value:
+                              TypeAccess:
+                                object:
+                                  Path:
+                                    segments:
+                                      - TokenType
+                                member: RPAREN
+                        generic_args: ~
+                        is_propagating: false
+              elif_clauses: []
+              else_body: ~
+          - If:
+              condition:
+                BinaryOp:
+                  lhs:
+                    Path:
+                      segments:
+                        - ch
+                  op: Equal
+                  rhs:
+                    IntegerLiteral:
+                      base: Decimal
+                      digits: "123"
+                      suffix: ~
+              then_body:
+                statements:
+                  - Return:
+                      Call:
+                        callee:
+                          FieldAccess:
+                            object: SelfValue
+                            field: make_token
+                            is_propagating: false
+                        args:
+                          - name: ~
+                            value:
+                              TypeAccess:
+                                object:
+                                  Path:
+                                    segments:
+                                      - TokenType
+                                member: LBRACE
+                        generic_args: ~
+                        is_propagating: false
+              elif_clauses: []
+              else_body: ~
+          - If:
+              condition:
+                BinaryOp:
+                  lhs:
+                    Path:
+                      segments:
+                        - ch
+                  op: Equal
+                  rhs:
+                    IntegerLiteral:
+                      base: Decimal
+                      digits: "125"
+                      suffix: ~
+              then_body:
+                statements:
+                  - Return:
+                      Call:
+                        callee:
+                          FieldAccess:
+                            object: SelfValue
+                            field: make_token
+                            is_propagating: false
+                        args:
+                          - name: ~
+                            value:
+                              TypeAccess:
+                                object:
+                                  Path:
+                                    segments:
+                                      - TokenType
+                                member: RBRACE
+                        generic_args: ~
+                        is_propagating: false
+              elif_clauses: []
+              else_body: ~
+          - If:
+              condition:
+                BinaryOp:
+                  lhs:
+                    Path:
+                      segments:
+                        - ch
+                  op: Equal
+                  rhs:
+                    IntegerLiteral:
+                      base: Decimal
+                      digits: "91"
+                      suffix: ~
+              then_body:
+                statements:
+                  - Return:
+                      Call:
+                        callee:
+                          FieldAccess:
+                            object: SelfValue
+                            field: make_token
+                            is_propagating: false
+                        args:
+                          - name: ~
+                            value:
+                              TypeAccess:
+                                object:
+                                  Path:
+                                    segments:
+                                      - TokenType
+                                member: LBRACKET
+                        generic_args: ~
+                        is_propagating: false
+              elif_clauses: []
+              else_body: ~
+          - If:
+              condition:
+                BinaryOp:
+                  lhs:
+                    Path:
+                      segments:
+                        - ch
+                  op: Equal
+                  rhs:
+                    IntegerLiteral:
+                      base: Decimal
+                      digits: "93"
+                      suffix: ~
+              then_body:
+                statements:
+                  - Return:
+                      Call:
+                        callee:
+                          FieldAccess:
+                            object: SelfValue
+                            field: make_token
+                            is_propagating: false
+                        args:
+                          - name: ~
+                            value:
+                              TypeAccess:
+                                object:
+                                  Path:
+                                    segments:
+                                      - TokenType
+                                member: RBRACKET
+                        generic_args: ~
+                        is_propagating: false
+              elif_clauses: []
+              else_body: ~
+          - If:
+              condition:
+                BinaryOp:
+                  lhs:
+                    Path:
+                      segments:
+                        - ch
+                  op: Equal
+                  rhs:
+                    IntegerLiteral:
+                      base: Decimal
+                      digits: "44"
+                      suffix: ~
+              then_body:
+                statements:
+                  - Return:
+                      Call:
+                        callee:
+                          FieldAccess:
+                            object: SelfValue
+                            field: make_token
+                            is_propagating: false
+                        args:
+                          - name: ~
+                            value:
+                              TypeAccess:
+                                object:
+                                  Path:
+                                    segments:
+                                      - TokenType
+                                member: COMMA
+                        generic_args: ~
+                        is_propagating: false
+              elif_clauses: []
+              else_body: ~
+          - If:
+              condition:
+                BinaryOp:
+                  lhs:
+                    Path:
+                      segments:
+                        - ch
+                  op: Equal
+                  rhs:
+                    IntegerLiteral:
+                      base: Decimal
+                      digits: "59"
+                      suffix: ~
+              then_body:
+                statements:
+                  - Return:
+                      Call:
+                        callee:
+                          FieldAccess:
+                            object: SelfValue
+                            field: make_token
+                            is_propagating: false
+                        args:
+                          - name: ~
+                            value:
+                              TypeAccess:
+                                object:
+                                  Path:
+                                    segments:
+                                      - TokenType
+                                member: SEMICOLON
+                        generic_args: ~
+                        is_propagating: false
+              elif_clauses: []
+              else_body: ~
+          - If:
+              condition:
+                BinaryOp:
+                  lhs:
+                    Path:
+                      segments:
+                        - ch
+                  op: Equal
+                  rhs:
+                    IntegerLiteral:
+                      base: Decimal
+                      digits: "58"
+                      suffix: ~
+              then_body:
+                statements:
+                  - Return:
+                      Call:
+                        callee:
+                          FieldAccess:
+                            object: SelfValue
+                            field: make_token
+                            is_propagating: false
+                        args:
+                          - name: ~
+                            value:
+                              TypeAccess:
+                                object:
+                                  Path:
+                                    segments:
+                                      - TokenType
+                                member: COLON
+                        generic_args: ~
+                        is_propagating: false
+              elif_clauses: []
+              else_body: ~
+          - If:
+              condition:
+                BinaryOp:
+                  lhs:
+                    Path:
+                      segments:
+                        - ch
+                  op: Equal
+                  rhs:
+                    IntegerLiteral:
+                      base: Decimal
+                      digits: "46"
+                      suffix: ~
+              then_body:
+                statements:
+                  - Return:
+                      Call:
+                        callee:
+                          FieldAccess:
+                            object: SelfValue
+                            field: make_token
+                            is_propagating: false
+                        args:
+                          - name: ~
+                            value:
+                              TypeAccess:
+                                object:
+                                  Path:
+                                    segments:
+                                      - TokenType
+                                member: DOT
+                        generic_args: ~
+                        is_propagating: false
+              elif_clauses: []
+              else_body: ~
+          - If:
+              condition:
+                BinaryOp:
+                  lhs:
+                    Path:
+                      segments:
+                        - ch
+                  op: Equal
+                  rhs:
+                    IntegerLiteral:
+                      base: Decimal
+                      digits: "43"
+                      suffix: ~
+              then_body:
+                statements:
+                  - If:
+                      condition:
+                        Call:
+                          callee:
+                            FieldAccess:
+                              object: SelfValue
+                              field: match_char
+                              is_propagating: false
+                          args:
+                            - name: ~
+                              value:
+                                IntegerLiteral:
+                                  base: Decimal
+                                  digits: "61"
+                                  suffix: ~
+                          generic_args: ~
+                          is_propagating: false
+                      then_body:
+                        statements:
+                          - Return:
+                              Call:
+                                callee:
+                                  FieldAccess:
+                                    object: SelfValue
+                                    field: make_token
+                                    is_propagating: false
+                                args:
+                                  - name: ~
+                                    value:
+                                      TypeAccess:
+                                        object:
+                                          Path:
+                                            segments:
+                                              - TokenType
+                                        member: PLUS_ASSIGN
+                                generic_args: ~
+                                is_propagating: false
+                      elif_clauses: []
+                      else_body: ~
+                  - Return:
+                      Call:
+                        callee:
+                          FieldAccess:
+                            object: SelfValue
+                            field: make_token
+                            is_propagating: false
+                        args:
+                          - name: ~
+                            value:
+                              TypeAccess:
+                                object:
+                                  Path:
+                                    segments:
+                                      - TokenType
+                                member: PLUS
+                        generic_args: ~
+                        is_propagating: false
+              elif_clauses: []
+              else_body: ~
+          - If:
+              condition:
+                BinaryOp:
+                  lhs:
+                    Path:
+                      segments:
+                        - ch
+                  op: Equal
+                  rhs:
+                    IntegerLiteral:
+                      base: Decimal
+                      digits: "45"
+                      suffix: ~
+              then_body:
+                statements:
+                  - If:
+                      condition:
+                        Call:
+                          callee:
+                            FieldAccess:
+                              object: SelfValue
+                              field: match_char
+                              is_propagating: false
+                          args:
+                            - name: ~
+                              value:
+                                IntegerLiteral:
+                                  base: Decimal
+                                  digits: "62"
+                                  suffix: ~
+                          generic_args: ~
+                          is_propagating: false
+                      then_body:
+                        statements:
+                          - Return:
+                              Call:
+                                callee:
+                                  FieldAccess:
+                                    object: SelfValue
+                                    field: make_token
+                                    is_propagating: false
+                                args:
+                                  - name: ~
+                                    value:
+                                      TypeAccess:
+                                        object:
+                                          Path:
+                                            segments:
+                                              - TokenType
+                                        member: ARROW
+                                generic_args: ~
+                                is_propagating: false
+                      elif_clauses: []
+                      else_body: ~
+                  - If:
+                      condition:
+                        Call:
+                          callee:
+                            FieldAccess:
+                              object: SelfValue
+                              field: match_char
+                              is_propagating: false
+                          args:
+                            - name: ~
+                              value:
+                                IntegerLiteral:
+                                  base: Decimal
+                                  digits: "61"
+                                  suffix: ~
+                          generic_args: ~
+                          is_propagating: false
+                      then_body:
+                        statements:
+                          - Return:
+                              Call:
+                                callee:
+                                  FieldAccess:
+                                    object: SelfValue
+                                    field: make_token
+                                    is_propagating: false
+                                args:
+                                  - name: ~
+                                    value:
+                                      TypeAccess:
+                                        object:
+                                          Path:
+                                            segments:
+                                              - TokenType
+                                        member: MINUS_ASSIGN
+                                generic_args: ~
+                                is_propagating: false
+                      elif_clauses: []
+                      else_body: ~
+                  - Return:
+                      Call:
+                        callee:
+                          FieldAccess:
+                            object: SelfValue
+                            field: make_token
+                            is_propagating: false
+                        args:
+                          - name: ~
+                            value:
+                              TypeAccess:
+                                object:
+                                  Path:
+                                    segments:
+                                      - TokenType
+                                member: MINUS
+                        generic_args: ~
+                        is_propagating: false
+              elif_clauses: []
+              else_body: ~
+          - If:
+              condition:
+                BinaryOp:
+                  lhs:
+                    Path:
+                      segments:
+                        - ch
+                  op: Equal
+                  rhs:
+                    IntegerLiteral:
+                      base: Decimal
+                      digits: "42"
+                      suffix: ~
+              then_body:
+                statements:
+                  - If:
+                      condition:
+                        Call:
+                          callee:
+                            FieldAccess:
+                              object: SelfValue
+                              field: match_char
+                              is_propagating: false
+                          args:
+                            - name: ~
+                              value:
+                                IntegerLiteral:
+                                  base: Decimal
+                                  digits: "61"
+                                  suffix: ~
+                          generic_args: ~
+                          is_propagating: false
+                      then_body:
+                        statements:
+                          - Return:
+                              Call:
+                                callee:
+                                  FieldAccess:
+                                    object: SelfValue
+                                    field: make_token
+                                    is_propagating: false
+                                args:
+                                  - name: ~
+                                    value:
+                                      TypeAccess:
+                                        object:
+                                          Path:
+                                            segments:
+                                              - TokenType
+                                        member: STAR_ASSIGN
+                                generic_args: ~
+                                is_propagating: false
+                      elif_clauses: []
+                      else_body: ~
+                  - Return:
+                      Call:
+                        callee:
+                          FieldAccess:
+                            object: SelfValue
+                            field: make_token
+                            is_propagating: false
+                        args:
+                          - name: ~
+                            value:
+                              TypeAccess:
+                                object:
+                                  Path:
+                                    segments:
+                                      - TokenType
+                                member: STAR
+                        generic_args: ~
+                        is_propagating: false
+              elif_clauses: []
+              else_body: ~
+          - If:
+              condition:
+                BinaryOp:
+                  lhs:
+                    Path:
+                      segments:
+                        - ch
+                  op: Equal
+                  rhs:
+                    IntegerLiteral:
+                      base: Decimal
+                      digits: "47"
+                      suffix: ~
+              then_body:
+                statements:
+                  - If:
+                      condition:
+                        Call:
+                          callee:
+                            FieldAccess:
+                              object: SelfValue
+                              field: match_char
+                              is_propagating: false
+                          args:
+                            - name: ~
+                              value:
+                                IntegerLiteral:
+                                  base: Decimal
+                                  digits: "47"
+                                  suffix: ~
+                          generic_args: ~
+                          is_propagating: false
+                      then_body:
+                        statements:
+                          - Expression:
+                              Call:
+                                callee:
+                                  FieldAccess:
+                                    object: SelfValue
+                                    field: skip_line_comment
+                                    is_propagating: false
+                                args: []
+                                generic_args: ~
+                                is_propagating: false
+                          - Return:
+                              Call:
+                                callee:
+                                  FieldAccess:
+                                    object: SelfValue
+                                    field: next_token
+                                    is_propagating: false
+                                args: []
+                                generic_args: ~
+                                is_propagating: false
+                      elif_clauses: []
+                      else_body: ~
+                  - If:
+                      condition:
+                        Call:
+                          callee:
+                            FieldAccess:
+                              object: SelfValue
+                              field: match_char
+                              is_propagating: false
+                          args:
+                            - name: ~
+                              value:
+                                IntegerLiteral:
+                                  base: Decimal
+                                  digits: "61"
+                                  suffix: ~
+                          generic_args: ~
+                          is_propagating: false
+                      then_body:
+                        statements:
+                          - Return:
+                              Call:
+                                callee:
+                                  FieldAccess:
+                                    object: SelfValue
+                                    field: make_token
+                                    is_propagating: false
+                                args:
+                                  - name: ~
+                                    value:
+                                      TypeAccess:
+                                        object:
+                                          Path:
+                                            segments:
+                                              - TokenType
+                                        member: SLASH_ASSIGN
+                                generic_args: ~
+                                is_propagating: false
+                      elif_clauses: []
+                      else_body: ~
+                  - Return:
+                      Call:
+                        callee:
+                          FieldAccess:
+                            object: SelfValue
+                            field: make_token
+                            is_propagating: false
+                        args:
+                          - name: ~
+                            value:
+                              TypeAccess:
+                                object:
+                                  Path:
+                                    segments:
+                                      - TokenType
+                                member: SLASH
+                        generic_args: ~
+                        is_propagating: false
+              elif_clauses: []
+              else_body: ~
+          - If:
+              condition:
+                BinaryOp:
+                  lhs:
+                    Path:
+                      segments:
+                        - ch
+                  op: Equal
+                  rhs:
+                    IntegerLiteral:
+                      base: Decimal
+                      digits: "37"
+                      suffix: ~
+              then_body:
+                statements:
+                  - Return:
+                      Call:
+                        callee:
+                          FieldAccess:
+                            object: SelfValue
+                            field: make_token
+                            is_propagating: false
+                        args:
+                          - name: ~
+                            value:
+                              TypeAccess:
+                                object:
+                                  Path:
+                                    segments:
+                                      - TokenType
+                                member: PERCENT
+                        generic_args: ~
+                        is_propagating: false
+              elif_clauses: []
+              else_body: ~
+          - If:
+              condition:
+                BinaryOp:
+                  lhs:
+                    Path:
+                      segments:
+                        - ch
+                  op: Equal
+                  rhs:
+                    IntegerLiteral:
+                      base: Decimal
+                      digits: "38"
+                      suffix: ~
+              then_body:
+                statements:
+                  - If:
+                      condition:
+                        Call:
+                          callee:
+                            FieldAccess:
+                              object: SelfValue
+                              field: match_char
+                              is_propagating: false
+                          args:
+                            - name: ~
+                              value:
+                                IntegerLiteral:
+                                  base: Decimal
+                                  digits: "38"
+                                  suffix: ~
+                          generic_args: ~
+                          is_propagating: false
+                      then_body:
+                        statements:
+                          - Return:
+                              Call:
+                                callee:
+                                  FieldAccess:
+                                    object: SelfValue
+                                    field: make_token
+                                    is_propagating: false
+                                args:
+                                  - name: ~
+                                    value:
+                                      TypeAccess:
+                                        object:
+                                          Path:
+                                            segments:
+                                              - TokenType
+                                        member: AND
+                                generic_args: ~
+                                is_propagating: false
+                      elif_clauses: []
+                      else_body: ~
+                  - Return:
+                      Call:
+                        callee:
+                          FieldAccess:
+                            object: SelfValue
+                            field: make_token
+                            is_propagating: false
+                        args:
+                          - name: ~
+                            value:
+                              TypeAccess:
+                                object:
+                                  Path:
+                                    segments:
+                                      - TokenType
+                                member: AMPERSAND
+                        generic_args: ~
+                        is_propagating: false
+              elif_clauses: []
+              else_body: ~
+          - If:
+              condition:
+                BinaryOp:
+                  lhs:
+                    Path:
+                      segments:
+                        - ch
+                  op: Equal
+                  rhs:
+                    IntegerLiteral:
+                      base: Decimal
+                      digits: "124"
+                      suffix: ~
+              then_body:
+                statements:
+                  - If:
+                      condition:
+                        Call:
+                          callee:
+                            FieldAccess:
+                              object: SelfValue
+                              field: match_char
+                              is_propagating: false
+                          args:
+                            - name: ~
+                              value:
+                                IntegerLiteral:
+                                  base: Decimal
+                                  digits: "124"
+                                  suffix: ~
+                          generic_args: ~
+                          is_propagating: false
+                      then_body:
+                        statements:
+                          - Return:
+                              Call:
+                                callee:
+                                  FieldAccess:
+                                    object: SelfValue
+                                    field: make_token
+                                    is_propagating: false
+                                args:
+                                  - name: ~
+                                    value:
+                                      TypeAccess:
+                                        object:
+                                          Path:
+                                            segments:
+                                              - TokenType
+                                        member: OR
+                                generic_args: ~
+                                is_propagating: false
+                      elif_clauses: []
+                      else_body: ~
+                  - Return:
+                      Call:
+                        callee:
+                          FieldAccess:
+                            object: SelfValue
+                            field: make_token
+                            is_propagating: false
+                        args:
+                          - name: ~
+                            value:
+                              TypeAccess:
+                                object:
+                                  Path:
+                                    segments:
+                                      - TokenType
+                                member: PIPE
+                        generic_args: ~
+                        is_propagating: false
+              elif_clauses: []
+              else_body: ~
+          - If:
+              condition:
+                BinaryOp:
+                  lhs:
+                    Path:
+                      segments:
+                        - ch
+                  op: Equal
+                  rhs:
+                    IntegerLiteral:
+                      base: Decimal
+                      digits: "94"
+                      suffix: ~
+              then_body:
+                statements:
+                  - Return:
+                      Call:
+                        callee:
+                          FieldAccess:
+                            object: SelfValue
+                            field: make_token
+                            is_propagating: false
+                        args:
+                          - name: ~
+                            value:
+                              TypeAccess:
+                                object:
+                                  Path:
+                                    segments:
+                                      - TokenType
+                                member: CARET
+                        generic_args: ~
+                        is_propagating: false
+              elif_clauses: []
+              else_body: ~
+          - If:
+              condition:
+                BinaryOp:
+                  lhs:
+                    Path:
+                      segments:
+                        - ch
+                  op: Equal
+                  rhs:
+                    IntegerLiteral:
+                      base: Decimal
+                      digits: "126"
+                      suffix: ~
+              then_body:
+                statements:
+                  - Return:
+                      Call:
+                        callee:
+                          FieldAccess:
+                            object: SelfValue
+                            field: make_token
+                            is_propagating: false
+                        args:
+                          - name: ~
+                            value:
+                              TypeAccess:
+                                object:
+                                  Path:
+                                    segments:
+                                      - TokenType
+                                member: TILDE
+                        generic_args: ~
+                        is_propagating: false
+              elif_clauses: []
+              else_body: ~
+          - If:
+              condition:
+                BinaryOp:
+                  lhs:
+                    Path:
+                      segments:
+                        - ch
+                  op: Equal
+                  rhs:
+                    IntegerLiteral:
+                      base: Decimal
+                      digits: "33"
+                      suffix: ~
+              then_body:
+                statements:
+                  - If:
+                      condition:
+                        Call:
+                          callee:
+                            FieldAccess:
+                              object: SelfValue
+                              field: match_char
+                              is_propagating: false
+                          args:
+                            - name: ~
+                              value:
+                                IntegerLiteral:
+                                  base: Decimal
+                                  digits: "61"
+                                  suffix: ~
+                          generic_args: ~
+                          is_propagating: false
+                      then_body:
+                        statements:
+                          - Return:
+                              Call:
+                                callee:
+                                  FieldAccess:
+                                    object: SelfValue
+                                    field: make_token
+                                    is_propagating: false
+                                args:
+                                  - name: ~
+                                    value:
+                                      TypeAccess:
+                                        object:
+                                          Path:
+                                            segments:
+                                              - TokenType
+                                        member: NE
+                                generic_args: ~
+                                is_propagating: false
+                      elif_clauses: []
+                      else_body: ~
+                  - Return:
+                      Call:
+                        callee:
+                          FieldAccess:
+                            object: SelfValue
+                            field: make_token
+                            is_propagating: false
+                        args:
+                          - name: ~
+                            value:
+                              TypeAccess:
+                                object:
+                                  Path:
+                                    segments:
+                                      - TokenType
+                                member: BANG
+                        generic_args: ~
+                        is_propagating: false
+              elif_clauses: []
+              else_body: ~
+          - If:
+              condition:
+                BinaryOp:
+                  lhs:
+                    Path:
+                      segments:
+                        - ch
+                  op: Equal
+                  rhs:
+                    IntegerLiteral:
+                      base: Decimal
+                      digits: "61"
+                      suffix: ~
+              then_body:
+                statements:
+                  - If:
+                      condition:
+                        Call:
+                          callee:
+                            FieldAccess:
+                              object: SelfValue
+                              field: match_char
+                              is_propagating: false
+                          args:
+                            - name: ~
+                              value:
+                                IntegerLiteral:
+                                  base: Decimal
+                                  digits: "61"
+                                  suffix: ~
+                          generic_args: ~
+                          is_propagating: false
+                      then_body:
+                        statements:
+                          - Return:
+                              Call:
+                                callee:
+                                  FieldAccess:
+                                    object: SelfValue
+                                    field: make_token
+                                    is_propagating: false
+                                args:
+                                  - name: ~
+                                    value:
+                                      TypeAccess:
+                                        object:
+                                          Path:
+                                            segments:
+                                              - TokenType
+                                        member: EQ
+                                generic_args: ~
+                                is_propagating: false
+                      elif_clauses: []
+                      else_body: ~
+                  - Return:
+                      Call:
+                        callee:
+                          FieldAccess:
+                            object: SelfValue
+                            field: make_token
+                            is_propagating: false
+                        args:
+                          - name: ~
+                            value:
+                              TypeAccess:
+                                object:
+                                  Path:
+                                    segments:
+                                      - TokenType
+                                member: ASSIGN
+                        generic_args: ~
+                        is_propagating: false
+              elif_clauses: []
+              else_body: ~
+          - If:
+              condition:
+                BinaryOp:
+                  lhs:
+                    Path:
+                      segments:
+                        - ch
+                  op: Equal
+                  rhs:
+                    IntegerLiteral:
+                      base: Decimal
+                      digits: "60"
+                      suffix: ~
+              then_body:
+                statements:
+                  - If:
+                      condition:
+                        Call:
+                          callee:
+                            FieldAccess:
+                              object: SelfValue
+                              field: match_char
+                              is_propagating: false
+                          args:
+                            - name: ~
+                              value:
+                                IntegerLiteral:
+                                  base: Decimal
+                                  digits: "61"
+                                  suffix: ~
+                          generic_args: ~
+                          is_propagating: false
+                      then_body:
+                        statements:
+                          - Return:
+                              Call:
+                                callee:
+                                  FieldAccess:
+                                    object: SelfValue
+                                    field: make_token
+                                    is_propagating: false
+                                args:
+                                  - name: ~
+                                    value:
+                                      TypeAccess:
+                                        object:
+                                          Path:
+                                            segments:
+                                              - TokenType
+                                        member: LE
+                                generic_args: ~
+                                is_propagating: false
+                      elif_clauses: []
+                      else_body: ~
+                  - Return:
+                      Call:
+                        callee:
+                          FieldAccess:
+                            object: SelfValue
+                            field: make_token
+                            is_propagating: false
+                        args:
+                          - name: ~
+                            value:
+                              TypeAccess:
+                                object:
+                                  Path:
+                                    segments:
+                                      - TokenType
+                                member: LT
+                        generic_args: ~
+                        is_propagating: false
+              elif_clauses: []
+              else_body: ~
+          - If:
+              condition:
+                BinaryOp:
+                  lhs:
+                    Path:
+                      segments:
+                        - ch
+                  op: Equal
+                  rhs:
+                    IntegerLiteral:
+                      base: Decimal
+                      digits: "62"
+                      suffix: ~
+              then_body:
+                statements:
+                  - If:
+                      condition:
+                        Call:
+                          callee:
+                            FieldAccess:
+                              object: SelfValue
+                              field: match_char
+                              is_propagating: false
+                          args:
+                            - name: ~
+                              value:
+                                IntegerLiteral:
+                                  base: Decimal
+                                  digits: "61"
+                                  suffix: ~
+                          generic_args: ~
+                          is_propagating: false
+                      then_body:
+                        statements:
+                          - Return:
+                              Call:
+                                callee:
+                                  FieldAccess:
+                                    object: SelfValue
+                                    field: make_token
+                                    is_propagating: false
+                                args:
+                                  - name: ~
+                                    value:
+                                      TypeAccess:
+                                        object:
+                                          Path:
+                                            segments:
+                                              - TokenType
+                                        member: GE
+                                generic_args: ~
+                                is_propagating: false
+                      elif_clauses: []
+                      else_body: ~
+                  - Return:
+                      Call:
+                        callee:
+                          FieldAccess:
+                            object: SelfValue
+                            field: make_token
+                            is_propagating: false
+                        args:
+                          - name: ~
+                            value:
+                              TypeAccess:
+                                object:
+                                  Path:
+                                    segments:
+                                      - TokenType
+                                member: GT
+                        generic_args: ~
+                        is_propagating: false
+              elif_clauses: []
+              else_body: ~
+          - Return:
+              Call:
+                callee:
+                  FieldAccess:
+                    object: SelfValue
+                    field: make_token
+                    is_propagating: false
+                args:
+                  - name: ~
+                    value:
+                      TypeAccess:
+                        object:
+                          Path:
+                            segments:
+                              - TokenType
+                        member: EOF
+                generic_args: ~
+                is_propagating: false
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: Lexer
+            generic_args: []
+        name: identifier
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params: []
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - Token
+              generic_args: []
+      body:
+        statements:
+          - For:
+              pattern: i
+              iterable:
+                Call:
+                  callee:
+                    Path:
+                      segments:
+                        - range
+                  args:
+                    - name: ~
+                      value:
+                        IntegerLiteral:
+                          base: Decimal
+                          digits: "0"
+                          suffix: ~
+                    - name: ~
+                      value:
+                        IntegerLiteral:
+                          base: Decimal
+                          digits: "1000"
+                          suffix: ~
+                  generic_args: ~
+                  is_propagating: false
+              body:
+                statements:
+                  - If:
+                      condition:
+                        Call:
+                          callee:
+                            FieldAccess:
+                              object: SelfValue
+                              field: is_eof
+                              is_propagating: false
+                          args: []
+                          generic_args: ~
+                          is_propagating: false
+                      then_body:
+                        statements:
+                          - Break
+                      elif_clauses: []
+                      else_body: ~
+                  - Let:
+                      annotations: []
+                      name: ch
+                      ty: ~
+                      value:
+                        Call:
+                          callee:
+                            FieldAccess:
+                              object: SelfValue
+                              field: peek
+                              is_propagating: false
+                          args: []
+                          generic_args: ~
+                          is_propagating: false
+                  - If:
+                      condition:
+                        Call:
+                          callee:
+                            UnaryOp:
+                              op: LogicalNot
+                              operand:
+                                Path:
+                                  segments:
+                                    - is_alpha_numeric
+                          args:
+                            - name: ~
+                              value:
+                                Path:
+                                  segments:
+                                    - ch
+                          generic_args: ~
+                          is_propagating: false
+                      then_body:
+                        statements:
+                          - Break
+                      elif_clauses: []
+                      else_body: ~
+                  - Expression:
+                      Call:
+                        callee:
+                          FieldAccess:
+                            object: SelfValue
+                            field: advance
+                            is_propagating: false
+                        args: []
+                        generic_args: ~
+                        is_propagating: false
+          - Let:
+              annotations: []
+              name: lexeme
+              ty: ~
+              value:
+                Call:
+                  callee:
+                    FieldAccess:
+                      object: SelfValue
+                      field: token_lexeme
+                      is_propagating: false
+                  args: []
+                  generic_args: ~
+                  is_propagating: false
+          - Let:
+              annotations: []
+              name: token_type
+              ty: ~
+              value:
+                Call:
+                  callee:
+                    FieldAccess:
+                      object: SelfValue
+                      field: identifier_type
+                      is_propagating: false
+                  args:
+                    - name: ~
+                      value:
+                        Path:
+                          segments:
+                            - lexeme
+                  generic_args: ~
+                  is_propagating: false
+          - Return:
+              Call:
+                callee:
+                  FieldAccess:
+                    object: SelfValue
+                    field: make_token
+                    is_propagating: false
+                args:
+                  - name: ~
+                    value:
+                      Path:
+                        segments:
+                          - token_type
+                generic_args: ~
+                is_propagating: false
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: false
+        receiver:
+          - name: Lexer
+            generic_args: []
+        name: identifier_type
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: false
+        params:
+          - name: lexeme
+            ty:
+              Array:
+                element_type: U8
+                size: ~
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - TokenType
+              generic_args: []
+      body:
+        statements:
+          - If:
+              condition:
+                Call:
+                  callee:
+                    Path:
+                      segments:
+                        - bytes_equal
+                  args:
+                    - name: ~
+                      value:
+                        Path:
+                          segments:
+                            - lexeme
+                    - name: ~
+                      value:
+                        StringLiteral: if
+                  generic_args: ~
+                  is_propagating: false
+              then_body:
+                statements:
+                  - Return:
+                      TypeAccess:
+                        object:
+                          Path:
+                            segments:
+                              - TokenType
+                        member: IF
+              elif_clauses: []
+              else_body: ~
+          - If:
+              condition:
+                Call:
+                  callee:
+                    Path:
+                      segments:
+                        - bytes_equal
+                  args:
+                    - name: ~
+                      value:
+                        Path:
+                          segments:
+                            - lexeme
+                    - name: ~
+                      value:
+                        StringLiteral: elif
+                  generic_args: ~
+                  is_propagating: false
+              then_body:
+                statements:
+                  - Return:
+                      TypeAccess:
+                        object:
+                          Path:
+                            segments:
+                              - TokenType
+                        member: ELIF
+              elif_clauses: []
+              else_body: ~
+          - If:
+              condition:
+                Call:
+                  callee:
+                    Path:
+                      segments:
+                        - bytes_equal
+                  args:
+                    - name: ~
+                      value:
+                        Path:
+                          segments:
+                            - lexeme
+                    - name: ~
+                      value:
+                        StringLiteral: else
+                  generic_args: ~
+                  is_propagating: false
+              then_body:
+                statements:
+                  - Return:
+                      TypeAccess:
+                        object:
+                          Path:
+                            segments:
+                              - TokenType
+                        member: ELSE
+              elif_clauses: []
+              else_body: ~
+          - If:
+              condition:
+                Call:
+                  callee:
+                    Path:
+                      segments:
+                        - bytes_equal
+                  args:
+                    - name: ~
+                      value:
+                        Path:
+                          segments:
+                            - lexeme
+                    - name: ~
+                      value:
+                        StringLiteral: for
+                  generic_args: ~
+                  is_propagating: false
+              then_body:
+                statements:
+                  - Return:
+                      TypeAccess:
+                        object:
+                          Path:
+                            segments:
+                              - TokenType
+                        member: FOR
+              elif_clauses: []
+              else_body: ~
+          - If:
+              condition:
+                Call:
+                  callee:
+                    Path:
+                      segments:
+                        - bytes_equal
+                  args:
+                    - name: ~
+                      value:
+                        Path:
+                          segments:
+                            - lexeme
+                    - name: ~
+                      value:
+                        StringLiteral: while
+                  generic_args: ~
+                  is_propagating: false
+              then_body:
+                statements:
+                  - Return:
+                      TypeAccess:
+                        object:
+                          Path:
+                            segments:
+                              - TokenType
+                        member: WHILE
+              elif_clauses: []
+              else_body: ~
+          - If:
+              condition:
+                Call:
+                  callee:
+                    Path:
+                      segments:
+                        - bytes_equal
+                  args:
+                    - name: ~
+                      value:
+                        Path:
+                          segments:
+                            - lexeme
+                    - name: ~
+                      value:
+                        StringLiteral: break
+                  generic_args: ~
+                  is_propagating: false
+              then_body:
+                statements:
+                  - Return:
+                      TypeAccess:
+                        object:
+                          Path:
+                            segments:
+                              - TokenType
+                        member: BREAK
+              elif_clauses: []
+              else_body: ~
+          - If:
+              condition:
+                Call:
+                  callee:
+                    Path:
+                      segments:
+                        - bytes_equal
+                  args:
+                    - name: ~
+                      value:
+                        Path:
+                          segments:
+                            - lexeme
+                    - name: ~
+                      value:
+                        StringLiteral: continue
+                  generic_args: ~
+                  is_propagating: false
+              then_body:
+                statements:
+                  - Return:
+                      TypeAccess:
+                        object:
+                          Path:
+                            segments:
+                              - TokenType
+                        member: CONTINUE
+              elif_clauses: []
+              else_body: ~
+          - If:
+              condition:
+                Call:
+                  callee:
+                    Path:
+                      segments:
+                        - bytes_equal
+                  args:
+                    - name: ~
+                      value:
+                        Path:
+                          segments:
+                            - lexeme
+                    - name: ~
+                      value:
+                        StringLiteral: return
+                  generic_args: ~
+                  is_propagating: false
+              then_body:
+                statements:
+                  - Return:
+                      TypeAccess:
+                        object:
+                          Path:
+                            segments:
+                              - TokenType
+                        member: RETURN
+              elif_clauses: []
+              else_body: ~
+          - If:
+              condition:
+                Call:
+                  callee:
+                    Path:
+                      segments:
+                        - bytes_equal
+                  args:
+                    - name: ~
+                      value:
+                        Path:
+                          segments:
+                            - lexeme
+                    - name: ~
+                      value:
+                        StringLiteral: func
+                  generic_args: ~
+                  is_propagating: false
+              then_body:
+                statements:
+                  - Return:
+                      TypeAccess:
+                        object:
+                          Path:
+                            segments:
+                              - TokenType
+                        member: FUNC
+              elif_clauses: []
+              else_body: ~
+          - If:
+              condition:
+                Call:
+                  callee:
+                    Path:
+                      segments:
+                        - bytes_equal
+                  args:
+                    - name: ~
+                      value:
+                        Path:
+                          segments:
+                            - lexeme
+                    - name: ~
+                      value:
+                        StringLiteral: struct
+                  generic_args: ~
+                  is_propagating: false
+              then_body:
+                statements:
+                  - Return:
+                      TypeAccess:
+                        object:
+                          Path:
+                            segments:
+                              - TokenType
+                        member: STRUCT
+              elif_clauses: []
+              else_body: ~
+          - If:
+              condition:
+                Call:
+                  callee:
+                    Path:
+                      segments:
+                        - bytes_equal
+                  args:
+                    - name: ~
+                      value:
+                        Path:
+                          segments:
+                            - lexeme
+                    - name: ~
+                      value:
+                        StringLiteral: enum
+                  generic_args: ~
+                  is_propagating: false
+              then_body:
+                statements:
+                  - Return:
+                      TypeAccess:
+                        object:
+                          Path:
+                            segments:
+                              - TokenType
+                        member: ENUM
+              elif_clauses: []
+              else_body: ~
+          - If:
+              condition:
+                Call:
+                  callee:
+                    Path:
+                      segments:
+                        - bytes_equal
+                  args:
+                    - name: ~
+                      value:
+                        Path:
+                          segments:
+                            - lexeme
+                    - name: ~
+                      value:
+                        StringLiteral: union
+                  generic_args: ~
+                  is_propagating: false
+              then_body:
+                statements:
+                  - Return:
+                      TypeAccess:
+                        object:
+                          Path:
+                            segments:
+                              - TokenType
+                        member: UNION
+              elif_clauses: []
+              else_body: ~
+          - If:
+              condition:
+                Call:
+                  callee:
+                    Path:
+                      segments:
+                        - bytes_equal
+                  args:
+                    - name: ~
+                      value:
+                        Path:
+                          segments:
+                            - lexeme
+                    - name: ~
+                      value:
+                        StringLiteral: interface
+                  generic_args: ~
+                  is_propagating: false
+              then_body:
+                statements:
+                  - Return:
+                      TypeAccess:
+                        object:
+                          Path:
+                            segments:
+                              - TokenType
+                        member: INTERFACE
+              elif_clauses: []
+              else_body: ~
+          - If:
+              condition:
+                Call:
+                  callee:
+                    Path:
+                      segments:
+                        - bytes_equal
+                  args:
+                    - name: ~
+                      value:
+                        Path:
+                          segments:
+                            - lexeme
+                    - name: ~
+                      value:
+                        StringLiteral: let
+                  generic_args: ~
+                  is_propagating: false
+              then_body:
+                statements:
+                  - Return:
+                      TypeAccess:
+                        object:
+                          Path:
+                            segments:
+                              - TokenType
+                        member: LET
+              elif_clauses: []
+              else_body: ~
+          - If:
+              condition:
+                Call:
+                  callee:
+                    Path:
+                      segments:
+                        - bytes_equal
+                  args:
+                    - name: ~
+                      value:
+                        Path:
+                          segments:
+                            - lexeme
+                    - name: ~
+                      value:
+                        StringLiteral: mut
+                  generic_args: ~
+                  is_propagating: false
+              then_body:
+                statements:
+                  - Return:
+                      TypeAccess:
+                        object:
+                          Path:
+                            segments:
+                              - TokenType
+                        member: MUT
+              elif_clauses: []
+              else_body: ~
+          - If:
+              condition:
+                Call:
+                  callee:
+                    Path:
+                      segments:
+                        - bytes_equal
+                  args:
+                    - name: ~
+                      value:
+                        Path:
+                          segments:
+                            - lexeme
+                    - name: ~
+                      value:
+                        StringLiteral: const
+                  generic_args: ~
+                  is_propagating: false
+              then_body:
+                statements:
+                  - Return:
+                      TypeAccess:
+                        object:
+                          Path:
+                            segments:
+                              - TokenType
+                        member: CONST
+              elif_clauses: []
+              else_body: ~
+          - If:
+              condition:
+                Call:
+                  callee:
+                    Path:
+                      segments:
+                        - bytes_equal
+                  args:
+                    - name: ~
+                      value:
+                        Path:
+                          segments:
+                            - lexeme
+                    - name: ~
+                      value:
+                        StringLiteral: using
+                  generic_args: ~
+                  is_propagating: false
+              then_body:
+                statements:
+                  - Return:
+                      TypeAccess:
+                        object:
+                          Path:
+                            segments:
+                              - TokenType
+                        member: USING
+              elif_clauses: []
+              else_body: ~
+          - If:
+              condition:
+                Call:
+                  callee:
+                    Path:
+                      segments:
+                        - bytes_equal
+                  args:
+                    - name: ~
+                      value:
+                        Path:
+                          segments:
+                            - lexeme
+                    - name: ~
+                      value:
+                        StringLiteral: export
+                  generic_args: ~
+                  is_propagating: false
+              then_body:
+                statements:
+                  - Return:
+                      TypeAccess:
+                        object:
+                          Path:
+                            segments:
+                              - TokenType
+                        member: EXPORT
+              elif_clauses: []
+              else_body: ~
+          - If:
+              condition:
+                Call:
+                  callee:
+                    Path:
+                      segments:
+                        - bytes_equal
+                  args:
+                    - name: ~
+                      value:
+                        Path:
+                          segments:
+                            - lexeme
+                    - name: ~
+                      value:
+                        StringLiteral: public
+                  generic_args: ~
+                  is_propagating: false
+              then_body:
+                statements:
+                  - Return:
+                      TypeAccess:
+                        object:
+                          Path:
+                            segments:
+                              - TokenType
+                        member: PUBLIC
+              elif_clauses: []
+              else_body: ~
+          - If:
+              condition:
+                Call:
+                  callee:
+                    Path:
+                      segments:
+                        - bytes_equal
+                  args:
+                    - name: ~
+                      value:
+                        Path:
+                          segments:
+                            - lexeme
+                    - name: ~
+                      value:
+                        StringLiteral: private
+                  generic_args: ~
+                  is_propagating: false
+              then_body:
+                statements:
+                  - Return:
+                      TypeAccess:
+                        object:
+                          Path:
+                            segments:
+                              - TokenType
+                        member: PRIVATE
+              elif_clauses: []
+              else_body: ~
+          - If:
+              condition:
+                Call:
+                  callee:
+                    Path:
+                      segments:
+                        - bytes_equal
+                  args:
+                    - name: ~
+                      value:
+                        Path:
+                          segments:
+                            - lexeme
+                    - name: ~
+                      value:
+                        StringLiteral: "true"
+                  generic_args: ~
+                  is_propagating: false
+              then_body:
+                statements:
+                  - Return:
+                      TypeAccess:
+                        object:
+                          Path:
+                            segments:
+                              - TokenType
+                        member: "TRUE"
+              elif_clauses: []
+              else_body: ~
+          - If:
+              condition:
+                Call:
+                  callee:
+                    Path:
+                      segments:
+                        - bytes_equal
+                  args:
+                    - name: ~
+                      value:
+                        Path:
+                          segments:
+                            - lexeme
+                    - name: ~
+                      value:
+                        StringLiteral: "false"
+                  generic_args: ~
+                  is_propagating: false
+              then_body:
+                statements:
+                  - Return:
+                      TypeAccess:
+                        object:
+                          Path:
+                            segments:
+                              - TokenType
+                        member: "FALSE"
+              elif_clauses: []
+              else_body: ~
+          - Return:
+              TypeAccess:
+                object:
+                  Path:
+                    segments:
+                      - TokenType
+                member: IDENTIFIER
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: Lexer
+            generic_args: []
+        name: number
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params: []
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - Token
+              generic_args: []
+      body:
+        statements:
+          - For:
+              pattern: i
+              iterable:
+                Call:
+                  callee:
+                    Path:
+                      segments:
+                        - range
+                  args:
+                    - name: ~
+                      value:
+                        IntegerLiteral:
+                          base: Decimal
+                          digits: "0"
+                          suffix: ~
+                    - name: ~
+                      value:
+                        IntegerLiteral:
+                          base: Decimal
+                          digits: "1000"
+                          suffix: ~
+                  generic_args: ~
+                  is_propagating: false
+              body:
+                statements:
+                  - If:
+                      condition:
+                        Call:
+                          callee:
+                            FieldAccess:
+                              object: SelfValue
+                              field: is_eof
+                              is_propagating: false
+                          args: []
+                          generic_args: ~
+                          is_propagating: false
+                      then_body:
+                        statements:
+                          - Break
+                      elif_clauses: []
+                      else_body: ~
+                  - Let:
+                      annotations: []
+                      name: ch
+                      ty: ~
+                      value:
+                        Call:
+                          callee:
+                            FieldAccess:
+                              object: SelfValue
+                              field: peek
+                              is_propagating: false
+                          args: []
+                          generic_args: ~
+                          is_propagating: false
+                  - If:
+                      condition:
+                        Call:
+                          callee:
+                            UnaryOp:
+                              op: LogicalNot
+                              operand:
+                                Path:
+                                  segments:
+                                    - is_digit
+                          args:
+                            - name: ~
+                              value:
+                                Path:
+                                  segments:
+                                    - ch
+                          generic_args: ~
+                          is_propagating: false
+                      then_body:
+                        statements:
+                          - Break
+                      elif_clauses: []
+                      else_body: ~
+                  - Expression:
+                      Call:
+                        callee:
+                          FieldAccess:
+                            object: SelfValue
+                            field: advance
+                            is_propagating: false
+                        args: []
+                        generic_args: ~
+                        is_propagating: false
+          - If:
+              condition:
+                BinaryOp:
+                  lhs:
+                    Call:
+                      callee:
+                        FieldAccess:
+                          object: SelfValue
+                          field: peek
+                          is_propagating: false
+                      args: []
+                      generic_args: ~
+                      is_propagating: false
+                  op: Equal
+                  rhs:
+                    BinaryOp:
+                      lhs:
+                        IntegerLiteral:
+                          base: Decimal
+                          digits: "46"
+                          suffix: ~
+                      op: LogicalAnd
+                      rhs:
+                        Call:
+                          callee:
+                            Path:
+                              segments:
+                                - is_digit
+                          args:
+                            - name: ~
+                              value:
+                                Call:
+                                  callee:
+                                    FieldAccess:
+                                      object: SelfValue
+                                      field: peek_next
+                                      is_propagating: false
+                                  args: []
+                                  generic_args: ~
+                                  is_propagating: false
+                          generic_args: ~
+                          is_propagating: false
+              then_body:
+                statements:
+                  - Expression:
+                      Call:
+                        callee:
+                          FieldAccess:
+                            object: SelfValue
+                            field: advance
+                            is_propagating: false
+                        args: []
+                        generic_args: ~
+                        is_propagating: false
+                  - For:
+                      pattern: i
+                      iterable:
+                        Call:
+                          callee:
+                            Path:
+                              segments:
+                                - range
+                          args:
+                            - name: ~
+                              value:
+                                IntegerLiteral:
+                                  base: Decimal
+                                  digits: "0"
+                                  suffix: ~
+                            - name: ~
+                              value:
+                                IntegerLiteral:
+                                  base: Decimal
+                                  digits: "1000"
+                                  suffix: ~
+                          generic_args: ~
+                          is_propagating: false
+                      body:
+                        statements:
+                          - If:
+                              condition:
+                                Call:
+                                  callee:
+                                    FieldAccess:
+                                      object: SelfValue
+                                      field: is_eof
+                                      is_propagating: false
+                                  args: []
+                                  generic_args: ~
+                                  is_propagating: false
+                              then_body:
+                                statements:
+                                  - Break
+                              elif_clauses: []
+                              else_body: ~
+                          - Let:
+                              annotations: []
+                              name: ch
+                              ty: ~
+                              value:
+                                Call:
+                                  callee:
+                                    FieldAccess:
+                                      object: SelfValue
+                                      field: peek
+                                      is_propagating: false
+                                  args: []
+                                  generic_args: ~
+                                  is_propagating: false
+                          - If:
+                              condition:
+                                Call:
+                                  callee:
+                                    UnaryOp:
+                                      op: LogicalNot
+                                      operand:
+                                        Path:
+                                          segments:
+                                            - is_digit
+                                  args:
+                                    - name: ~
+                                      value:
+                                        Path:
+                                          segments:
+                                            - ch
+                                  generic_args: ~
+                                  is_propagating: false
+                              then_body:
+                                statements:
+                                  - Break
+                              elif_clauses: []
+                              else_body: ~
+                          - Expression:
+                              Call:
+                                callee:
+                                  FieldAccess:
+                                    object: SelfValue
+                                    field: advance
+                                    is_propagating: false
+                                args: []
+                                generic_args: ~
+                                is_propagating: false
+                  - Return:
+                      Call:
+                        callee:
+                          FieldAccess:
+                            object: SelfValue
+                            field: make_token
+                            is_propagating: false
+                        args:
+                          - name: ~
+                            value:
+                              TypeAccess:
+                                object:
+                                  Path:
+                                    segments:
+                                      - TokenType
+                                member: FLOAT
+                        generic_args: ~
+                        is_propagating: false
+              elif_clauses: []
+              else_body: ~
+          - Return:
+              Call:
+                callee:
+                  FieldAccess:
+                    object: SelfValue
+                    field: make_token
+                    is_propagating: false
+                args:
+                  - name: ~
+                    value:
+                      TypeAccess:
+                        object:
+                          Path:
+                            segments:
+                              - TokenType
+                        member: INTEGER
+                generic_args: ~
+                is_propagating: false
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: Lexer
+            generic_args: []
+        name: string_literal
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params: []
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - Token
+              generic_args: []
+      body:
+        statements:
+          - For:
+              pattern: i
+              iterable:
+                Call:
+                  callee:
+                    Path:
+                      segments:
+                        - range
+                  args:
+                    - name: ~
+                      value:
+                        IntegerLiteral:
+                          base: Decimal
+                          digits: "0"
+                          suffix: ~
+                    - name: ~
+                      value:
+                        IntegerLiteral:
+                          base: Decimal
+                          digits: "10000"
+                          suffix: ~
+                  generic_args: ~
+                  is_propagating: false
+              body:
+                statements:
+                  - If:
+                      condition:
+                        Call:
+                          callee:
+                            FieldAccess:
+                              object: SelfValue
+                              field: is_eof
+                              is_propagating: false
+                          args: []
+                          generic_args: ~
+                          is_propagating: false
+                      then_body:
+                        statements:
+                          - Break
+                      elif_clauses: []
+                      else_body: ~
+                  - Let:
+                      annotations: []
+                      name: ch
+                      ty: ~
+                      value:
+                        Call:
+                          callee:
+                            FieldAccess:
+                              object: SelfValue
+                              field: peek
+                              is_propagating: false
+                          args: []
+                          generic_args: ~
+                          is_propagating: false
+                  - If:
+                      condition:
+                        BinaryOp:
+                          lhs:
+                            Path:
+                              segments:
+                                - ch
+                          op: Equal
+                          rhs:
+                            IntegerLiteral:
+                              base: Decimal
+                              digits: "34"
+                              suffix: ~
+                      then_body:
+                        statements:
+                          - Expression:
+                              Call:
+                                callee:
+                                  FieldAccess:
+                                    object: SelfValue
+                                    field: advance
+                                    is_propagating: false
+                                args: []
+                                generic_args: ~
+                                is_propagating: false
+                          - Break
+                      elif_clauses: []
+                      else_body: ~
+                  - If:
+                      condition:
+                        BinaryOp:
+                          lhs:
+                            Path:
+                              segments:
+                                - ch
+                          op: Equal
+                          rhs:
+                            IntegerLiteral:
+                              base: Decimal
+                              digits: "92"
+                              suffix: ~
+                      then_body:
+                        statements:
+                          - Expression:
+                              Call:
+                                callee:
+                                  FieldAccess:
+                                    object: SelfValue
+                                    field: advance
+                                    is_propagating: false
+                                args: []
+                                generic_args: ~
+                                is_propagating: false
+                          - If:
+                              condition:
+                                Call:
+                                  callee:
+                                    FieldAccess:
+                                      object:
+                                        UnaryOp:
+                                          op: LogicalNot
+                                          operand: SelfValue
+                                      field: is_eof
+                                      is_propagating: false
+                                  args: []
+                                  generic_args: ~
+                                  is_propagating: false
+                              then_body:
+                                statements:
+                                  - Expression:
+                                      Call:
+                                        callee:
+                                          FieldAccess:
+                                            object: SelfValue
+                                            field: advance
+                                            is_propagating: false
+                                        args: []
+                                        generic_args: ~
+                                        is_propagating: false
+                              elif_clauses: []
+                              else_body: ~
+                      elif_clauses: []
+                      else_body:
+                        statements:
+                          - Expression:
+                              Call:
+                                callee:
+                                  FieldAccess:
+                                    object: SelfValue
+                                    field: advance
+                                    is_propagating: false
+                                args: []
+                                generic_args: ~
+                                is_propagating: false
+          - Return:
+              Call:
+                callee:
+                  FieldAccess:
+                    object: SelfValue
+                    field: make_token
+                    is_propagating: false
+                args:
+                  - name: ~
+                    value:
+                      TypeAccess:
+                        object:
+                          Path:
+                            segments:
+                              - TokenType
+                        member: STRING
+                generic_args: ~
+                is_propagating: false
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: Lexer
+            generic_args: []
+        name: char_literal
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params: []
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - Token
+              generic_args: []
+      body:
+        statements:
+          - If:
+              condition:
+                Call:
+                  callee:
+                    FieldAccess:
+                      object:
+                        UnaryOp:
+                          op: LogicalNot
+                          operand: SelfValue
+                      field: is_eof
+                      is_propagating: false
+                  args: []
+                  generic_args: ~
+                  is_propagating: false
+              then_body:
+                statements:
+                  - If:
+                      condition:
+                        BinaryOp:
+                          lhs:
+                            Call:
+                              callee:
+                                FieldAccess:
+                                  object: SelfValue
+                                  field: peek
+                                  is_propagating: false
+                              args: []
+                              generic_args: ~
+                              is_propagating: false
+                          op: Equal
+                          rhs:
+                            IntegerLiteral:
+                              base: Decimal
+                              digits: "92"
+                              suffix: ~
+                      then_body:
+                        statements:
+                          - Expression:
+                              Call:
+                                callee:
+                                  FieldAccess:
+                                    object: SelfValue
+                                    field: advance
+                                    is_propagating: false
+                                args: []
+                                generic_args: ~
+                                is_propagating: false
+                      elif_clauses: []
+                      else_body: ~
+                  - Expression:
+                      Call:
+                        callee:
+                          FieldAccess:
+                            object: SelfValue
+                            field: advance
+                            is_propagating: false
+                        args: []
+                        generic_args: ~
+                        is_propagating: false
+              elif_clauses: []
+              else_body: ~
+          - If:
+              condition:
+                BinaryOp:
+                  lhs:
+                    BinaryOp:
+                      lhs:
+                        Call:
+                          callee:
+                            FieldAccess:
+                              object:
+                                UnaryOp:
+                                  op: LogicalNot
+                                  operand: SelfValue
+                              field: is_eof
+                              is_propagating: false
+                          args: []
+                          generic_args: ~
+                          is_propagating: false
+                      op: LogicalAnd
+                      rhs:
+                        Call:
+                          callee:
+                            FieldAccess:
+                              object: SelfValue
+                              field: peek
+                              is_propagating: false
+                          args: []
+                          generic_args: ~
+                          is_propagating: false
+                  op: Equal
+                  rhs:
+                    IntegerLiteral:
+                      base: Decimal
+                      digits: "39"
+                      suffix: ~
+              then_body:
+                statements:
+                  - Expression:
+                      Call:
+                        callee:
+                          FieldAccess:
+                            object: SelfValue
+                            field: advance
+                            is_propagating: false
+                        args: []
+                        generic_args: ~
+                        is_propagating: false
+              elif_clauses: []
+              else_body: ~
+          - Return:
+              Call:
+                callee:
+                  FieldAccess:
+                    object: SelfValue
+                    field: make_token
+                    is_propagating: false
+                args:
+                  - name: ~
+                    value:
+                      TypeAccess:
+                        object:
+                          Path:
+                            segments:
+                              - TokenType
+                        member: CHAR
+                generic_args: ~
+                is_propagating: false
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: Lexer
+            generic_args: []
+        name: skip_whitespace
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params: []
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
+      body:
+        statements:
+          - For:
+              pattern: i
+              iterable:
+                Call:
+                  callee:
+                    Path:
+                      segments:
+                        - range
+                  args:
+                    - name: ~
+                      value:
+                        IntegerLiteral:
+                          base: Decimal
+                          digits: "0"
+                          suffix: ~
+                    - name: ~
+                      value:
+                        IntegerLiteral:
+                          base: Decimal
+                          digits: "10000"
+                          suffix: ~
+                  generic_args: ~
+                  is_propagating: false
+              body:
+                statements:
+                  - If:
+                      condition:
+                        Call:
+                          callee:
+                            FieldAccess:
+                              object: SelfValue
+                              field: is_eof
+                              is_propagating: false
+                          args: []
+                          generic_args: ~
+                          is_propagating: false
+                      then_body:
+                        statements:
+                          - Break
+                      elif_clauses: []
+                      else_body: ~
+                  - Let:
+                      annotations: []
+                      name: ch
+                      ty: ~
+                      value:
+                        Call:
+                          callee:
+                            FieldAccess:
+                              object: SelfValue
+                              field: peek
+                              is_propagating: false
+                          args: []
+                          generic_args: ~
+                          is_propagating: false
+                  - If:
+                      condition:
+                        BinaryOp:
+                          lhs:
+                            BinaryOp:
+                              lhs:
+                                BinaryOp:
+                                  lhs:
+                                    Path:
+                                      segments:
+                                        - ch
+                                  op: Equal
+                                  rhs:
+                                    BinaryOp:
+                                      lhs:
+                                        IntegerLiteral:
+                                          base: Decimal
+                                          digits: "32"
+                                          suffix: ~
+                                      op: LogicalOr
+                                      rhs:
+                                        Path:
+                                          segments:
+                                            - ch
+                              op: Equal
+                              rhs:
+                                BinaryOp:
+                                  lhs:
+                                    IntegerLiteral:
+                                      base: Decimal
+                                      digits: "9"
+                                      suffix: ~
+                                  op: LogicalOr
+                                  rhs:
+                                    Path:
+                                      segments:
+                                        - ch
+                          op: Equal
+                          rhs:
+                            IntegerLiteral:
+                              base: Decimal
+                              digits: "13"
+                              suffix: ~
+                      then_body:
+                        statements:
+                          - Expression:
+                              Call:
+                                callee:
+                                  FieldAccess:
+                                    object: SelfValue
+                                    field: advance
+                                    is_propagating: false
+                                args: []
+                                generic_args: ~
+                                is_propagating: false
+                      elif_clauses:
+                        - condition:
+                            BinaryOp:
+                              lhs:
+                                Path:
+                                  segments:
+                                    - ch
+                              op: Equal
+                              rhs:
+                                IntegerLiteral:
+                                  base: Decimal
+                                  digits: "10"
+                                  suffix: ~
+                          body:
+                            statements:
+                              - Expression:
+                                  Assign:
+                                    lhs:
+                                      FieldAccess:
+                                        object: SelfValue
+                                        field: line
+                                        is_propagating: false
+                                    op: Assign
+                                    rhs:
+                                      BinaryOp:
+                                        lhs:
+                                          FieldAccess:
+                                            object: SelfValue
+                                            field: line
+                                            is_propagating: false
+                                        op: Add
+                                        rhs:
+                                          IntegerLiteral:
+                                            base: Decimal
+                                            digits: "1"
+                                            suffix: ~
+                              - Expression:
+                                  Assign:
+                                    lhs:
+                                      FieldAccess:
+                                        object: SelfValue
+                                        field: column
+                                        is_propagating: false
+                                    op: Assign
+                                    rhs:
+                                      IntegerLiteral:
+                                        base: Decimal
+                                        digits: "1"
+                                        suffix: ~
+                              - Expression:
+                                  Call:
+                                    callee:
+                                      FieldAccess:
+                                        object: SelfValue
+                                        field: advance
+                                        is_propagating: false
+                                    args: []
+                                    generic_args: ~
+                                    is_propagating: false
+                      else_body:
+                        statements:
+                          - Break
+          - Pass
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: Lexer
+            generic_args: []
+        name: skip_line_comment
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params: []
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
+      body:
+        statements:
+          - For:
+              pattern: i
+              iterable:
+                Call:
+                  callee:
+                    Path:
+                      segments:
+                        - range
+                  args:
+                    - name: ~
+                      value:
+                        IntegerLiteral:
+                          base: Decimal
+                          digits: "0"
+                          suffix: ~
+                    - name: ~
+                      value:
+                        IntegerLiteral:
+                          base: Decimal
+                          digits: "10000"
+                          suffix: ~
+                  generic_args: ~
+                  is_propagating: false
+              body:
+                statements:
+                  - If:
+                      condition:
+                        Call:
+                          callee:
+                            FieldAccess:
+                              object: SelfValue
+                              field: is_eof
+                              is_propagating: false
+                          args: []
+                          generic_args: ~
+                          is_propagating: false
+                      then_body:
+                        statements:
+                          - Break
+                      elif_clauses: []
+                      else_body: ~
+                  - Let:
+                      annotations: []
+                      name: ch
+                      ty: ~
+                      value:
+                        Call:
+                          callee:
+                            FieldAccess:
+                              object: SelfValue
+                              field: peek
+                              is_propagating: false
+                          args: []
+                          generic_args: ~
+                          is_propagating: false
+                  - If:
+                      condition:
+                        BinaryOp:
+                          lhs:
+                            Path:
+                              segments:
+                                - ch
+                          op: Equal
+                          rhs:
+                            IntegerLiteral:
+                              base: Decimal
+                              digits: "10"
+                              suffix: ~
+                      then_body:
+                        statements:
+                          - Break
+                      elif_clauses: []
+                      else_body: ~
+                  - Expression:
+                      Call:
+                        callee:
+                          FieldAccess:
+                            object: SelfValue
+                            field: advance
+                            is_propagating: false
+                        args: []
+                        generic_args: ~
+                        is_propagating: false
+          - Pass
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: Lexer
+            generic_args: []
+        name: advance
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params: []
+        return_types:
+          - U8
+      body:
+        statements:
+          - Let:
+              annotations: []
+              name: ch
+              ty: ~
+              value:
+                Index:
+                  object:
+                    FieldAccess:
+                      object: SelfValue
+                      field: source
+                      is_propagating: false
+                  index:
+                    FieldAccess:
+                      object: SelfValue
+                      field: position
+                      is_propagating: false
+          - Expression:
+              Assign:
+                lhs:
+                  FieldAccess:
+                    object: SelfValue
+                    field: position
+                    is_propagating: false
+                op: Assign
+                rhs:
+                  BinaryOp:
+                    lhs:
+                      FieldAccess:
+                        object: SelfValue
+                        field: position
+                        is_propagating: false
+                    op: Add
+                    rhs:
+                      IntegerLiteral:
+                        base: Decimal
+                        digits: "1"
+                        suffix: ~
+          - Expression:
+              Assign:
+                lhs:
+                  FieldAccess:
+                    object: SelfValue
+                    field: column
+                    is_propagating: false
+                op: Assign
+                rhs:
+                  BinaryOp:
+                    lhs:
+                      FieldAccess:
+                        object: SelfValue
+                        field: column
+                        is_propagating: false
+                    op: Add
+                    rhs:
+                      IntegerLiteral:
+                        base: Decimal
+                        digits: "1"
+                        suffix: ~
+          - Return:
+              Path:
+                segments:
+                  - ch
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: false
+        receiver:
+          - name: Lexer
+            generic_args: []
+        name: peek
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: false
+        params: []
+        return_types:
+          - U8
+      body:
+        statements:
+          - If:
+              condition:
+                Call:
+                  callee:
+                    FieldAccess:
+                      object: SelfValue
+                      field: is_eof
+                      is_propagating: false
+                  args: []
+                  generic_args: ~
+                  is_propagating: false
+              then_body:
+                statements:
+                  - Return:
+                      IntegerLiteral:
+                        base: Decimal
+                        digits: "0"
+                        suffix: ~
+              elif_clauses: []
+              else_body: ~
+          - Return:
+              Index:
+                object:
+                  FieldAccess:
+                    object: SelfValue
+                    field: source
+                    is_propagating: false
+                index:
+                  FieldAccess:
+                    object: SelfValue
+                    field: position
+                    is_propagating: false
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: false
+        receiver:
+          - name: Lexer
+            generic_args: []
+        name: peek_next
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: false
+        params: []
+        return_types:
+          - U8
+      body:
+        statements:
+          - If:
+              condition:
+                BinaryOp:
+                  lhs:
+                    FieldAccess:
+                      object: SelfValue
+                      field: position
+                      is_propagating: false
+                  op: Add
+                  rhs:
+                    BinaryOp:
+                      lhs:
+                        IntegerLiteral:
+                          base: Decimal
+                          digits: "1"
+                          suffix: ~
+                      op: GreaterThanOrEqual
+                      rhs:
+                        FieldAccess:
+                          object:
+                            FieldAccess:
+                              object: SelfValue
+                              field: source
+                              is_propagating: false
+                          field: len
+                          is_propagating: false
+              then_body:
+                statements:
+                  - Return:
+                      IntegerLiteral:
+                        base: Decimal
+                        digits: "0"
+                        suffix: ~
+              elif_clauses: []
+              else_body: ~
+          - Return:
+              Index:
+                object:
+                  FieldAccess:
+                    object: SelfValue
+                    field: source
+                    is_propagating: false
+                index:
+                  BinaryOp:
+                    lhs:
+                      FieldAccess:
+                        object: SelfValue
+                        field: position
+                        is_propagating: false
+                    op: Add
+                    rhs:
+                      IntegerLiteral:
+                        base: Decimal
+                        digits: "1"
+                        suffix: ~
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: Lexer
+            generic_args: []
+        name: match_char
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params:
+          - name: expected
+            ty: U8
+        return_types:
+          - Bool
+      body:
+        statements:
+          - If:
+              condition:
+                Call:
+                  callee:
+                    FieldAccess:
+                      object: SelfValue
+                      field: is_eof
+                      is_propagating: false
+                  args: []
+                  generic_args: ~
+                  is_propagating: false
+              then_body:
+                statements:
+                  - Return:
+                      BooleanLiteral: false
+              elif_clauses: []
+              else_body: ~
+          - If:
+              condition:
+                BinaryOp:
+                  lhs:
+                    Call:
+                      callee:
+                        FieldAccess:
+                          object: SelfValue
+                          field: peek
+                          is_propagating: false
+                      args: []
+                      generic_args: ~
+                      is_propagating: false
+                  op: NotEqual
+                  rhs:
+                    Path:
+                      segments:
+                        - expected
+              then_body:
+                statements:
+                  - Return:
+                      BooleanLiteral: false
+              elif_clauses: []
+              else_body: ~
+          - Expression:
+              Call:
+                callee:
+                  FieldAccess:
+                    object: SelfValue
+                    field: advance
+                    is_propagating: false
+                args: []
+                generic_args: ~
+                is_propagating: false
+          - Return:
+              BooleanLiteral: true
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: false
+        receiver:
+          - name: Lexer
+            generic_args: []
+        name: is_eof
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: false
+        params: []
+        return_types:
+          - Bool
+      body:
+        statements:
+          - Return:
+              BinaryOp:
+                lhs:
+                  FieldAccess:
+                    object: SelfValue
+                    field: position
+                    is_propagating: false
+                op: GreaterThanOrEqual
+                rhs:
+                  FieldAccess:
+                    object:
+                      FieldAccess:
+                        object: SelfValue
+                        field: source
+                        is_propagating: false
+                    field: len
+                    is_propagating: false
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: false
+        receiver:
+          - name: Lexer
+            generic_args: []
+        name: token_lexeme
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: false
+        params: []
+        return_types:
+          - Array:
+              element_type: U8
+              size: ~
+      body:
+        statements:
+          - Return:
+              Call:
+                callee:
+                  Path:
+                    segments:
+                      - slice_range
+                args:
+                  - name: ~
+                    value:
+                      FieldAccess:
+                        object: SelfValue
+                        field: source
+                        is_propagating: false
+                  - name: ~
+                    value:
+                      FieldAccess:
+                        object: SelfValue
+                        field: token_start
+                        is_propagating: false
+                  - name: ~
+                    value:
+                      FieldAccess:
+                        object: SelfValue
+                        field: position
+                        is_propagating: false
+                generic_args: ~
+                is_propagating: false
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: false
+        receiver:
+          - name: Lexer
+            generic_args: []
+        name: make_token
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: false
+        params:
+          - name: token_type
+            ty:
+              Path:
+                path:
+                  segments:
+                    - TokenType
+                generic_args: []
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - Token
+              generic_args: []
+      body:
+        statements:
+          - Return:
+              Call:
+                callee:
+                  Path:
+                    segments:
+                      - Token
+                args:
+                  - name: typ
+                    value:
+                      Path:
+                        segments:
+                          - token_type
+                  - name: lexeme
+                    value:
+                      Call:
+                        callee:
+                          FieldAccess:
+                            object: SelfValue
+                            field: token_lexeme
+                            is_propagating: false
+                        args: []
+                        generic_args: ~
+                        is_propagating: false
+                  - name: line
+                    value:
+                      FieldAccess:
+                        object: SelfValue
+                        field: line
+                        is_propagating: false
+                  - name: column
+                    value:
+                      BinaryOp:
+                        lhs:
+                          FieldAccess:
+                            object: SelfValue
+                            field: column
+                            is_propagating: false
+                        op: Subtract
+                        rhs:
+                          Parenthesized:
+                            BinaryOp:
+                              lhs:
+                                FieldAccess:
+                                  object: SelfValue
+                                  field: position
+                                  is_propagating: false
+                              op: Subtract
+                              rhs:
+                                FieldAccess:
+                                  object: SelfValue
+                                  field: token_start
+                                  is_propagating: false
+                  - name: offset
+                    value:
+                      FieldAccess:
+                        object: SelfValue
+                        field: token_start
+                        is_propagating: false
+                generic_args: ~
+                is_propagating: false
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: false
+        receiver: ~
+        name: is_alpha
+        outer_generic_params: []
+        func_generic_params: []
+        self_param: ~
+        params:
+          - name: ch
+            ty: U8
+        return_types:
+          - Bool
+      body:
+        statements:
+          - Return:
+              BinaryOp:
+                lhs:
+                  BinaryOp:
+                    lhs:
+                      BinaryOp:
+                        lhs:
+                          Parenthesized:
+                            BinaryOp:
+                              lhs:
+                                BinaryOp:
+                                  lhs:
+                                    Path:
+                                      segments:
+                                        - ch
+                                  op: GreaterThanOrEqual
+                                  rhs:
+                                    BinaryOp:
+                                      lhs:
+                                        IntegerLiteral:
+                                          base: Decimal
+                                          digits: "65"
+                                          suffix: ~
+                                      op: LogicalAnd
+                                      rhs:
+                                        Path:
+                                          segments:
+                                            - ch
+                              op: LessThanOrEqual
+                              rhs:
+                                IntegerLiteral:
+                                  base: Decimal
+                                  digits: "90"
+                                  suffix: ~
+                        op: LogicalOr
+                        rhs:
+                          Parenthesized:
+                            BinaryOp:
+                              lhs:
+                                BinaryOp:
+                                  lhs:
+                                    Path:
+                                      segments:
+                                        - ch
+                                  op: GreaterThanOrEqual
+                                  rhs:
+                                    BinaryOp:
+                                      lhs:
+                                        IntegerLiteral:
+                                          base: Decimal
+                                          digits: "97"
+                                          suffix: ~
+                                      op: LogicalAnd
+                                      rhs:
+                                        Path:
+                                          segments:
+                                            - ch
+                              op: LessThanOrEqual
+                              rhs:
+                                IntegerLiteral:
+                                  base: Decimal
+                                  digits: "122"
+                                  suffix: ~
+                    op: LogicalOr
+                    rhs:
+                      Path:
+                        segments:
+                          - ch
+                op: Equal
+                rhs:
+                  IntegerLiteral:
+                    base: Decimal
+                    digits: "95"
+                    suffix: ~
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: false
+        receiver: ~
+        name: is_digit
+        outer_generic_params: []
+        func_generic_params: []
+        self_param: ~
+        params:
+          - name: ch
+            ty: U8
+        return_types:
+          - Bool
+      body:
+        statements:
+          - Return:
+              BinaryOp:
+                lhs:
+                  BinaryOp:
+                    lhs:
+                      Path:
+                        segments:
+                          - ch
+                    op: GreaterThanOrEqual
+                    rhs:
+                      BinaryOp:
+                        lhs:
+                          IntegerLiteral:
+                            base: Decimal
+                            digits: "48"
+                            suffix: ~
+                        op: LogicalAnd
+                        rhs:
+                          Path:
+                            segments:
+                              - ch
+                op: LessThanOrEqual
+                rhs:
+                  IntegerLiteral:
+                    base: Decimal
+                    digits: "57"
+                    suffix: ~
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: false
+        receiver: ~
+        name: is_alpha_numeric
+        outer_generic_params: []
+        func_generic_params: []
+        self_param: ~
+        params:
+          - name: ch
+            ty: U8
+        return_types:
+          - Bool
+      body:
+        statements:
+          - Return:
+              BinaryOp:
+                lhs:
+                  Call:
+                    callee:
+                      Path:
+                        segments:
+                          - is_alpha
+                    args:
+                      - name: ~
+                        value:
+                          Path:
+                            segments:
+                              - ch
+                    generic_args: ~
+                    is_propagating: false
+                op: LogicalOr
+                rhs:
+                  Call:
+                    callee:
+                      Path:
+                        segments:
+                          - is_digit
+                    args:
+                      - name: ~
+                        value:
+                          Path:
+                            segments:
+                              - ch
+                    generic_args: ~
+                    is_propagating: false
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: false
+        receiver: ~
+        name: bytes_equal
+        outer_generic_params: []
+        func_generic_params: []
+        self_param: ~
+        params:
+          - name: a
+            ty:
+              Array:
+                element_type: U8
+                size: ~
+          - name: b
+            ty:
+              Array:
+                element_type: U8
+                size: ~
+        return_types:
+          - Bool
+      body:
+        statements:
+          - If:
+              condition:
+                BinaryOp:
+                  lhs:
+                    FieldAccess:
+                      object:
+                        Path:
+                          segments:
+                            - a
+                      field: len
+                      is_propagating: false
+                  op: NotEqual
+                  rhs:
+                    FieldAccess:
+                      object:
+                        Path:
+                          segments:
+                            - b
+                      field: len
+                      is_propagating: false
+              then_body:
+                statements:
+                  - Return:
+                      BooleanLiteral: false
+              elif_clauses: []
+              else_body: ~
+          - For:
+              pattern: i
+              iterable:
+                Call:
+                  callee:
+                    Path:
+                      segments:
+                        - range
+                  args:
+                    - name: ~
+                      value:
+                        IntegerLiteral:
+                          base: Decimal
+                          digits: "0"
+                          suffix: ~
+                    - name: ~
+                      value:
+                        FieldAccess:
+                          object:
+                            Path:
+                              segments:
+                                - a
+                          field: len
+                          is_propagating: false
+                  generic_args: ~
+                  is_propagating: false
+              body:
+                statements:
+                  - If:
+                      condition:
+                        BinaryOp:
+                          lhs:
+                            Index:
+                              object:
+                                Path:
+                                  segments:
+                                    - a
+                              index:
+                                Path:
+                                  segments:
+                                    - i
+                          op: NotEqual
+                          rhs:
+                            Index:
+                              object:
+                                Path:
+                                  segments:
+                                    - b
+                              index:
+                                Path:
+                                  segments:
+                                    - i
+                      then_body:
+                        statements:
+                          - Return:
+                              BooleanLiteral: false
+                      elif_clauses: []
+                      else_body: ~
+          - Return:
+              BooleanLiteral: true
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: false
+        receiver: ~
+        name: slice_range
+        outer_generic_params: []
+        func_generic_params: []
+        self_param: ~
+        params:
+          - name: bytes
+            ty:
+              Array:
+                element_type: U8
+                size: ~
+          - name: start
+            ty: USize
+          - name: end
+            ty: USize
+        return_types:
+          - Array:
+              element_type: U8
+              size: ~
+      body:
+        statements:
+          - Pass

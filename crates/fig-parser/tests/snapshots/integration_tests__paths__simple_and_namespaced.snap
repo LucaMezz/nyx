@@ -11,11 +11,16 @@ items:
         is_effect: false
         receiver: ~
         name: use_paths
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params: []
         return_types:
-          - Ok
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
       body:
         statements:
           - Let:
@@ -26,7 +31,6 @@ items:
                 Path:
                   segments:
                     - foo
-                  generic_args: []
           - Let:
               annotations: []
               name: y
@@ -39,7 +43,6 @@ items:
                         Path:
                           segments:
                             - std
-                          generic_args: []
                       member: io
                   member: stdin
           - Let:
@@ -54,7 +57,6 @@ items:
                         Path:
                           segments:
                             - core
-                          generic_args: []
                       member: math
                   member: PI
           - Let:
@@ -65,7 +67,6 @@ items:
                 Path:
                   segments:
                     - some_value
-                  generic_args: []
           - Let:
               annotations: []
               name: b
@@ -76,7 +77,6 @@ items:
                     Path:
                       segments:
                         - some_module
-                      generic_args: []
                   member: some_value
           - Let:
               annotations: []
@@ -90,7 +90,6 @@ items:
                         Path:
                           segments:
                             - a
-                          generic_args: []
                       member: b
                   member: c
           - Pass

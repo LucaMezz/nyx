@@ -28,7 +28,9 @@ items:
                 digits: "4096"
                 suffix: ~
       is_packed: false
-      name: Page
+      name:
+        segments:
+          - Page
       generic_params: []
       requires: []
       fields:
@@ -41,3 +43,5 @@ items:
                   base: Decimal
                   digits: "4096"
                   suffix: ~
+          visibility: Default
+          annotations: []

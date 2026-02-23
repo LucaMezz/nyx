@@ -47,7 +47,7 @@ expression: tokens
 - Newline
 - Dedent
 - Hash
-- Packed
+- Ident: unaligned
 - Newline
 - Hash
 - Ident: repr
@@ -55,6 +55,7 @@ expression: tokens
 - Ident: C
 - RParen
 - Newline
+- Packed
 - Struct
 - Ident: PackedCStruct
 - Newline

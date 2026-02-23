@@ -7,12 +7,16 @@ items:
       visibility: Default
       annotations: []
       is_packed: false
-      name: Node
+      name:
+        segments:
+          - Node
       generic_params: []
       requires: []
       fields:
         - name: data
           ty: I32
+          visibility: Default
+          annotations: []
   - Function:
       signature:
         visibility: Default
@@ -20,11 +24,11 @@ items:
         is_extern: false
         is_effect: false
         receiver:
-          segments:
-            - Node
-          generic_args: []
+          - name: Node
+            generic_args: []
         name: consume
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param:
           is_pointer: false
           is_mutable: true
@@ -41,19 +45,20 @@ items:
         is_extern: false
         is_effect: false
         receiver:
-          segments:
-            - Node
-          generic_args: []
+          - name: Node
+            generic_args: []
         name: transform
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param:
           is_pointer: false
           is_mutable: true
         params: []
         return_types:
           - Path:
-              segments:
-                - Node
+              path:
+                segments:
+                  - Node
               generic_args: []
       body:
         statements:

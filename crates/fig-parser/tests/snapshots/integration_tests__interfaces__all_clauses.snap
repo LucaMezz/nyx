@@ -1,0 +1,101 @@
+---
+source: crates/fig-parser/tests/integration_tests.rs
+expression: ast
+---
+items:
+  - Interface:
+      visibility: Default
+      annotations: []
+      name:
+        segments:
+          - Drawable
+      generic_params:
+        - Type:
+            name: T
+            bounds:
+              - Path:
+                  path:
+                    segments:
+                      - Sized
+                  generic_args: []
+            default_type: ~
+      extends:
+        - Path:
+            path:
+              segments:
+                - Display
+            generic_args: []
+        - Path:
+            path:
+              segments:
+                - Debug
+            generic_args: []
+      methods:
+        - visibility: Default
+          annotations: []
+          is_extern: false
+          is_effect: false
+          receiver: ~
+          name: draw
+          outer_generic_params: []
+          func_generic_params: []
+          self_param:
+            is_pointer: true
+            is_mutable: false
+          params: []
+          return_types:
+            - Path:
+                path:
+                  segments:
+                    - ok
+                generic_args: []
+        - visibility: Default
+          annotations: []
+          is_extern: false
+          is_effect: false
+          receiver: ~
+          name: resize
+          outer_generic_params: []
+          func_generic_params: []
+          self_param:
+            is_pointer: true
+            is_mutable: true
+          params:
+            - name: width
+              ty:
+                Path:
+                  path:
+                    segments:
+                      - T
+                  generic_args: []
+            - name: height
+              ty:
+                Path:
+                  path:
+                    segments:
+                      - T
+                  generic_args: []
+          return_types:
+            - Path:
+                path:
+                  segments:
+                    - ok
+                generic_args: []
+        - visibility: Default
+          annotations: []
+          is_extern: false
+          is_effect: false
+          receiver: ~
+          name: bounding_box
+          outer_generic_params: []
+          func_generic_params: []
+          self_param:
+            is_pointer: true
+            is_mutable: false
+          params: []
+          return_types:
+            - Path:
+                path:
+                  segments:
+                    - Rect
+                generic_args: []

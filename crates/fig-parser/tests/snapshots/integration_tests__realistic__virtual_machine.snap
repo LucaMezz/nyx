@@ -1,0 +1,4747 @@
+---
+source: crates/fig-parser/tests/integration_tests.rs
+expression: ast
+---
+items:
+  - Using:
+      visibility: Default
+      annotations: []
+      path:
+        segments:
+          - core
+          - memory
+  - Const:
+      visibility: Default
+      annotations: []
+      generic_params: []
+      receiver: []
+      name: STACK_SIZE
+      ty: USize
+      value:
+        IntegerLiteral:
+          base: Decimal
+          digits: "256"
+          suffix: ~
+  - Const:
+      visibility: Default
+      annotations: []
+      generic_params: []
+      receiver: []
+      name: MAX_LOCALS
+      ty: USize
+      value:
+        IntegerLiteral:
+          base: Decimal
+          digits: "64"
+          suffix: ~
+  - Enum:
+      visibility: Default
+      annotations: []
+      name:
+        segments:
+          - Opcode
+      representation: ~
+      generic_params: []
+      requires: []
+      variants:
+        - name: HALT
+          value: ~
+        - name: NOP
+          value: ~
+        - name: PUSH
+          value: ~
+        - name: POP
+          value: ~
+        - name: DUP
+          value: ~
+        - name: SWAP
+          value: ~
+        - name: ADD
+          value: ~
+        - name: SUB
+          value: ~
+        - name: MUL
+          value: ~
+        - name: DIV
+          value: ~
+        - name: MOD
+          value: ~
+        - name: NEG
+          value: ~
+        - name: AND
+          value: ~
+        - name: OR
+          value: ~
+        - name: XOR
+          value: ~
+        - name: NOT
+          value: ~
+        - name: EQ
+          value: ~
+        - name: NE
+          value: ~
+        - name: LT
+          value: ~
+        - name: LE
+          value: ~
+        - name: GT
+          value: ~
+        - name: GE
+          value: ~
+        - name: JMP
+          value: ~
+        - name: JMP_IF_TRUE
+          value: ~
+        - name: JMP_IF_FALSE
+          value: ~
+        - name: CALL
+          value: ~
+        - name: RET
+          value: ~
+        - name: LOAD_LOCAL
+          value: ~
+        - name: STORE_LOCAL
+          value: ~
+        - name: LOAD_CONST
+          value: ~
+        - name: PRINT
+          value: ~
+  - Union:
+      visibility: Default
+      annotations: []
+      name:
+        segments:
+          - Value
+      generic_params: []
+      requires: []
+      variants:
+        - name: int
+          ty: I64
+        - name: float
+          ty: F64
+        - name: boolean
+          ty: Bool
+        - name: nil
+          ty:
+            Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
+  - Struct:
+      visibility: Default
+      annotations: []
+      is_packed: false
+      name:
+        segments:
+          - Instruction
+      generic_params: []
+      requires: []
+      fields:
+        - name: opcode
+          ty:
+            Path:
+              path:
+                segments:
+                  - Opcode
+              generic_args: []
+          visibility: Default
+          annotations: []
+        - name: operand
+          ty: I32
+          visibility: Default
+          annotations: []
+  - Struct:
+      visibility: Export
+      annotations: []
+      is_packed: false
+      name:
+        segments:
+          - VM
+      generic_params: []
+      requires: []
+      fields:
+        - name: stack
+          ty:
+            Array:
+              element_type:
+                Path:
+                  path:
+                    segments:
+                      - Value
+                  generic_args: []
+              size: ~
+          visibility: Default
+          annotations: []
+        - name: stack_pointer
+          ty: USize
+          visibility: Default
+          annotations: []
+        - name: program
+          ty:
+            Array:
+              element_type:
+                Path:
+                  path:
+                    segments:
+                      - Instruction
+                  generic_args: []
+              size: ~
+          visibility: Default
+          annotations: []
+        - name: program_counter
+          ty: USize
+          visibility: Default
+          annotations: []
+        - name: locals
+          ty:
+            Array:
+              element_type:
+                Path:
+                  path:
+                    segments:
+                      - Value
+                  generic_args: []
+              size: ~
+          visibility: Default
+          annotations: []
+        - name: call_frames
+          ty:
+            Array:
+              element_type:
+                Path:
+                  path:
+                    segments:
+                      - CallFrame
+                  generic_args: []
+              size: ~
+          visibility: Default
+          annotations: []
+        - name: frame_count
+          ty: USize
+          visibility: Default
+          annotations: []
+        - name: constants
+          ty:
+            Array:
+              element_type:
+                Path:
+                  path:
+                    segments:
+                      - Value
+                  generic_args: []
+              size: ~
+          visibility: Default
+          annotations: []
+        - name: running
+          ty: Bool
+          visibility: Default
+          annotations: []
+  - Struct:
+      visibility: Default
+      annotations: []
+      is_packed: false
+      name:
+        segments:
+          - CallFrame
+      generic_params: []
+      requires: []
+      fields:
+        - name: return_address
+          ty: USize
+          visibility: Default
+          annotations: []
+        - name: local_base
+          ty: USize
+          visibility: Default
+          annotations: []
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: VM
+            generic_args: []
+        name: new
+        outer_generic_params: []
+        func_generic_params: []
+        self_param: ~
+        params: []
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - VM
+              generic_args: []
+      body:
+        statements:
+          - Return:
+              Call:
+                callee:
+                  Path:
+                    segments:
+                      - VM
+                args:
+                  - name: stack
+                    value:
+                      ArrayLiteral:
+                        elements: []
+                  - name: stack_pointer
+                    value:
+                      IntegerLiteral:
+                        base: Decimal
+                        digits: "0"
+                        suffix: ~
+                  - name: program
+                    value:
+                      ArrayLiteral:
+                        elements: []
+                  - name: program_counter
+                    value:
+                      IntegerLiteral:
+                        base: Decimal
+                        digits: "0"
+                        suffix: ~
+                  - name: locals
+                    value:
+                      ArrayLiteral:
+                        elements: []
+                  - name: call_frames
+                    value:
+                      ArrayLiteral:
+                        elements: []
+                  - name: frame_count
+                    value:
+                      IntegerLiteral:
+                        base: Decimal
+                        digits: "0"
+                        suffix: ~
+                  - name: constants
+                    value:
+                      ArrayLiteral:
+                        elements: []
+                  - name: running
+                    value:
+                      BooleanLiteral: false
+                generic_args: ~
+                is_propagating: false
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: VM
+            generic_args: []
+        name: load_program
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params:
+          - name: program
+            ty:
+              Array:
+                element_type:
+                  Path:
+                    path:
+                      segments:
+                        - Instruction
+                    generic_args: []
+                size: ~
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
+      body:
+        statements:
+          - Expression:
+              Assign:
+                lhs:
+                  FieldAccess:
+                    object: SelfValue
+                    field: program
+                    is_propagating: false
+                op: Assign
+                rhs:
+                  Path:
+                    segments:
+                      - program
+          - Expression:
+              Assign:
+                lhs:
+                  FieldAccess:
+                    object: SelfValue
+                    field: program_counter
+                    is_propagating: false
+                op: Assign
+                rhs:
+                  IntegerLiteral:
+                    base: Decimal
+                    digits: "0"
+                    suffix: ~
+          - Pass
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: VM
+            generic_args: []
+        name: add_constant
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params:
+          - name: value
+            ty:
+              Path:
+                path:
+                  segments:
+                    - Value
+                generic_args: []
+        return_types:
+          - USize
+      body:
+        statements:
+          - Let:
+              annotations: []
+              name: index
+              ty: ~
+              value:
+                FieldAccess:
+                  object:
+                    FieldAccess:
+                      object: SelfValue
+                      field: constants
+                      is_propagating: false
+                  field: len
+                  is_propagating: false
+          - Expression:
+              Call:
+                callee:
+                  FieldAccess:
+                    object:
+                      FieldAccess:
+                        object: SelfValue
+                        field: constants
+                        is_propagating: false
+                    field: push
+                    is_propagating: false
+                args:
+                  - name: ~
+                    value:
+                      Path:
+                        segments:
+                          - value
+                generic_args: ~
+                is_propagating: false
+          - Return:
+              Path:
+                segments:
+                  - index
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: VM
+            generic_args: []
+        name: run
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params: []
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
+      body:
+        statements:
+          - Expression:
+              Assign:
+                lhs:
+                  FieldAccess:
+                    object: SelfValue
+                    field: running
+                    is_propagating: false
+                op: Assign
+                rhs:
+                  BooleanLiteral: true
+          - Expression:
+              Assign:
+                lhs:
+                  FieldAccess:
+                    object: SelfValue
+                    field: program_counter
+                    is_propagating: false
+                op: Assign
+                rhs:
+                  IntegerLiteral:
+                    base: Decimal
+                    digits: "0"
+                    suffix: ~
+          - Expression:
+              Assign:
+                lhs:
+                  FieldAccess:
+                    object: SelfValue
+                    field: stack_pointer
+                    is_propagating: false
+                op: Assign
+                rhs:
+                  IntegerLiteral:
+                    base: Decimal
+                    digits: "0"
+                    suffix: ~
+          - For:
+              pattern: i
+              iterable:
+                Call:
+                  callee:
+                    Path:
+                      segments:
+                        - range
+                  args:
+                    - name: ~
+                      value:
+                        IntegerLiteral:
+                          base: Decimal
+                          digits: "0"
+                          suffix: ~
+                    - name: ~
+                      value:
+                        IntegerLiteral:
+                          base: Decimal
+                          digits: "100000"
+                          suffix: ~
+                  generic_args: ~
+                  is_propagating: false
+              body:
+                statements:
+                  - If:
+                      condition:
+                        FieldAccess:
+                          object:
+                            UnaryOp:
+                              op: LogicalNot
+                              operand: SelfValue
+                          field: running
+                          is_propagating: false
+                      then_body:
+                        statements:
+                          - Break
+                      elif_clauses: []
+                      else_body: ~
+                  - If:
+                      condition:
+                        BinaryOp:
+                          lhs:
+                            FieldAccess:
+                              object: SelfValue
+                              field: program_counter
+                              is_propagating: false
+                          op: GreaterThanOrEqual
+                          rhs:
+                            FieldAccess:
+                              object:
+                                FieldAccess:
+                                  object: SelfValue
+                                  field: program
+                                  is_propagating: false
+                              field: len
+                              is_propagating: false
+                      then_body:
+                        statements:
+                          - Break
+                      elif_clauses: []
+                      else_body: ~
+                  - Let:
+                      annotations: []
+                      name: instruction
+                      ty: ~
+                      value:
+                        Index:
+                          object:
+                            FieldAccess:
+                              object:
+                                UnaryOp:
+                                  op: AddressOf
+                                  operand: SelfValue
+                              field: program
+                              is_propagating: false
+                          index:
+                            FieldAccess:
+                              object: SelfValue
+                              field: program_counter
+                              is_propagating: false
+                  - Expression:
+                      Call:
+                        callee:
+                          FieldAccess:
+                            object: SelfValue
+                            field: execute
+                            is_propagating: false
+                        args:
+                          - name: ~
+                            value:
+                              Path:
+                                segments:
+                                  - instruction
+                        generic_args: ~
+                        is_propagating: false
+                  - Expression:
+                      Assign:
+                        lhs:
+                          FieldAccess:
+                            object: SelfValue
+                            field: program_counter
+                            is_propagating: false
+                        op: Assign
+                        rhs:
+                          BinaryOp:
+                            lhs:
+                              FieldAccess:
+                                object: SelfValue
+                                field: program_counter
+                                is_propagating: false
+                            op: Add
+                            rhs:
+                              IntegerLiteral:
+                                base: Decimal
+                                digits: "1"
+                                suffix: ~
+          - Pass
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: VM
+            generic_args: []
+        name: execute
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params:
+          - name: instruction
+            ty:
+              Pointer:
+                nullable: false
+                mutable: false
+                element_type:
+                  Path:
+                    path:
+                      segments:
+                        - Instruction
+                    generic_args: []
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
+      body:
+        statements:
+          - If:
+              condition:
+                BinaryOp:
+                  lhs:
+                    FieldAccess:
+                      object:
+                        Path:
+                          segments:
+                            - instruction
+                      field: opcode
+                      is_propagating: false
+                  op: Equal
+                  rhs:
+                    TypeAccess:
+                      object:
+                        Path:
+                          segments:
+                            - Opcode
+                      member: HALT
+              then_body:
+                statements:
+                  - Expression:
+                      Assign:
+                        lhs:
+                          FieldAccess:
+                            object: SelfValue
+                            field: running
+                            is_propagating: false
+                        op: Assign
+                        rhs:
+                          BooleanLiteral: false
+              elif_clauses:
+                - condition:
+                    BinaryOp:
+                      lhs:
+                        FieldAccess:
+                          object:
+                            Path:
+                              segments:
+                                - instruction
+                          field: opcode
+                          is_propagating: false
+                      op: Equal
+                      rhs:
+                        TypeAccess:
+                          object:
+                            Path:
+                              segments:
+                                - Opcode
+                          member: NOP
+                  body:
+                    statements:
+                      - Pass
+                - condition:
+                    BinaryOp:
+                      lhs:
+                        FieldAccess:
+                          object:
+                            Path:
+                              segments:
+                                - instruction
+                          field: opcode
+                          is_propagating: false
+                      op: Equal
+                      rhs:
+                        TypeAccess:
+                          object:
+                            Path:
+                              segments:
+                                - Opcode
+                          member: PUSH
+                  body:
+                    statements:
+                      - Let:
+                          annotations: []
+                          name: value
+                          ty: ~
+                          value:
+                            Call:
+                              callee:
+                                TypeAccess:
+                                  object:
+                                    Path:
+                                      segments:
+                                        - Value
+                                  member: int
+                              args:
+                                - name: ~
+                                  value:
+                                    Cast:
+                                      expr:
+                                        FieldAccess:
+                                          object:
+                                            Path:
+                                              segments:
+                                                - instruction
+                                          field: operand
+                                          is_propagating: false
+                                      target_type: I64
+                              generic_args: ~
+                              is_propagating: false
+                      - Expression:
+                          Call:
+                            callee:
+                              FieldAccess:
+                                object: SelfValue
+                                field: push
+                                is_propagating: false
+                            args:
+                              - name: ~
+                                value:
+                                  Path:
+                                    segments:
+                                      - value
+                            generic_args: ~
+                            is_propagating: false
+                - condition:
+                    BinaryOp:
+                      lhs:
+                        FieldAccess:
+                          object:
+                            Path:
+                              segments:
+                                - instruction
+                          field: opcode
+                          is_propagating: false
+                      op: Equal
+                      rhs:
+                        TypeAccess:
+                          object:
+                            Path:
+                              segments:
+                                - Opcode
+                          member: POP
+                  body:
+                    statements:
+                      - Expression:
+                          Call:
+                            callee:
+                              FieldAccess:
+                                object: SelfValue
+                                field: pop
+                                is_propagating: false
+                            args: []
+                            generic_args: ~
+                            is_propagating: false
+                - condition:
+                    BinaryOp:
+                      lhs:
+                        FieldAccess:
+                          object:
+                            Path:
+                              segments:
+                                - instruction
+                          field: opcode
+                          is_propagating: false
+                      op: Equal
+                      rhs:
+                        TypeAccess:
+                          object:
+                            Path:
+                              segments:
+                                - Opcode
+                          member: DUP
+                  body:
+                    statements:
+                      - Let:
+                          annotations: []
+                          name: value
+                          ty: ~
+                          value:
+                            Call:
+                              callee:
+                                FieldAccess:
+                                  object: SelfValue
+                                  field: peek
+                                  is_propagating: false
+                              args:
+                                - name: ~
+                                  value:
+                                    IntegerLiteral:
+                                      base: Decimal
+                                      digits: "0"
+                                      suffix: ~
+                              generic_args: ~
+                              is_propagating: false
+                      - Expression:
+                          Call:
+                            callee:
+                              FieldAccess:
+                                object: SelfValue
+                                field: push
+                                is_propagating: false
+                            args:
+                              - name: ~
+                                value:
+                                  Path:
+                                    segments:
+                                      - value
+                            generic_args: ~
+                            is_propagating: false
+                - condition:
+                    BinaryOp:
+                      lhs:
+                        FieldAccess:
+                          object:
+                            Path:
+                              segments:
+                                - instruction
+                          field: opcode
+                          is_propagating: false
+                      op: Equal
+                      rhs:
+                        TypeAccess:
+                          object:
+                            Path:
+                              segments:
+                                - Opcode
+                          member: SWAP
+                  body:
+                    statements:
+                      - Let:
+                          annotations: []
+                          name: a
+                          ty: ~
+                          value:
+                            Call:
+                              callee:
+                                FieldAccess:
+                                  object: SelfValue
+                                  field: pop
+                                  is_propagating: false
+                              args: []
+                              generic_args: ~
+                              is_propagating: false
+                      - Let:
+                          annotations: []
+                          name: b
+                          ty: ~
+                          value:
+                            Call:
+                              callee:
+                                FieldAccess:
+                                  object: SelfValue
+                                  field: pop
+                                  is_propagating: false
+                              args: []
+                              generic_args: ~
+                              is_propagating: false
+                      - Expression:
+                          Call:
+                            callee:
+                              FieldAccess:
+                                object: SelfValue
+                                field: push
+                                is_propagating: false
+                            args:
+                              - name: ~
+                                value:
+                                  Path:
+                                    segments:
+                                      - a
+                            generic_args: ~
+                            is_propagating: false
+                      - Expression:
+                          Call:
+                            callee:
+                              FieldAccess:
+                                object: SelfValue
+                                field: push
+                                is_propagating: false
+                            args:
+                              - name: ~
+                                value:
+                                  Path:
+                                    segments:
+                                      - b
+                            generic_args: ~
+                            is_propagating: false
+                - condition:
+                    BinaryOp:
+                      lhs:
+                        FieldAccess:
+                          object:
+                            Path:
+                              segments:
+                                - instruction
+                          field: opcode
+                          is_propagating: false
+                      op: Equal
+                      rhs:
+                        TypeAccess:
+                          object:
+                            Path:
+                              segments:
+                                - Opcode
+                          member: ADD
+                  body:
+                    statements:
+                      - Let:
+                          annotations: []
+                          name: b
+                          ty: ~
+                          value:
+                            Call:
+                              callee:
+                                FieldAccess:
+                                  object: SelfValue
+                                  field: pop
+                                  is_propagating: false
+                              args: []
+                              generic_args: ~
+                              is_propagating: false
+                      - Let:
+                          annotations: []
+                          name: a
+                          ty: ~
+                          value:
+                            Call:
+                              callee:
+                                FieldAccess:
+                                  object: SelfValue
+                                  field: pop
+                                  is_propagating: false
+                              args: []
+                              generic_args: ~
+                              is_propagating: false
+                      - Let:
+                          annotations: []
+                          name: result
+                          ty: ~
+                          value:
+                            Call:
+                              callee:
+                                TypeAccess:
+                                  object:
+                                    Path:
+                                      segments:
+                                        - Value
+                                  member: int
+                              args:
+                                - name: ~
+                                  value:
+                                    BinaryOp:
+                                      lhs:
+                                        FieldAccess:
+                                          object:
+                                            Path:
+                                              segments:
+                                                - a
+                                          field: int
+                                          is_propagating: false
+                                      op: Add
+                                      rhs:
+                                        FieldAccess:
+                                          object:
+                                            Path:
+                                              segments:
+                                                - b
+                                          field: int
+                                          is_propagating: false
+                              generic_args: ~
+                              is_propagating: false
+                      - Expression:
+                          Call:
+                            callee:
+                              FieldAccess:
+                                object: SelfValue
+                                field: push
+                                is_propagating: false
+                            args:
+                              - name: ~
+                                value:
+                                  Path:
+                                    segments:
+                                      - result
+                            generic_args: ~
+                            is_propagating: false
+                - condition:
+                    BinaryOp:
+                      lhs:
+                        FieldAccess:
+                          object:
+                            Path:
+                              segments:
+                                - instruction
+                          field: opcode
+                          is_propagating: false
+                      op: Equal
+                      rhs:
+                        TypeAccess:
+                          object:
+                            Path:
+                              segments:
+                                - Opcode
+                          member: SUB
+                  body:
+                    statements:
+                      - Let:
+                          annotations: []
+                          name: b
+                          ty: ~
+                          value:
+                            Call:
+                              callee:
+                                FieldAccess:
+                                  object: SelfValue
+                                  field: pop
+                                  is_propagating: false
+                              args: []
+                              generic_args: ~
+                              is_propagating: false
+                      - Let:
+                          annotations: []
+                          name: a
+                          ty: ~
+                          value:
+                            Call:
+                              callee:
+                                FieldAccess:
+                                  object: SelfValue
+                                  field: pop
+                                  is_propagating: false
+                              args: []
+                              generic_args: ~
+                              is_propagating: false
+                      - Let:
+                          annotations: []
+                          name: result
+                          ty: ~
+                          value:
+                            Call:
+                              callee:
+                                TypeAccess:
+                                  object:
+                                    Path:
+                                      segments:
+                                        - Value
+                                  member: int
+                              args:
+                                - name: ~
+                                  value:
+                                    BinaryOp:
+                                      lhs:
+                                        FieldAccess:
+                                          object:
+                                            Path:
+                                              segments:
+                                                - a
+                                          field: int
+                                          is_propagating: false
+                                      op: Subtract
+                                      rhs:
+                                        FieldAccess:
+                                          object:
+                                            Path:
+                                              segments:
+                                                - b
+                                          field: int
+                                          is_propagating: false
+                              generic_args: ~
+                              is_propagating: false
+                      - Expression:
+                          Call:
+                            callee:
+                              FieldAccess:
+                                object: SelfValue
+                                field: push
+                                is_propagating: false
+                            args:
+                              - name: ~
+                                value:
+                                  Path:
+                                    segments:
+                                      - result
+                            generic_args: ~
+                            is_propagating: false
+                - condition:
+                    BinaryOp:
+                      lhs:
+                        FieldAccess:
+                          object:
+                            Path:
+                              segments:
+                                - instruction
+                          field: opcode
+                          is_propagating: false
+                      op: Equal
+                      rhs:
+                        TypeAccess:
+                          object:
+                            Path:
+                              segments:
+                                - Opcode
+                          member: MUL
+                  body:
+                    statements:
+                      - Let:
+                          annotations: []
+                          name: b
+                          ty: ~
+                          value:
+                            Call:
+                              callee:
+                                FieldAccess:
+                                  object: SelfValue
+                                  field: pop
+                                  is_propagating: false
+                              args: []
+                              generic_args: ~
+                              is_propagating: false
+                      - Let:
+                          annotations: []
+                          name: a
+                          ty: ~
+                          value:
+                            Call:
+                              callee:
+                                FieldAccess:
+                                  object: SelfValue
+                                  field: pop
+                                  is_propagating: false
+                              args: []
+                              generic_args: ~
+                              is_propagating: false
+                      - Let:
+                          annotations: []
+                          name: result
+                          ty: ~
+                          value:
+                            Call:
+                              callee:
+                                TypeAccess:
+                                  object:
+                                    Path:
+                                      segments:
+                                        - Value
+                                  member: int
+                              args:
+                                - name: ~
+                                  value:
+                                    BinaryOp:
+                                      lhs:
+                                        FieldAccess:
+                                          object:
+                                            Path:
+                                              segments:
+                                                - a
+                                          field: int
+                                          is_propagating: false
+                                      op: Multiply
+                                      rhs:
+                                        FieldAccess:
+                                          object:
+                                            Path:
+                                              segments:
+                                                - b
+                                          field: int
+                                          is_propagating: false
+                              generic_args: ~
+                              is_propagating: false
+                      - Expression:
+                          Call:
+                            callee:
+                              FieldAccess:
+                                object: SelfValue
+                                field: push
+                                is_propagating: false
+                            args:
+                              - name: ~
+                                value:
+                                  Path:
+                                    segments:
+                                      - result
+                            generic_args: ~
+                            is_propagating: false
+                - condition:
+                    BinaryOp:
+                      lhs:
+                        FieldAccess:
+                          object:
+                            Path:
+                              segments:
+                                - instruction
+                          field: opcode
+                          is_propagating: false
+                      op: Equal
+                      rhs:
+                        TypeAccess:
+                          object:
+                            Path:
+                              segments:
+                                - Opcode
+                          member: DIV
+                  body:
+                    statements:
+                      - Let:
+                          annotations: []
+                          name: b
+                          ty: ~
+                          value:
+                            Call:
+                              callee:
+                                FieldAccess:
+                                  object: SelfValue
+                                  field: pop
+                                  is_propagating: false
+                              args: []
+                              generic_args: ~
+                              is_propagating: false
+                      - Let:
+                          annotations: []
+                          name: a
+                          ty: ~
+                          value:
+                            Call:
+                              callee:
+                                FieldAccess:
+                                  object: SelfValue
+                                  field: pop
+                                  is_propagating: false
+                              args: []
+                              generic_args: ~
+                              is_propagating: false
+                      - Let:
+                          annotations: []
+                          name: result
+                          ty: ~
+                          value:
+                            Call:
+                              callee:
+                                TypeAccess:
+                                  object:
+                                    Path:
+                                      segments:
+                                        - Value
+                                  member: int
+                              args:
+                                - name: ~
+                                  value:
+                                    BinaryOp:
+                                      lhs:
+                                        FieldAccess:
+                                          object:
+                                            Path:
+                                              segments:
+                                                - a
+                                          field: int
+                                          is_propagating: false
+                                      op: Divide
+                                      rhs:
+                                        FieldAccess:
+                                          object:
+                                            Path:
+                                              segments:
+                                                - b
+                                          field: int
+                                          is_propagating: false
+                              generic_args: ~
+                              is_propagating: false
+                      - Expression:
+                          Call:
+                            callee:
+                              FieldAccess:
+                                object: SelfValue
+                                field: push
+                                is_propagating: false
+                            args:
+                              - name: ~
+                                value:
+                                  Path:
+                                    segments:
+                                      - result
+                            generic_args: ~
+                            is_propagating: false
+                - condition:
+                    BinaryOp:
+                      lhs:
+                        FieldAccess:
+                          object:
+                            Path:
+                              segments:
+                                - instruction
+                          field: opcode
+                          is_propagating: false
+                      op: Equal
+                      rhs:
+                        TypeAccess:
+                          object:
+                            Path:
+                              segments:
+                                - Opcode
+                          member: MOD
+                  body:
+                    statements:
+                      - Let:
+                          annotations: []
+                          name: b
+                          ty: ~
+                          value:
+                            Call:
+                              callee:
+                                FieldAccess:
+                                  object: SelfValue
+                                  field: pop
+                                  is_propagating: false
+                              args: []
+                              generic_args: ~
+                              is_propagating: false
+                      - Let:
+                          annotations: []
+                          name: a
+                          ty: ~
+                          value:
+                            Call:
+                              callee:
+                                FieldAccess:
+                                  object: SelfValue
+                                  field: pop
+                                  is_propagating: false
+                              args: []
+                              generic_args: ~
+                              is_propagating: false
+                      - Let:
+                          annotations: []
+                          name: result
+                          ty: ~
+                          value:
+                            Call:
+                              callee:
+                                TypeAccess:
+                                  object:
+                                    Path:
+                                      segments:
+                                        - Value
+                                  member: int
+                              args:
+                                - name: ~
+                                  value:
+                                    BinaryOp:
+                                      lhs:
+                                        FieldAccess:
+                                          object:
+                                            Path:
+                                              segments:
+                                                - a
+                                          field: int
+                                          is_propagating: false
+                                      op: Modulo
+                                      rhs:
+                                        FieldAccess:
+                                          object:
+                                            Path:
+                                              segments:
+                                                - b
+                                          field: int
+                                          is_propagating: false
+                              generic_args: ~
+                              is_propagating: false
+                      - Expression:
+                          Call:
+                            callee:
+                              FieldAccess:
+                                object: SelfValue
+                                field: push
+                                is_propagating: false
+                            args:
+                              - name: ~
+                                value:
+                                  Path:
+                                    segments:
+                                      - result
+                            generic_args: ~
+                            is_propagating: false
+                - condition:
+                    BinaryOp:
+                      lhs:
+                        FieldAccess:
+                          object:
+                            Path:
+                              segments:
+                                - instruction
+                          field: opcode
+                          is_propagating: false
+                      op: Equal
+                      rhs:
+                        TypeAccess:
+                          object:
+                            Path:
+                              segments:
+                                - Opcode
+                          member: NEG
+                  body:
+                    statements:
+                      - Let:
+                          annotations: []
+                          name: a
+                          ty: ~
+                          value:
+                            Call:
+                              callee:
+                                FieldAccess:
+                                  object: SelfValue
+                                  field: pop
+                                  is_propagating: false
+                              args: []
+                              generic_args: ~
+                              is_propagating: false
+                      - Let:
+                          annotations: []
+                          name: result
+                          ty: ~
+                          value:
+                            Call:
+                              callee:
+                                TypeAccess:
+                                  object:
+                                    Path:
+                                      segments:
+                                        - Value
+                                  member: int
+                              args:
+                                - name: ~
+                                  value:
+                                    FieldAccess:
+                                      object:
+                                        UnaryOp:
+                                          op: Negate
+                                          operand:
+                                            Path:
+                                              segments:
+                                                - a
+                                      field: int
+                                      is_propagating: false
+                              generic_args: ~
+                              is_propagating: false
+                      - Expression:
+                          Call:
+                            callee:
+                              FieldAccess:
+                                object: SelfValue
+                                field: push
+                                is_propagating: false
+                            args:
+                              - name: ~
+                                value:
+                                  Path:
+                                    segments:
+                                      - result
+                            generic_args: ~
+                            is_propagating: false
+                - condition:
+                    BinaryOp:
+                      lhs:
+                        FieldAccess:
+                          object:
+                            Path:
+                              segments:
+                                - instruction
+                          field: opcode
+                          is_propagating: false
+                      op: Equal
+                      rhs:
+                        TypeAccess:
+                          object:
+                            Path:
+                              segments:
+                                - Opcode
+                          member: AND
+                  body:
+                    statements:
+                      - Let:
+                          annotations: []
+                          name: b
+                          ty: ~
+                          value:
+                            Call:
+                              callee:
+                                FieldAccess:
+                                  object: SelfValue
+                                  field: pop
+                                  is_propagating: false
+                              args: []
+                              generic_args: ~
+                              is_propagating: false
+                      - Let:
+                          annotations: []
+                          name: a
+                          ty: ~
+                          value:
+                            Call:
+                              callee:
+                                FieldAccess:
+                                  object: SelfValue
+                                  field: pop
+                                  is_propagating: false
+                              args: []
+                              generic_args: ~
+                              is_propagating: false
+                      - Let:
+                          annotations: []
+                          name: result
+                          ty: ~
+                          value:
+                            Call:
+                              callee:
+                                TypeAccess:
+                                  object:
+                                    Path:
+                                      segments:
+                                        - Value
+                                  member: int
+                              args:
+                                - name: ~
+                                  value:
+                                    BinaryOp:
+                                      lhs:
+                                        FieldAccess:
+                                          object:
+                                            Path:
+                                              segments:
+                                                - a
+                                          field: int
+                                          is_propagating: false
+                                      op: BitwiseAnd
+                                      rhs:
+                                        FieldAccess:
+                                          object:
+                                            Path:
+                                              segments:
+                                                - b
+                                          field: int
+                                          is_propagating: false
+                              generic_args: ~
+                              is_propagating: false
+                      - Expression:
+                          Call:
+                            callee:
+                              FieldAccess:
+                                object: SelfValue
+                                field: push
+                                is_propagating: false
+                            args:
+                              - name: ~
+                                value:
+                                  Path:
+                                    segments:
+                                      - result
+                            generic_args: ~
+                            is_propagating: false
+                - condition:
+                    BinaryOp:
+                      lhs:
+                        FieldAccess:
+                          object:
+                            Path:
+                              segments:
+                                - instruction
+                          field: opcode
+                          is_propagating: false
+                      op: Equal
+                      rhs:
+                        TypeAccess:
+                          object:
+                            Path:
+                              segments:
+                                - Opcode
+                          member: OR
+                  body:
+                    statements:
+                      - Let:
+                          annotations: []
+                          name: b
+                          ty: ~
+                          value:
+                            Call:
+                              callee:
+                                FieldAccess:
+                                  object: SelfValue
+                                  field: pop
+                                  is_propagating: false
+                              args: []
+                              generic_args: ~
+                              is_propagating: false
+                      - Let:
+                          annotations: []
+                          name: a
+                          ty: ~
+                          value:
+                            Call:
+                              callee:
+                                FieldAccess:
+                                  object: SelfValue
+                                  field: pop
+                                  is_propagating: false
+                              args: []
+                              generic_args: ~
+                              is_propagating: false
+                      - Let:
+                          annotations: []
+                          name: result
+                          ty: ~
+                          value:
+                            Call:
+                              callee:
+                                TypeAccess:
+                                  object:
+                                    Path:
+                                      segments:
+                                        - Value
+                                  member: int
+                              args:
+                                - name: ~
+                                  value:
+                                    BinaryOp:
+                                      lhs:
+                                        FieldAccess:
+                                          object:
+                                            Path:
+                                              segments:
+                                                - a
+                                          field: int
+                                          is_propagating: false
+                                      op: BitwiseOr
+                                      rhs:
+                                        FieldAccess:
+                                          object:
+                                            Path:
+                                              segments:
+                                                - b
+                                          field: int
+                                          is_propagating: false
+                              generic_args: ~
+                              is_propagating: false
+                      - Expression:
+                          Call:
+                            callee:
+                              FieldAccess:
+                                object: SelfValue
+                                field: push
+                                is_propagating: false
+                            args:
+                              - name: ~
+                                value:
+                                  Path:
+                                    segments:
+                                      - result
+                            generic_args: ~
+                            is_propagating: false
+                - condition:
+                    BinaryOp:
+                      lhs:
+                        FieldAccess:
+                          object:
+                            Path:
+                              segments:
+                                - instruction
+                          field: opcode
+                          is_propagating: false
+                      op: Equal
+                      rhs:
+                        TypeAccess:
+                          object:
+                            Path:
+                              segments:
+                                - Opcode
+                          member: XOR
+                  body:
+                    statements:
+                      - Let:
+                          annotations: []
+                          name: b
+                          ty: ~
+                          value:
+                            Call:
+                              callee:
+                                FieldAccess:
+                                  object: SelfValue
+                                  field: pop
+                                  is_propagating: false
+                              args: []
+                              generic_args: ~
+                              is_propagating: false
+                      - Let:
+                          annotations: []
+                          name: a
+                          ty: ~
+                          value:
+                            Call:
+                              callee:
+                                FieldAccess:
+                                  object: SelfValue
+                                  field: pop
+                                  is_propagating: false
+                              args: []
+                              generic_args: ~
+                              is_propagating: false
+                      - Let:
+                          annotations: []
+                          name: result
+                          ty: ~
+                          value:
+                            Call:
+                              callee:
+                                TypeAccess:
+                                  object:
+                                    Path:
+                                      segments:
+                                        - Value
+                                  member: int
+                              args:
+                                - name: ~
+                                  value:
+                                    BinaryOp:
+                                      lhs:
+                                        FieldAccess:
+                                          object:
+                                            Path:
+                                              segments:
+                                                - a
+                                          field: int
+                                          is_propagating: false
+                                      op: BitwiseXor
+                                      rhs:
+                                        FieldAccess:
+                                          object:
+                                            Path:
+                                              segments:
+                                                - b
+                                          field: int
+                                          is_propagating: false
+                              generic_args: ~
+                              is_propagating: false
+                      - Expression:
+                          Call:
+                            callee:
+                              FieldAccess:
+                                object: SelfValue
+                                field: push
+                                is_propagating: false
+                            args:
+                              - name: ~
+                                value:
+                                  Path:
+                                    segments:
+                                      - result
+                            generic_args: ~
+                            is_propagating: false
+                - condition:
+                    BinaryOp:
+                      lhs:
+                        FieldAccess:
+                          object:
+                            Path:
+                              segments:
+                                - instruction
+                          field: opcode
+                          is_propagating: false
+                      op: Equal
+                      rhs:
+                        TypeAccess:
+                          object:
+                            Path:
+                              segments:
+                                - Opcode
+                          member: NOT
+                  body:
+                    statements:
+                      - Let:
+                          annotations: []
+                          name: a
+                          ty: ~
+                          value:
+                            Call:
+                              callee:
+                                FieldAccess:
+                                  object: SelfValue
+                                  field: pop
+                                  is_propagating: false
+                              args: []
+                              generic_args: ~
+                              is_propagating: false
+                      - Let:
+                          annotations: []
+                          name: result
+                          ty: ~
+                          value:
+                            Call:
+                              callee:
+                                TypeAccess:
+                                  object:
+                                    Path:
+                                      segments:
+                                        - Value
+                                  member: int
+                              args:
+                                - name: ~
+                                  value:
+                                    FieldAccess:
+                                      object:
+                                        UnaryOp:
+                                          op: LogicalNot
+                                          operand:
+                                            Path:
+                                              segments:
+                                                - a
+                                      field: int
+                                      is_propagating: false
+                              generic_args: ~
+                              is_propagating: false
+                      - Expression:
+                          Call:
+                            callee:
+                              FieldAccess:
+                                object: SelfValue
+                                field: push
+                                is_propagating: false
+                            args:
+                              - name: ~
+                                value:
+                                  Path:
+                                    segments:
+                                      - result
+                            generic_args: ~
+                            is_propagating: false
+                - condition:
+                    BinaryOp:
+                      lhs:
+                        FieldAccess:
+                          object:
+                            Path:
+                              segments:
+                                - instruction
+                          field: opcode
+                          is_propagating: false
+                      op: Equal
+                      rhs:
+                        TypeAccess:
+                          object:
+                            Path:
+                              segments:
+                                - Opcode
+                          member: EQ
+                  body:
+                    statements:
+                      - Let:
+                          annotations: []
+                          name: b
+                          ty: ~
+                          value:
+                            Call:
+                              callee:
+                                FieldAccess:
+                                  object: SelfValue
+                                  field: pop
+                                  is_propagating: false
+                              args: []
+                              generic_args: ~
+                              is_propagating: false
+                      - Let:
+                          annotations: []
+                          name: a
+                          ty: ~
+                          value:
+                            Call:
+                              callee:
+                                FieldAccess:
+                                  object: SelfValue
+                                  field: pop
+                                  is_propagating: false
+                              args: []
+                              generic_args: ~
+                              is_propagating: false
+                      - Let:
+                          annotations: []
+                          name: result
+                          ty: ~
+                          value:
+                            Call:
+                              callee:
+                                TypeAccess:
+                                  object:
+                                    Path:
+                                      segments:
+                                        - Value
+                                  member: boolean
+                              args:
+                                - name: ~
+                                  value:
+                                    BinaryOp:
+                                      lhs:
+                                        FieldAccess:
+                                          object:
+                                            Path:
+                                              segments:
+                                                - a
+                                          field: int
+                                          is_propagating: false
+                                      op: Equal
+                                      rhs:
+                                        FieldAccess:
+                                          object:
+                                            Path:
+                                              segments:
+                                                - b
+                                          field: int
+                                          is_propagating: false
+                              generic_args: ~
+                              is_propagating: false
+                      - Expression:
+                          Call:
+                            callee:
+                              FieldAccess:
+                                object: SelfValue
+                                field: push
+                                is_propagating: false
+                            args:
+                              - name: ~
+                                value:
+                                  Path:
+                                    segments:
+                                      - result
+                            generic_args: ~
+                            is_propagating: false
+                - condition:
+                    BinaryOp:
+                      lhs:
+                        FieldAccess:
+                          object:
+                            Path:
+                              segments:
+                                - instruction
+                          field: opcode
+                          is_propagating: false
+                      op: Equal
+                      rhs:
+                        TypeAccess:
+                          object:
+                            Path:
+                              segments:
+                                - Opcode
+                          member: NE
+                  body:
+                    statements:
+                      - Let:
+                          annotations: []
+                          name: b
+                          ty: ~
+                          value:
+                            Call:
+                              callee:
+                                FieldAccess:
+                                  object: SelfValue
+                                  field: pop
+                                  is_propagating: false
+                              args: []
+                              generic_args: ~
+                              is_propagating: false
+                      - Let:
+                          annotations: []
+                          name: a
+                          ty: ~
+                          value:
+                            Call:
+                              callee:
+                                FieldAccess:
+                                  object: SelfValue
+                                  field: pop
+                                  is_propagating: false
+                              args: []
+                              generic_args: ~
+                              is_propagating: false
+                      - Let:
+                          annotations: []
+                          name: result
+                          ty: ~
+                          value:
+                            Call:
+                              callee:
+                                TypeAccess:
+                                  object:
+                                    Path:
+                                      segments:
+                                        - Value
+                                  member: boolean
+                              args:
+                                - name: ~
+                                  value:
+                                    BinaryOp:
+                                      lhs:
+                                        FieldAccess:
+                                          object:
+                                            Path:
+                                              segments:
+                                                - a
+                                          field: int
+                                          is_propagating: false
+                                      op: NotEqual
+                                      rhs:
+                                        FieldAccess:
+                                          object:
+                                            Path:
+                                              segments:
+                                                - b
+                                          field: int
+                                          is_propagating: false
+                              generic_args: ~
+                              is_propagating: false
+                      - Expression:
+                          Call:
+                            callee:
+                              FieldAccess:
+                                object: SelfValue
+                                field: push
+                                is_propagating: false
+                            args:
+                              - name: ~
+                                value:
+                                  Path:
+                                    segments:
+                                      - result
+                            generic_args: ~
+                            is_propagating: false
+                - condition:
+                    BinaryOp:
+                      lhs:
+                        FieldAccess:
+                          object:
+                            Path:
+                              segments:
+                                - instruction
+                          field: opcode
+                          is_propagating: false
+                      op: Equal
+                      rhs:
+                        TypeAccess:
+                          object:
+                            Path:
+                              segments:
+                                - Opcode
+                          member: LT
+                  body:
+                    statements:
+                      - Let:
+                          annotations: []
+                          name: b
+                          ty: ~
+                          value:
+                            Call:
+                              callee:
+                                FieldAccess:
+                                  object: SelfValue
+                                  field: pop
+                                  is_propagating: false
+                              args: []
+                              generic_args: ~
+                              is_propagating: false
+                      - Let:
+                          annotations: []
+                          name: a
+                          ty: ~
+                          value:
+                            Call:
+                              callee:
+                                FieldAccess:
+                                  object: SelfValue
+                                  field: pop
+                                  is_propagating: false
+                              args: []
+                              generic_args: ~
+                              is_propagating: false
+                      - Let:
+                          annotations: []
+                          name: result
+                          ty: ~
+                          value:
+                            Call:
+                              callee:
+                                TypeAccess:
+                                  object:
+                                    Path:
+                                      segments:
+                                        - Value
+                                  member: boolean
+                              args:
+                                - name: ~
+                                  value:
+                                    BinaryOp:
+                                      lhs:
+                                        FieldAccess:
+                                          object:
+                                            Path:
+                                              segments:
+                                                - a
+                                          field: int
+                                          is_propagating: false
+                                      op: LessThan
+                                      rhs:
+                                        FieldAccess:
+                                          object:
+                                            Path:
+                                              segments:
+                                                - b
+                                          field: int
+                                          is_propagating: false
+                              generic_args: ~
+                              is_propagating: false
+                      - Expression:
+                          Call:
+                            callee:
+                              FieldAccess:
+                                object: SelfValue
+                                field: push
+                                is_propagating: false
+                            args:
+                              - name: ~
+                                value:
+                                  Path:
+                                    segments:
+                                      - result
+                            generic_args: ~
+                            is_propagating: false
+                - condition:
+                    BinaryOp:
+                      lhs:
+                        FieldAccess:
+                          object:
+                            Path:
+                              segments:
+                                - instruction
+                          field: opcode
+                          is_propagating: false
+                      op: Equal
+                      rhs:
+                        TypeAccess:
+                          object:
+                            Path:
+                              segments:
+                                - Opcode
+                          member: LE
+                  body:
+                    statements:
+                      - Let:
+                          annotations: []
+                          name: b
+                          ty: ~
+                          value:
+                            Call:
+                              callee:
+                                FieldAccess:
+                                  object: SelfValue
+                                  field: pop
+                                  is_propagating: false
+                              args: []
+                              generic_args: ~
+                              is_propagating: false
+                      - Let:
+                          annotations: []
+                          name: a
+                          ty: ~
+                          value:
+                            Call:
+                              callee:
+                                FieldAccess:
+                                  object: SelfValue
+                                  field: pop
+                                  is_propagating: false
+                              args: []
+                              generic_args: ~
+                              is_propagating: false
+                      - Let:
+                          annotations: []
+                          name: result
+                          ty: ~
+                          value:
+                            Call:
+                              callee:
+                                TypeAccess:
+                                  object:
+                                    Path:
+                                      segments:
+                                        - Value
+                                  member: boolean
+                              args:
+                                - name: ~
+                                  value:
+                                    BinaryOp:
+                                      lhs:
+                                        FieldAccess:
+                                          object:
+                                            Path:
+                                              segments:
+                                                - a
+                                          field: int
+                                          is_propagating: false
+                                      op: LessThanOrEqual
+                                      rhs:
+                                        FieldAccess:
+                                          object:
+                                            Path:
+                                              segments:
+                                                - b
+                                          field: int
+                                          is_propagating: false
+                              generic_args: ~
+                              is_propagating: false
+                      - Expression:
+                          Call:
+                            callee:
+                              FieldAccess:
+                                object: SelfValue
+                                field: push
+                                is_propagating: false
+                            args:
+                              - name: ~
+                                value:
+                                  Path:
+                                    segments:
+                                      - result
+                            generic_args: ~
+                            is_propagating: false
+                - condition:
+                    BinaryOp:
+                      lhs:
+                        FieldAccess:
+                          object:
+                            Path:
+                              segments:
+                                - instruction
+                          field: opcode
+                          is_propagating: false
+                      op: Equal
+                      rhs:
+                        TypeAccess:
+                          object:
+                            Path:
+                              segments:
+                                - Opcode
+                          member: GT
+                  body:
+                    statements:
+                      - Let:
+                          annotations: []
+                          name: b
+                          ty: ~
+                          value:
+                            Call:
+                              callee:
+                                FieldAccess:
+                                  object: SelfValue
+                                  field: pop
+                                  is_propagating: false
+                              args: []
+                              generic_args: ~
+                              is_propagating: false
+                      - Let:
+                          annotations: []
+                          name: a
+                          ty: ~
+                          value:
+                            Call:
+                              callee:
+                                FieldAccess:
+                                  object: SelfValue
+                                  field: pop
+                                  is_propagating: false
+                              args: []
+                              generic_args: ~
+                              is_propagating: false
+                      - Let:
+                          annotations: []
+                          name: result
+                          ty: ~
+                          value:
+                            Call:
+                              callee:
+                                TypeAccess:
+                                  object:
+                                    Path:
+                                      segments:
+                                        - Value
+                                  member: boolean
+                              args:
+                                - name: ~
+                                  value:
+                                    BinaryOp:
+                                      lhs:
+                                        FieldAccess:
+                                          object:
+                                            Path:
+                                              segments:
+                                                - a
+                                          field: int
+                                          is_propagating: false
+                                      op: GreaterThan
+                                      rhs:
+                                        FieldAccess:
+                                          object:
+                                            Path:
+                                              segments:
+                                                - b
+                                          field: int
+                                          is_propagating: false
+                              generic_args: ~
+                              is_propagating: false
+                      - Expression:
+                          Call:
+                            callee:
+                              FieldAccess:
+                                object: SelfValue
+                                field: push
+                                is_propagating: false
+                            args:
+                              - name: ~
+                                value:
+                                  Path:
+                                    segments:
+                                      - result
+                            generic_args: ~
+                            is_propagating: false
+                - condition:
+                    BinaryOp:
+                      lhs:
+                        FieldAccess:
+                          object:
+                            Path:
+                              segments:
+                                - instruction
+                          field: opcode
+                          is_propagating: false
+                      op: Equal
+                      rhs:
+                        TypeAccess:
+                          object:
+                            Path:
+                              segments:
+                                - Opcode
+                          member: GE
+                  body:
+                    statements:
+                      - Let:
+                          annotations: []
+                          name: b
+                          ty: ~
+                          value:
+                            Call:
+                              callee:
+                                FieldAccess:
+                                  object: SelfValue
+                                  field: pop
+                                  is_propagating: false
+                              args: []
+                              generic_args: ~
+                              is_propagating: false
+                      - Let:
+                          annotations: []
+                          name: a
+                          ty: ~
+                          value:
+                            Call:
+                              callee:
+                                FieldAccess:
+                                  object: SelfValue
+                                  field: pop
+                                  is_propagating: false
+                              args: []
+                              generic_args: ~
+                              is_propagating: false
+                      - Let:
+                          annotations: []
+                          name: result
+                          ty: ~
+                          value:
+                            Call:
+                              callee:
+                                TypeAccess:
+                                  object:
+                                    Path:
+                                      segments:
+                                        - Value
+                                  member: boolean
+                              args:
+                                - name: ~
+                                  value:
+                                    BinaryOp:
+                                      lhs:
+                                        FieldAccess:
+                                          object:
+                                            Path:
+                                              segments:
+                                                - a
+                                          field: int
+                                          is_propagating: false
+                                      op: GreaterThanOrEqual
+                                      rhs:
+                                        FieldAccess:
+                                          object:
+                                            Path:
+                                              segments:
+                                                - b
+                                          field: int
+                                          is_propagating: false
+                              generic_args: ~
+                              is_propagating: false
+                      - Expression:
+                          Call:
+                            callee:
+                              FieldAccess:
+                                object: SelfValue
+                                field: push
+                                is_propagating: false
+                            args:
+                              - name: ~
+                                value:
+                                  Path:
+                                    segments:
+                                      - result
+                            generic_args: ~
+                            is_propagating: false
+                - condition:
+                    BinaryOp:
+                      lhs:
+                        FieldAccess:
+                          object:
+                            Path:
+                              segments:
+                                - instruction
+                          field: opcode
+                          is_propagating: false
+                      op: Equal
+                      rhs:
+                        TypeAccess:
+                          object:
+                            Path:
+                              segments:
+                                - Opcode
+                          member: JMP
+                  body:
+                    statements:
+                      - Expression:
+                          Assign:
+                            lhs:
+                              FieldAccess:
+                                object: SelfValue
+                                field: program_counter
+                                is_propagating: false
+                            op: Assign
+                            rhs:
+                              BinaryOp:
+                                lhs:
+                                  Parenthesized:
+                                    Cast:
+                                      expr:
+                                        FieldAccess:
+                                          object:
+                                            Path:
+                                              segments:
+                                                - instruction
+                                          field: operand
+                                          is_propagating: false
+                                      target_type: USize
+                                op: Subtract
+                                rhs:
+                                  IntegerLiteral:
+                                    base: Decimal
+                                    digits: "1"
+                                    suffix: ~
+                - condition:
+                    BinaryOp:
+                      lhs:
+                        FieldAccess:
+                          object:
+                            Path:
+                              segments:
+                                - instruction
+                          field: opcode
+                          is_propagating: false
+                      op: Equal
+                      rhs:
+                        TypeAccess:
+                          object:
+                            Path:
+                              segments:
+                                - Opcode
+                          member: JMP_IF_TRUE
+                  body:
+                    statements:
+                      - Let:
+                          annotations: []
+                          name: value
+                          ty: ~
+                          value:
+                            Call:
+                              callee:
+                                FieldAccess:
+                                  object: SelfValue
+                                  field: pop
+                                  is_propagating: false
+                              args: []
+                              generic_args: ~
+                              is_propagating: false
+                      - If:
+                          condition:
+                            FieldAccess:
+                              object:
+                                Path:
+                                  segments:
+                                    - value
+                              field: boolean
+                              is_propagating: false
+                          then_body:
+                            statements:
+                              - Expression:
+                                  Assign:
+                                    lhs:
+                                      FieldAccess:
+                                        object: SelfValue
+                                        field: program_counter
+                                        is_propagating: false
+                                    op: Assign
+                                    rhs:
+                                      BinaryOp:
+                                        lhs:
+                                          Parenthesized:
+                                            Cast:
+                                              expr:
+                                                FieldAccess:
+                                                  object:
+                                                    Path:
+                                                      segments:
+                                                        - instruction
+                                                  field: operand
+                                                  is_propagating: false
+                                              target_type: USize
+                                        op: Subtract
+                                        rhs:
+                                          IntegerLiteral:
+                                            base: Decimal
+                                            digits: "1"
+                                            suffix: ~
+                          elif_clauses: []
+                          else_body: ~
+                - condition:
+                    BinaryOp:
+                      lhs:
+                        FieldAccess:
+                          object:
+                            Path:
+                              segments:
+                                - instruction
+                          field: opcode
+                          is_propagating: false
+                      op: Equal
+                      rhs:
+                        TypeAccess:
+                          object:
+                            Path:
+                              segments:
+                                - Opcode
+                          member: JMP_IF_FALSE
+                  body:
+                    statements:
+                      - Let:
+                          annotations: []
+                          name: value
+                          ty: ~
+                          value:
+                            Call:
+                              callee:
+                                FieldAccess:
+                                  object: SelfValue
+                                  field: pop
+                                  is_propagating: false
+                              args: []
+                              generic_args: ~
+                              is_propagating: false
+                      - If:
+                          condition:
+                            FieldAccess:
+                              object:
+                                UnaryOp:
+                                  op: LogicalNot
+                                  operand:
+                                    Path:
+                                      segments:
+                                        - value
+                              field: boolean
+                              is_propagating: false
+                          then_body:
+                            statements:
+                              - Expression:
+                                  Assign:
+                                    lhs:
+                                      FieldAccess:
+                                        object: SelfValue
+                                        field: program_counter
+                                        is_propagating: false
+                                    op: Assign
+                                    rhs:
+                                      BinaryOp:
+                                        lhs:
+                                          Parenthesized:
+                                            Cast:
+                                              expr:
+                                                FieldAccess:
+                                                  object:
+                                                    Path:
+                                                      segments:
+                                                        - instruction
+                                                  field: operand
+                                                  is_propagating: false
+                                              target_type: USize
+                                        op: Subtract
+                                        rhs:
+                                          IntegerLiteral:
+                                            base: Decimal
+                                            digits: "1"
+                                            suffix: ~
+                          elif_clauses: []
+                          else_body: ~
+                - condition:
+                    BinaryOp:
+                      lhs:
+                        FieldAccess:
+                          object:
+                            Path:
+                              segments:
+                                - instruction
+                          field: opcode
+                          is_propagating: false
+                      op: Equal
+                      rhs:
+                        TypeAccess:
+                          object:
+                            Path:
+                              segments:
+                                - Opcode
+                          member: CALL
+                  body:
+                    statements:
+                      - Let:
+                          annotations: []
+                          name: frame
+                          ty: ~
+                          value:
+                            Call:
+                              callee:
+                                Path:
+                                  segments:
+                                    - CallFrame
+                              args:
+                                - name: return_address
+                                  value:
+                                    BinaryOp:
+                                      lhs:
+                                        FieldAccess:
+                                          object: SelfValue
+                                          field: program_counter
+                                          is_propagating: false
+                                      op: Add
+                                      rhs:
+                                        IntegerLiteral:
+                                          base: Decimal
+                                          digits: "1"
+                                          suffix: ~
+                                - name: local_base
+                                  value:
+                                    FieldAccess:
+                                      object: SelfValue
+                                      field: stack_pointer
+                                      is_propagating: false
+                              generic_args: ~
+                              is_propagating: false
+                      - Expression:
+                          Call:
+                            callee:
+                              FieldAccess:
+                                object:
+                                  FieldAccess:
+                                    object: SelfValue
+                                    field: call_frames
+                                    is_propagating: false
+                                field: push
+                                is_propagating: false
+                            args:
+                              - name: ~
+                                value:
+                                  Path:
+                                    segments:
+                                      - frame
+                            generic_args: ~
+                            is_propagating: false
+                      - Expression:
+                          Assign:
+                            lhs:
+                              FieldAccess:
+                                object: SelfValue
+                                field: frame_count
+                                is_propagating: false
+                            op: Assign
+                            rhs:
+                              BinaryOp:
+                                lhs:
+                                  FieldAccess:
+                                    object: SelfValue
+                                    field: frame_count
+                                    is_propagating: false
+                                op: Add
+                                rhs:
+                                  IntegerLiteral:
+                                    base: Decimal
+                                    digits: "1"
+                                    suffix: ~
+                      - Expression:
+                          Assign:
+                            lhs:
+                              FieldAccess:
+                                object: SelfValue
+                                field: program_counter
+                                is_propagating: false
+                            op: Assign
+                            rhs:
+                              BinaryOp:
+                                lhs:
+                                  Parenthesized:
+                                    Cast:
+                                      expr:
+                                        FieldAccess:
+                                          object:
+                                            Path:
+                                              segments:
+                                                - instruction
+                                          field: operand
+                                          is_propagating: false
+                                      target_type: USize
+                                op: Subtract
+                                rhs:
+                                  IntegerLiteral:
+                                    base: Decimal
+                                    digits: "1"
+                                    suffix: ~
+                - condition:
+                    BinaryOp:
+                      lhs:
+                        FieldAccess:
+                          object:
+                            Path:
+                              segments:
+                                - instruction
+                          field: opcode
+                          is_propagating: false
+                      op: Equal
+                      rhs:
+                        TypeAccess:
+                          object:
+                            Path:
+                              segments:
+                                - Opcode
+                          member: RET
+                  body:
+                    statements:
+                      - If:
+                          condition:
+                            BinaryOp:
+                              lhs:
+                                FieldAccess:
+                                  object: SelfValue
+                                  field: frame_count
+                                  is_propagating: false
+                              op: GreaterThan
+                              rhs:
+                                IntegerLiteral:
+                                  base: Decimal
+                                  digits: "0"
+                                  suffix: ~
+                          then_body:
+                            statements:
+                              - Let:
+                                  annotations: []
+                                  name: frame
+                                  ty: ~
+                                  value:
+                                    Index:
+                                      object:
+                                        FieldAccess:
+                                          object:
+                                            UnaryOp:
+                                              op: AddressOf
+                                              operand: SelfValue
+                                          field: call_frames
+                                          is_propagating: false
+                                      index:
+                                        BinaryOp:
+                                          lhs:
+                                            FieldAccess:
+                                              object: SelfValue
+                                              field: frame_count
+                                              is_propagating: false
+                                          op: Subtract
+                                          rhs:
+                                            IntegerLiteral:
+                                              base: Decimal
+                                              digits: "1"
+                                              suffix: ~
+                              - Expression:
+                                  Assign:
+                                    lhs:
+                                      FieldAccess:
+                                        object: SelfValue
+                                        field: program_counter
+                                        is_propagating: false
+                                    op: Assign
+                                    rhs:
+                                      BinaryOp:
+                                        lhs:
+                                          FieldAccess:
+                                            object:
+                                              Path:
+                                                segments:
+                                                  - frame
+                                            field: return_address
+                                            is_propagating: false
+                                        op: Subtract
+                                        rhs:
+                                          IntegerLiteral:
+                                            base: Decimal
+                                            digits: "1"
+                                            suffix: ~
+                              - Expression:
+                                  Assign:
+                                    lhs:
+                                      FieldAccess:
+                                        object: SelfValue
+                                        field: stack_pointer
+                                        is_propagating: false
+                                    op: Assign
+                                    rhs:
+                                      FieldAccess:
+                                        object:
+                                          Path:
+                                            segments:
+                                              - frame
+                                        field: local_base
+                                        is_propagating: false
+                              - Expression:
+                                  Assign:
+                                    lhs:
+                                      FieldAccess:
+                                        object: SelfValue
+                                        field: frame_count
+                                        is_propagating: false
+                                    op: Assign
+                                    rhs:
+                                      BinaryOp:
+                                        lhs:
+                                          FieldAccess:
+                                            object: SelfValue
+                                            field: frame_count
+                                            is_propagating: false
+                                        op: Subtract
+                                        rhs:
+                                          IntegerLiteral:
+                                            base: Decimal
+                                            digits: "1"
+                                            suffix: ~
+                          elif_clauses: []
+                          else_body: ~
+                - condition:
+                    BinaryOp:
+                      lhs:
+                        FieldAccess:
+                          object:
+                            Path:
+                              segments:
+                                - instruction
+                          field: opcode
+                          is_propagating: false
+                      op: Equal
+                      rhs:
+                        TypeAccess:
+                          object:
+                            Path:
+                              segments:
+                                - Opcode
+                          member: LOAD_LOCAL
+                  body:
+                    statements:
+                      - Let:
+                          annotations: []
+                          name: index
+                          ty: ~
+                          value:
+                            Cast:
+                              expr:
+                                FieldAccess:
+                                  object:
+                                    Path:
+                                      segments:
+                                        - instruction
+                                  field: operand
+                                  is_propagating: false
+                              target_type: USize
+                      - Let:
+                          annotations: []
+                          name: value
+                          ty: ~
+                          value:
+                            Index:
+                              object:
+                                FieldAccess:
+                                  object: SelfValue
+                                  field: locals
+                                  is_propagating: false
+                              index:
+                                Path:
+                                  segments:
+                                    - index
+                      - Expression:
+                          Call:
+                            callee:
+                              FieldAccess:
+                                object: SelfValue
+                                field: push
+                                is_propagating: false
+                            args:
+                              - name: ~
+                                value:
+                                  Path:
+                                    segments:
+                                      - value
+                            generic_args: ~
+                            is_propagating: false
+                - condition:
+                    BinaryOp:
+                      lhs:
+                        FieldAccess:
+                          object:
+                            Path:
+                              segments:
+                                - instruction
+                          field: opcode
+                          is_propagating: false
+                      op: Equal
+                      rhs:
+                        TypeAccess:
+                          object:
+                            Path:
+                              segments:
+                                - Opcode
+                          member: STORE_LOCAL
+                  body:
+                    statements:
+                      - Let:
+                          annotations: []
+                          name: index
+                          ty: ~
+                          value:
+                            Cast:
+                              expr:
+                                FieldAccess:
+                                  object:
+                                    Path:
+                                      segments:
+                                        - instruction
+                                  field: operand
+                                  is_propagating: false
+                              target_type: USize
+                      - Let:
+                          annotations: []
+                          name: value
+                          ty: ~
+                          value:
+                            Call:
+                              callee:
+                                FieldAccess:
+                                  object: SelfValue
+                                  field: pop
+                                  is_propagating: false
+                              args: []
+                              generic_args: ~
+                              is_propagating: false
+                      - Expression:
+                          Assign:
+                            lhs:
+                              Index:
+                                object:
+                                  FieldAccess:
+                                    object: SelfValue
+                                    field: locals
+                                    is_propagating: false
+                                index:
+                                  Path:
+                                    segments:
+                                      - index
+                            op: Assign
+                            rhs:
+                              Path:
+                                segments:
+                                  - value
+                - condition:
+                    BinaryOp:
+                      lhs:
+                        FieldAccess:
+                          object:
+                            Path:
+                              segments:
+                                - instruction
+                          field: opcode
+                          is_propagating: false
+                      op: Equal
+                      rhs:
+                        TypeAccess:
+                          object:
+                            Path:
+                              segments:
+                                - Opcode
+                          member: LOAD_CONST
+                  body:
+                    statements:
+                      - Let:
+                          annotations: []
+                          name: index
+                          ty: ~
+                          value:
+                            Cast:
+                              expr:
+                                FieldAccess:
+                                  object:
+                                    Path:
+                                      segments:
+                                        - instruction
+                                  field: operand
+                                  is_propagating: false
+                              target_type: USize
+                      - Let:
+                          annotations: []
+                          name: value
+                          ty: ~
+                          value:
+                            Index:
+                              object:
+                                FieldAccess:
+                                  object: SelfValue
+                                  field: constants
+                                  is_propagating: false
+                              index:
+                                Path:
+                                  segments:
+                                    - index
+                      - Expression:
+                          Call:
+                            callee:
+                              FieldAccess:
+                                object: SelfValue
+                                field: push
+                                is_propagating: false
+                            args:
+                              - name: ~
+                                value:
+                                  Path:
+                                    segments:
+                                      - value
+                            generic_args: ~
+                            is_propagating: false
+                - condition:
+                    BinaryOp:
+                      lhs:
+                        FieldAccess:
+                          object:
+                            Path:
+                              segments:
+                                - instruction
+                          field: opcode
+                          is_propagating: false
+                      op: Equal
+                      rhs:
+                        TypeAccess:
+                          object:
+                            Path:
+                              segments:
+                                - Opcode
+                          member: PRINT
+                  body:
+                    statements:
+                      - Let:
+                          annotations: []
+                          name: value
+                          ty: ~
+                          value:
+                            Call:
+                              callee:
+                                FieldAccess:
+                                  object: SelfValue
+                                  field: pop
+                                  is_propagating: false
+                              args: []
+                              generic_args: ~
+                              is_propagating: false
+                      - Expression:
+                          Call:
+                            callee:
+                              Path:
+                                segments:
+                                  - print_value
+                            args:
+                              - name: ~
+                                value:
+                                  UnaryOp:
+                                    op: AddressOf
+                                    operand:
+                                      Path:
+                                        segments:
+                                          - value
+                            generic_args: ~
+                            is_propagating: false
+              else_body: ~
+          - Pass
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: VM
+            generic_args: []
+        name: push
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params:
+          - name: value
+            ty:
+              Path:
+                path:
+                  segments:
+                    - Value
+                generic_args: []
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
+      body:
+        statements:
+          - If:
+              condition:
+                BinaryOp:
+                  lhs:
+                    FieldAccess:
+                      object: SelfValue
+                      field: stack_pointer
+                      is_propagating: false
+                  op: GreaterThanOrEqual
+                  rhs:
+                    Path:
+                      segments:
+                        - STACK_SIZE
+              then_body:
+                statements:
+                  - Return:
+                      Path:
+                        segments:
+                          - ok
+              elif_clauses: []
+              else_body: ~
+          - Expression:
+              Call:
+                callee:
+                  FieldAccess:
+                    object:
+                      FieldAccess:
+                        object: SelfValue
+                        field: stack
+                        is_propagating: false
+                    field: push
+                    is_propagating: false
+                args:
+                  - name: ~
+                    value:
+                      Path:
+                        segments:
+                          - value
+                generic_args: ~
+                is_propagating: false
+          - Expression:
+              Assign:
+                lhs:
+                  FieldAccess:
+                    object: SelfValue
+                    field: stack_pointer
+                    is_propagating: false
+                op: Assign
+                rhs:
+                  BinaryOp:
+                    lhs:
+                      FieldAccess:
+                        object: SelfValue
+                        field: stack_pointer
+                        is_propagating: false
+                    op: Add
+                    rhs:
+                      IntegerLiteral:
+                        base: Decimal
+                        digits: "1"
+                        suffix: ~
+          - Pass
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: VM
+            generic_args: []
+        name: pop
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params: []
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - Value
+              generic_args: []
+      body:
+        statements:
+          - If:
+              condition:
+                BinaryOp:
+                  lhs:
+                    FieldAccess:
+                      object: SelfValue
+                      field: stack_pointer
+                      is_propagating: false
+                  op: Equal
+                  rhs:
+                    IntegerLiteral:
+                      base: Decimal
+                      digits: "0"
+                      suffix: ~
+              then_body:
+                statements:
+                  - Return:
+                      Call:
+                        callee:
+                          TypeAccess:
+                            object:
+                              Path:
+                                segments:
+                                  - Value
+                            member: nil
+                        args:
+                          - name: ~
+                            value:
+                              Path:
+                                segments:
+                                  - ok
+                        generic_args: ~
+                        is_propagating: false
+              elif_clauses: []
+              else_body: ~
+          - Expression:
+              Assign:
+                lhs:
+                  FieldAccess:
+                    object: SelfValue
+                    field: stack_pointer
+                    is_propagating: false
+                op: Assign
+                rhs:
+                  BinaryOp:
+                    lhs:
+                      FieldAccess:
+                        object: SelfValue
+                        field: stack_pointer
+                        is_propagating: false
+                    op: Subtract
+                    rhs:
+                      IntegerLiteral:
+                        base: Decimal
+                        digits: "1"
+                        suffix: ~
+          - Return:
+              Index:
+                object:
+                  FieldAccess:
+                    object: SelfValue
+                    field: stack
+                    is_propagating: false
+                index:
+                  FieldAccess:
+                    object: SelfValue
+                    field: stack_pointer
+                    is_propagating: false
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: false
+        receiver:
+          - name: VM
+            generic_args: []
+        name: peek
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: false
+        params:
+          - name: distance
+            ty: USize
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - Value
+              generic_args: []
+      body:
+        statements:
+          - If:
+              condition:
+                BinaryOp:
+                  lhs:
+                    FieldAccess:
+                      object: SelfValue
+                      field: stack_pointer
+                      is_propagating: false
+                  op: Equal
+                  rhs:
+                    IntegerLiteral:
+                      base: Decimal
+                      digits: "0"
+                      suffix: ~
+              then_body:
+                statements:
+                  - Return:
+                      Call:
+                        callee:
+                          TypeAccess:
+                            object:
+                              Path:
+                                segments:
+                                  - Value
+                            member: nil
+                        args:
+                          - name: ~
+                            value:
+                              Path:
+                                segments:
+                                  - ok
+                        generic_args: ~
+                        is_propagating: false
+              elif_clauses: []
+              else_body: ~
+          - Let:
+              annotations: []
+              name: index
+              ty: ~
+              value:
+                BinaryOp:
+                  lhs:
+                    BinaryOp:
+                      lhs:
+                        FieldAccess:
+                          object: SelfValue
+                          field: stack_pointer
+                          is_propagating: false
+                      op: Subtract
+                      rhs:
+                        IntegerLiteral:
+                          base: Decimal
+                          digits: "1"
+                          suffix: ~
+                  op: Subtract
+                  rhs:
+                    Path:
+                      segments:
+                        - distance
+          - Return:
+              Index:
+                object:
+                  FieldAccess:
+                    object: SelfValue
+                    field: stack
+                    is_propagating: false
+                index:
+                  Path:
+                    segments:
+                      - index
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: false
+        receiver:
+          - name: VM
+            generic_args: []
+        name: stack_size
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: false
+        params: []
+        return_types:
+          - USize
+      body:
+        statements:
+          - Return:
+              FieldAccess:
+                object: SelfValue
+                field: stack_pointer
+                is_propagating: false
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: false
+        receiver:
+          - name: VM
+            generic_args: []
+        name: is_running
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: false
+        params: []
+        return_types:
+          - Bool
+      body:
+        statements:
+          - Return:
+              FieldAccess:
+                object: SelfValue
+                field: running
+                is_propagating: false
+  - Struct:
+      visibility: Export
+      annotations: []
+      is_packed: false
+      name:
+        segments:
+          - Assembler
+      generic_params: []
+      requires: []
+      fields:
+        - name: instructions
+          ty:
+            Array:
+              element_type:
+                Path:
+                  path:
+                    segments:
+                      - Instruction
+                  generic_args: []
+              size: ~
+          visibility: Default
+          annotations: []
+        - name: labels
+          ty:
+            Array:
+              element_type:
+                Path:
+                  path:
+                    segments:
+                      - Label
+                  generic_args: []
+              size: ~
+          visibility: Default
+          annotations: []
+        - name: constants
+          ty:
+            Array:
+              element_type:
+                Path:
+                  path:
+                    segments:
+                      - Value
+                  generic_args: []
+              size: ~
+          visibility: Default
+          annotations: []
+  - Struct:
+      visibility: Default
+      annotations: []
+      is_packed: false
+      name:
+        segments:
+          - Label
+      generic_params: []
+      requires: []
+      fields:
+        - name: name
+          ty:
+            Array:
+              element_type: U8
+              size: ~
+          visibility: Default
+          annotations: []
+        - name: address
+          ty: USize
+          visibility: Default
+          annotations: []
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: Assembler
+            generic_args: []
+        name: new
+        outer_generic_params: []
+        func_generic_params: []
+        self_param: ~
+        params: []
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - Assembler
+              generic_args: []
+      body:
+        statements:
+          - Return:
+              Call:
+                callee:
+                  Path:
+                    segments:
+                      - Assembler
+                args:
+                  - name: instructions
+                    value:
+                      ArrayLiteral:
+                        elements: []
+                  - name: labels
+                    value:
+                      ArrayLiteral:
+                        elements: []
+                  - name: constants
+                    value:
+                      ArrayLiteral:
+                        elements: []
+                generic_args: ~
+                is_propagating: false
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: Assembler
+            generic_args: []
+        name: add_label
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params:
+          - name: name
+            ty:
+              Array:
+                element_type: U8
+                size: ~
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
+      body:
+        statements:
+          - Let:
+              annotations: []
+              name: label
+              ty: ~
+              value:
+                Call:
+                  callee:
+                    Path:
+                      segments:
+                        - Label
+                  args:
+                    - name: name
+                      value:
+                        Path:
+                          segments:
+                            - name
+                    - name: address
+                      value:
+                        FieldAccess:
+                          object:
+                            FieldAccess:
+                              object: SelfValue
+                              field: instructions
+                              is_propagating: false
+                          field: len
+                          is_propagating: false
+                  generic_args: ~
+                  is_propagating: false
+          - Expression:
+              Call:
+                callee:
+                  FieldAccess:
+                    object:
+                      FieldAccess:
+                        object: SelfValue
+                        field: labels
+                        is_propagating: false
+                    field: push
+                    is_propagating: false
+                args:
+                  - name: ~
+                    value:
+                      Path:
+                        segments:
+                          - label
+                generic_args: ~
+                is_propagating: false
+          - Pass
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: Assembler
+            generic_args: []
+        name: emit
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params:
+          - name: opcode
+            ty:
+              Path:
+                path:
+                  segments:
+                    - Opcode
+                generic_args: []
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
+      body:
+        statements:
+          - Let:
+              annotations: []
+              name: instruction
+              ty: ~
+              value:
+                Call:
+                  callee:
+                    Path:
+                      segments:
+                        - Instruction
+                  args:
+                    - name: opcode
+                      value:
+                        Path:
+                          segments:
+                            - opcode
+                    - name: operand
+                      value:
+                        IntegerLiteral:
+                          base: Decimal
+                          digits: "0"
+                          suffix: ~
+                  generic_args: ~
+                  is_propagating: false
+          - Expression:
+              Call:
+                callee:
+                  FieldAccess:
+                    object:
+                      FieldAccess:
+                        object: SelfValue
+                        field: instructions
+                        is_propagating: false
+                    field: push
+                    is_propagating: false
+                args:
+                  - name: ~
+                    value:
+                      Path:
+                        segments:
+                          - instruction
+                generic_args: ~
+                is_propagating: false
+          - Pass
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: Assembler
+            generic_args: []
+        name: emit_with_operand
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params:
+          - name: opcode
+            ty:
+              Path:
+                path:
+                  segments:
+                    - Opcode
+                generic_args: []
+          - name: operand
+            ty: I32
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
+      body:
+        statements:
+          - Let:
+              annotations: []
+              name: instruction
+              ty: ~
+              value:
+                Call:
+                  callee:
+                    Path:
+                      segments:
+                        - Instruction
+                  args:
+                    - name: opcode
+                      value:
+                        Path:
+                          segments:
+                            - opcode
+                    - name: operand
+                      value:
+                        Path:
+                          segments:
+                            - operand
+                  generic_args: ~
+                  is_propagating: false
+          - Expression:
+              Call:
+                callee:
+                  FieldAccess:
+                    object:
+                      FieldAccess:
+                        object: SelfValue
+                        field: instructions
+                        is_propagating: false
+                    field: push
+                    is_propagating: false
+                args:
+                  - name: ~
+                    value:
+                      Path:
+                        segments:
+                          - instruction
+                generic_args: ~
+                is_propagating: false
+          - Pass
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: Assembler
+            generic_args: []
+        name: emit_push
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params:
+          - name: value
+            ty: I64
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
+      body:
+        statements:
+          - Expression:
+              Call:
+                callee:
+                  FieldAccess:
+                    object: SelfValue
+                    field: emit_with_operand
+                    is_propagating: false
+                args:
+                  - name: ~
+                    value:
+                      TypeAccess:
+                        object:
+                          Path:
+                            segments:
+                              - Opcode
+                        member: PUSH
+                  - name: ~
+                    value:
+                      Cast:
+                        expr:
+                          Path:
+                            segments:
+                              - value
+                        target_type: I32
+                generic_args: ~
+                is_propagating: false
+          - Pass
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: Assembler
+            generic_args: []
+        name: emit_jump
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params:
+          - name: label
+            ty:
+              Array:
+                element_type: U8
+                size: ~
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
+      body:
+        statements:
+          - Let:
+              annotations: []
+              name: address
+              ty: ~
+              value:
+                Call:
+                  callee:
+                    FieldAccess:
+                      object: SelfValue
+                      field: find_label
+                      is_propagating: false
+                  args:
+                    - name: ~
+                      value:
+                        Path:
+                          segments:
+                            - label
+                  generic_args: ~
+                  is_propagating: false
+          - Expression:
+              Call:
+                callee:
+                  FieldAccess:
+                    object: SelfValue
+                    field: emit_with_operand
+                    is_propagating: false
+                args:
+                  - name: ~
+                    value:
+                      TypeAccess:
+                        object:
+                          Path:
+                            segments:
+                              - Opcode
+                        member: JMP
+                  - name: ~
+                    value:
+                      Cast:
+                        expr:
+                          Path:
+                            segments:
+                              - address
+                        target_type: I32
+                generic_args: ~
+                is_propagating: false
+          - Pass
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: Assembler
+            generic_args: []
+        name: emit_jump_if_true
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params:
+          - name: label
+            ty:
+              Array:
+                element_type: U8
+                size: ~
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
+      body:
+        statements:
+          - Let:
+              annotations: []
+              name: address
+              ty: ~
+              value:
+                Call:
+                  callee:
+                    FieldAccess:
+                      object: SelfValue
+                      field: find_label
+                      is_propagating: false
+                  args:
+                    - name: ~
+                      value:
+                        Path:
+                          segments:
+                            - label
+                  generic_args: ~
+                  is_propagating: false
+          - Expression:
+              Call:
+                callee:
+                  FieldAccess:
+                    object: SelfValue
+                    field: emit_with_operand
+                    is_propagating: false
+                args:
+                  - name: ~
+                    value:
+                      TypeAccess:
+                        object:
+                          Path:
+                            segments:
+                              - Opcode
+                        member: JMP_IF_TRUE
+                  - name: ~
+                    value:
+                      Cast:
+                        expr:
+                          Path:
+                            segments:
+                              - address
+                        target_type: I32
+                generic_args: ~
+                is_propagating: false
+          - Pass
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: Assembler
+            generic_args: []
+        name: emit_jump_if_false
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params:
+          - name: label
+            ty:
+              Array:
+                element_type: U8
+                size: ~
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
+      body:
+        statements:
+          - Let:
+              annotations: []
+              name: address
+              ty: ~
+              value:
+                Call:
+                  callee:
+                    FieldAccess:
+                      object: SelfValue
+                      field: find_label
+                      is_propagating: false
+                  args:
+                    - name: ~
+                      value:
+                        Path:
+                          segments:
+                            - label
+                  generic_args: ~
+                  is_propagating: false
+          - Expression:
+              Call:
+                callee:
+                  FieldAccess:
+                    object: SelfValue
+                    field: emit_with_operand
+                    is_propagating: false
+                args:
+                  - name: ~
+                    value:
+                      TypeAccess:
+                        object:
+                          Path:
+                            segments:
+                              - Opcode
+                        member: JMP_IF_FALSE
+                  - name: ~
+                    value:
+                      Cast:
+                        expr:
+                          Path:
+                            segments:
+                              - address
+                        target_type: I32
+                generic_args: ~
+                is_propagating: false
+          - Pass
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: Assembler
+            generic_args: []
+        name: emit_call
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params:
+          - name: label
+            ty:
+              Array:
+                element_type: U8
+                size: ~
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
+      body:
+        statements:
+          - Let:
+              annotations: []
+              name: address
+              ty: ~
+              value:
+                Call:
+                  callee:
+                    FieldAccess:
+                      object: SelfValue
+                      field: find_label
+                      is_propagating: false
+                  args:
+                    - name: ~
+                      value:
+                        Path:
+                          segments:
+                            - label
+                  generic_args: ~
+                  is_propagating: false
+          - Expression:
+              Call:
+                callee:
+                  FieldAccess:
+                    object: SelfValue
+                    field: emit_with_operand
+                    is_propagating: false
+                args:
+                  - name: ~
+                    value:
+                      TypeAccess:
+                        object:
+                          Path:
+                            segments:
+                              - Opcode
+                        member: CALL
+                  - name: ~
+                    value:
+                      Cast:
+                        expr:
+                          Path:
+                            segments:
+                              - address
+                        target_type: I32
+                generic_args: ~
+                is_propagating: false
+          - Pass
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: Assembler
+            generic_args: []
+        name: emit_load_local
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params:
+          - name: index
+            ty: USize
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
+      body:
+        statements:
+          - Expression:
+              Call:
+                callee:
+                  FieldAccess:
+                    object: SelfValue
+                    field: emit_with_operand
+                    is_propagating: false
+                args:
+                  - name: ~
+                    value:
+                      TypeAccess:
+                        object:
+                          Path:
+                            segments:
+                              - Opcode
+                        member: LOAD_LOCAL
+                  - name: ~
+                    value:
+                      Cast:
+                        expr:
+                          Path:
+                            segments:
+                              - index
+                        target_type: I32
+                generic_args: ~
+                is_propagating: false
+          - Pass
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: Assembler
+            generic_args: []
+        name: emit_store_local
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params:
+          - name: index
+            ty: USize
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
+      body:
+        statements:
+          - Expression:
+              Call:
+                callee:
+                  FieldAccess:
+                    object: SelfValue
+                    field: emit_with_operand
+                    is_propagating: false
+                args:
+                  - name: ~
+                    value:
+                      TypeAccess:
+                        object:
+                          Path:
+                            segments:
+                              - Opcode
+                        member: STORE_LOCAL
+                  - name: ~
+                    value:
+                      Cast:
+                        expr:
+                          Path:
+                            segments:
+                              - index
+                        target_type: I32
+                generic_args: ~
+                is_propagating: false
+          - Pass
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: Assembler
+            generic_args: []
+        name: add_constant
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params:
+          - name: value
+            ty:
+              Path:
+                path:
+                  segments:
+                    - Value
+                generic_args: []
+        return_types:
+          - USize
+      body:
+        statements:
+          - Let:
+              annotations: []
+              name: index
+              ty: ~
+              value:
+                FieldAccess:
+                  object:
+                    FieldAccess:
+                      object: SelfValue
+                      field: constants
+                      is_propagating: false
+                  field: len
+                  is_propagating: false
+          - Expression:
+              Call:
+                callee:
+                  FieldAccess:
+                    object:
+                      FieldAccess:
+                        object: SelfValue
+                        field: constants
+                        is_propagating: false
+                    field: push
+                    is_propagating: false
+                args:
+                  - name: ~
+                    value:
+                      Path:
+                        segments:
+                          - value
+                generic_args: ~
+                is_propagating: false
+          - Return:
+              Path:
+                segments:
+                  - index
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: Assembler
+            generic_args: []
+        name: emit_load_const
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params:
+          - name: index
+            ty: USize
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
+      body:
+        statements:
+          - Expression:
+              Call:
+                callee:
+                  FieldAccess:
+                    object: SelfValue
+                    field: emit_with_operand
+                    is_propagating: false
+                args:
+                  - name: ~
+                    value:
+                      TypeAccess:
+                        object:
+                          Path:
+                            segments:
+                              - Opcode
+                        member: LOAD_CONST
+                  - name: ~
+                    value:
+                      Cast:
+                        expr:
+                          Path:
+                            segments:
+                              - index
+                        target_type: I32
+                generic_args: ~
+                is_propagating: false
+          - Pass
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: false
+        receiver:
+          - name: Assembler
+            generic_args: []
+        name: find_label
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: false
+        params:
+          - name: name
+            ty:
+              Array:
+                element_type: U8
+                size: ~
+        return_types:
+          - USize
+      body:
+        statements:
+          - For:
+              pattern: i
+              iterable:
+                Call:
+                  callee:
+                    Path:
+                      segments:
+                        - range
+                  args:
+                    - name: ~
+                      value:
+                        IntegerLiteral:
+                          base: Decimal
+                          digits: "0"
+                          suffix: ~
+                    - name: ~
+                      value:
+                        FieldAccess:
+                          object:
+                            FieldAccess:
+                              object: SelfValue
+                              field: labels
+                              is_propagating: false
+                          field: len
+                          is_propagating: false
+                  generic_args: ~
+                  is_propagating: false
+              body:
+                statements:
+                  - Let:
+                      annotations: []
+                      name: label
+                      ty: ~
+                      value:
+                        Index:
+                          object:
+                            FieldAccess:
+                              object:
+                                UnaryOp:
+                                  op: AddressOf
+                                  operand: SelfValue
+                              field: labels
+                              is_propagating: false
+                          index:
+                            Path:
+                              segments:
+                                - i
+                  - If:
+                      condition:
+                        Call:
+                          callee:
+                            Path:
+                              segments:
+                                - strings_equal
+                          args:
+                            - name: ~
+                              value:
+                                FieldAccess:
+                                  object:
+                                    Path:
+                                      segments:
+                                        - label
+                                  field: name
+                                  is_propagating: false
+                            - name: ~
+                              value:
+                                Path:
+                                  segments:
+                                    - name
+                          generic_args: ~
+                          is_propagating: false
+                      then_body:
+                        statements:
+                          - Return:
+                              FieldAccess:
+                                object:
+                                  Path:
+                                    segments:
+                                      - label
+                                field: address
+                                is_propagating: false
+                      elif_clauses: []
+                      else_body: ~
+          - Return:
+              IntegerLiteral:
+                base: Decimal
+                digits: "0"
+                suffix: ~
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: Assembler
+            generic_args: []
+        name: build
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: false
+        params: []
+        return_types:
+          - Array:
+              element_type:
+                Path:
+                  path:
+                    segments:
+                      - Instruction
+                  generic_args: []
+              size: ~
+      body:
+        statements:
+          - Return:
+              FieldAccess:
+                object: SelfValue
+                field: instructions
+                is_propagating: false
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: Assembler
+            generic_args: []
+        name: get_constants
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: false
+        params: []
+        return_types:
+          - Array:
+              element_type:
+                Path:
+                  path:
+                    segments:
+                      - Value
+                  generic_args: []
+              size: ~
+      body:
+        statements:
+          - Return:
+              FieldAccess:
+                object: SelfValue
+                field: constants
+                is_propagating: false
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: false
+        receiver: ~
+        name: strings_equal
+        outer_generic_params: []
+        func_generic_params: []
+        self_param: ~
+        params:
+          - name: a
+            ty:
+              Array:
+                element_type: U8
+                size: ~
+          - name: b
+            ty:
+              Array:
+                element_type: U8
+                size: ~
+        return_types:
+          - Bool
+      body:
+        statements:
+          - If:
+              condition:
+                BinaryOp:
+                  lhs:
+                    FieldAccess:
+                      object:
+                        Path:
+                          segments:
+                            - a
+                      field: len
+                      is_propagating: false
+                  op: NotEqual
+                  rhs:
+                    FieldAccess:
+                      object:
+                        Path:
+                          segments:
+                            - b
+                      field: len
+                      is_propagating: false
+              then_body:
+                statements:
+                  - Return:
+                      BooleanLiteral: false
+              elif_clauses: []
+              else_body: ~
+          - For:
+              pattern: i
+              iterable:
+                Call:
+                  callee:
+                    Path:
+                      segments:
+                        - range
+                  args:
+                    - name: ~
+                      value:
+                        IntegerLiteral:
+                          base: Decimal
+                          digits: "0"
+                          suffix: ~
+                    - name: ~
+                      value:
+                        FieldAccess:
+                          object:
+                            Path:
+                              segments:
+                                - a
+                          field: len
+                          is_propagating: false
+                  generic_args: ~
+                  is_propagating: false
+              body:
+                statements:
+                  - If:
+                      condition:
+                        BinaryOp:
+                          lhs:
+                            Index:
+                              object:
+                                Path:
+                                  segments:
+                                    - a
+                              index:
+                                Path:
+                                  segments:
+                                    - i
+                          op: NotEqual
+                          rhs:
+                            Index:
+                              object:
+                                Path:
+                                  segments:
+                                    - b
+                              index:
+                                Path:
+                                  segments:
+                                    - i
+                      then_body:
+                        statements:
+                          - Return:
+                              BooleanLiteral: false
+                      elif_clauses: []
+                      else_body: ~
+          - Return:
+              BooleanLiteral: true
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver: ~
+        name: print_value
+        outer_generic_params: []
+        func_generic_params: []
+        self_param: ~
+        params:
+          - name: value
+            ty:
+              Pointer:
+                nullable: false
+                mutable: false
+                element_type:
+                  Path:
+                    path:
+                      segments:
+                        - Value
+                    generic_args: []
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
+      body:
+        statements:
+          - Pass

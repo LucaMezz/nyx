@@ -11,7 +11,8 @@ items:
         is_effect: false
         receiver: ~
         name: index_ops
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params:
           - name: arr
@@ -22,7 +23,11 @@ items:
           - name: idx
             ty: USize
         return_types:
-          - Ok
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
       body:
         statements:
           - Let:
@@ -35,7 +40,6 @@ items:
                     Path:
                       segments:
                         - arr
-                      generic_args: []
                   index:
                     IntegerLiteral:
                       base: Decimal
@@ -51,12 +55,10 @@ items:
                     Path:
                       segments:
                         - arr
-                      generic_args: []
                   index:
                     Path:
                       segments:
                         - idx
-                      generic_args: []
           - Let:
               annotations: []
               name: computed
@@ -67,14 +69,12 @@ items:
                     Path:
                       segments:
                         - arr
-                      generic_args: []
                   index:
                     BinaryOp:
                       lhs:
                         Path:
                           segments:
                             - idx
-                          generic_args: []
                       op: Add
                       rhs:
                         IntegerLiteral:

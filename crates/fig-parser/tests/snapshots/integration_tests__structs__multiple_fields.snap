@@ -7,41 +7,65 @@ items:
       visibility: Default
       annotations: []
       is_packed: false
-      name: Point
+      name:
+        segments:
+          - Point
       generic_params: []
       requires: []
       fields:
         - name: x
           ty: F64
+          visibility: Default
+          annotations: []
         - name: y
           ty: F64
+          visibility: Default
+          annotations: []
   - Struct:
       visibility: Default
       annotations: []
       is_packed: false
-      name: Point3
+      name:
+        segments:
+          - Point3
       generic_params: []
       requires: []
       fields:
         - name: x
           ty: F64
+          visibility: Default
+          annotations: []
         - name: y
           ty: F64
+          visibility: Default
+          annotations: []
         - name: z
           ty: F64
+          visibility: Default
+          annotations: []
   - Struct:
       visibility: Default
       annotations: []
       is_packed: false
-      name: Rgba
+      name:
+        segments:
+          - Rgba
       generic_params: []
       requires: []
       fields:
         - name: r
           ty: U8
+          visibility: Default
+          annotations: []
         - name: g
           ty: U8
+          visibility: Default
+          annotations: []
         - name: b
           ty: U8
+          visibility: Default
+          annotations: []
         - name: a
           ty: U8
+          visibility: Default
+          annotations: []

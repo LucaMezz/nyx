@@ -1,0 +1,72 @@
+---
+source: crates/fig-parser/tests/integration_tests.rs
+expression: ast
+---
+items:
+  - Interface:
+      visibility: Default
+      annotations: []
+      name:
+        segments:
+          - Container
+      generic_params:
+        - Type:
+            name: T
+            bounds:
+              - Path:
+                  path:
+                    segments:
+                      - Sized
+                  generic_args: []
+            default_type: ~
+      extends: []
+      methods:
+        - visibility: Default
+          annotations: []
+          is_extern: false
+          is_effect: false
+          receiver: ~
+          name: len
+          outer_generic_params: []
+          func_generic_params: []
+          self_param:
+            is_pointer: true
+            is_mutable: false
+          params: []
+          return_types:
+            - USize
+        - visibility: Default
+          annotations: []
+          is_extern: false
+          is_effect: false
+          receiver: ~
+          name: is_empty
+          outer_generic_params: []
+          func_generic_params: []
+          self_param:
+            is_pointer: true
+            is_mutable: false
+          params: []
+          return_types:
+            - Bool
+        - visibility: Default
+          annotations: []
+          is_extern: false
+          is_effect: false
+          receiver: ~
+          name: get
+          outer_generic_params: []
+          func_generic_params: []
+          self_param:
+            is_pointer: true
+            is_mutable: false
+          params:
+            - name: index
+              ty: USize
+          return_types:
+            - Nullable:
+                Path:
+                  path:
+                    segments:
+                      - T
+                  generic_args: []

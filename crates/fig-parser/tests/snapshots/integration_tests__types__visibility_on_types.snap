@@ -6,18 +6,24 @@ items:
   - TypeAlias:
       visibility: Public
       annotations: []
-      name: PublicInt
+      name:
+        segments:
+          - PublicInt
       generic_params: []
       aliased_type: I32
   - TypeAlias:
       visibility: Export
       annotations: []
-      name: ExportedByte
+      name:
+        segments:
+          - ExportedByte
       generic_params: []
       aliased_type: U8
   - TypeAlias:
       visibility: Private
       annotations: []
-      name: PrivateFloat
+      name:
+        segments:
+          - PrivateFloat
       generic_params: []
       aliased_type: F64

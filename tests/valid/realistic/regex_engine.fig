@@ -22,10 +22,14 @@ export struct Regex
     instructions: [RegexInstruction]
     capture_groups: usize
 
+struct Range
+    start: u8
+    end: u8
+
 union CompileError
     unexpected_char: u8
     unmatched_paren: usize
-    invalid_range: (u8, u8)
+    invalid_range: Range
     empty_pattern: ok
 
 union CompileResult[T]

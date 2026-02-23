@@ -11,7 +11,8 @@ items:
         is_effect: false
         receiver: ~
         name: pub_fn
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params:
           - name: x
@@ -24,7 +25,6 @@ items:
               Path:
                 segments:
                   - x
-                generic_args: []
   - Function:
       signature:
         visibility: Export
@@ -33,7 +33,8 @@ items:
         is_effect: false
         receiver: ~
         name: exported_fn
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params:
           - name: x
@@ -46,7 +47,6 @@ items:
               Path:
                 segments:
                   - x
-                generic_args: []
   - Function:
       signature:
         visibility: Private
@@ -55,7 +55,8 @@ items:
         is_effect: false
         receiver: ~
         name: private_fn
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params:
           - name: x
@@ -68,4 +69,3 @@ items:
               Path:
                 segments:
                   - x
-                generic_args: []

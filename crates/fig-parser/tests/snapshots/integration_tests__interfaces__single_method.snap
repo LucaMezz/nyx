@@ -6,10 +6,11 @@ items:
   - Interface:
       visibility: Default
       annotations: []
-      name: Printable
+      name:
+        segments:
+          - Printable
       generic_params: []
       extends: []
-      requires: []
       methods:
         - visibility: Default
           annotations: []
@@ -17,10 +18,15 @@ items:
           is_effect: false
           receiver: ~
           name: print
-          generic_params: []
+          outer_generic_params: []
+          func_generic_params: []
           self_param:
             is_pointer: true
             is_mutable: false
           params: []
           return_types:
-            - Ok
+            - Path:
+                path:
+                  segments:
+                    - ok
+                generic_args: []

@@ -3,10 +3,10 @@ source: crates/fig-lexer/tests/integration_tests.rs
 expression: tokens
 ---
 - Namespace
-- Core
+- Ident: core
 - Newline
 - Namespace
-- Std
+- Ident: std
 - Newline
 - Namespace
 - Ident: math

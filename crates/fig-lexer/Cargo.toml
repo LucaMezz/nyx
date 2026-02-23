@@ -9,6 +9,7 @@ derive_builder = "0.20.2"
 getset = "0.1.6"
 logos = "0.16.1"
 serde = { version = "1", features = ["derive"] }
+codespan-reporting = "0.11"
 
 [dev-dependencies]
 datatest-stable = "0.3.3"

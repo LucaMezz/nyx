@@ -69,7 +69,8 @@ func! Utf8String::char_at(*self, index: usize) -> ?u32
 
 func! Utf8String::push(*mut self, code_point: u32) -> ok
     mut buf: [u8] = [0, 0, 0, 0]
-    let bytes_written = encode_utf8_char(code_point, &mut buf[0])
+    let bufptr = *buf
+    let bytes_written = encode_utf8_char(code_point, bufptr)
     
     for i in range(0, bytes_written)
         self.bytes.push(buf[i])

@@ -1,0 +1,89 @@
+---
+source: crates/fig-parser/tests/integration_tests.rs
+expression: ast
+---
+items:
+  - Struct:
+      visibility: Default
+      annotations: []
+      is_packed: false
+      name:
+        segments:
+          - Point
+      generic_params: []
+      requires: []
+      fields:
+        - name: x
+          ty: F64
+          visibility: Default
+          annotations: []
+        - name: y
+          ty: F64
+          visibility: Default
+          annotations: []
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: false
+        receiver: ~
+        name: field_access
+        outer_generic_params: []
+        func_generic_params: []
+        self_param: ~
+        params:
+          - name: p
+            ty:
+              Path:
+                path:
+                  segments:
+                    - Point
+                generic_args: []
+        return_types:
+          - F64
+      body:
+        statements:
+          - Let:
+              annotations: []
+              name: x
+              ty: ~
+              value:
+                FieldAccess:
+                  object:
+                    Path:
+                      segments:
+                        - p
+                  field: x
+                  is_propagating: false
+          - Let:
+              annotations: []
+              name: y
+              ty: ~
+              value:
+                FieldAccess:
+                  object:
+                    Path:
+                      segments:
+                        - p
+                  field: y
+                  is_propagating: false
+          - Return:
+              BinaryOp:
+                lhs:
+                  FieldAccess:
+                    object:
+                      Path:
+                        segments:
+                          - p
+                    field: x
+                    is_propagating: false
+                op: Add
+                rhs:
+                  FieldAccess:
+                    object:
+                      Path:
+                        segments:
+                          - p
+                    field: y
+                    is_propagating: false

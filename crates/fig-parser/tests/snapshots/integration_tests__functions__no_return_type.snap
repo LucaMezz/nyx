@@ -11,7 +11,8 @@ items:
         is_effect: false
         receiver: ~
         name: say_hello
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params: []
         return_types: []
@@ -26,7 +27,8 @@ items:
         is_effect: false
         receiver: ~
         name: do_nothing
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params: []
         return_types: []

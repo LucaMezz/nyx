@@ -12,7 +12,7 @@ expression: tokens
 - RBracket
 - Newline
 - Indent
-- OkLiteral
+- Ident: ok
 - Colon
 - Ident: T
 - Newline
@@ -35,6 +35,6 @@ expression: tokens
 - Newline
 - Ident: none
 - Colon
-- OkLiteral
+- Ident: ok
 - Newline
 - Dedent

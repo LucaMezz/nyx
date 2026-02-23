@@ -3,7 +3,7 @@ source: crates/fig-lexer/tests/integration_tests.rs
 expression: tokens
 ---
 - Using
-- Core
+- Ident: core
 - ColonColon
 - Ident: memory
 - Newline
@@ -27,7 +27,7 @@ expression: tokens
 - RBracket
 - Newline
 - Indent
-- OkLiteral
+- Ident: ok
 - Colon
 - Ident: T
 - Newline
@@ -135,7 +135,7 @@ expression: tokens
 - Arrow
 - Ident: SerdeResult
 - LBracket
-- OkLiteral
+- Ident: ok
 - RBracket
 - Newline
 - Indent
@@ -157,7 +157,7 @@ expression: tokens
 - Return
 - Ident: SerdeResult
 - LBracket
-- OkLiteral
+- Ident: ok
 - RBracket
 - ColonColon
 - Ident: err
@@ -195,12 +195,12 @@ expression: tokens
 - Return
 - Ident: SerdeResult
 - LBracket
-- OkLiteral
+- Ident: ok
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
-- OkLiteral
+- Ident: ok
 - RParen
 - Newline
 - Dedent
@@ -221,7 +221,7 @@ expression: tokens
 - Arrow
 - Ident: SerdeResult
 - LBracket
-- OkLiteral
+- Ident: ok
 - RBracket
 - Newline
 - Indent
@@ -243,7 +243,7 @@ expression: tokens
 - Return
 - Ident: SerdeResult
 - LBracket
-- OkLiteral
+- Ident: ok
 - RBracket
 - ColonColon
 - Ident: err
@@ -322,12 +322,12 @@ expression: tokens
 - Return
 - Ident: SerdeResult
 - LBracket
-- OkLiteral
+- Ident: ok
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
-- OkLiteral
+- Ident: ok
 - RParen
 - Newline
 - Dedent
@@ -348,7 +348,7 @@ expression: tokens
 - Arrow
 - Ident: SerdeResult
 - LBracket
-- OkLiteral
+- Ident: ok
 - RBracket
 - Newline
 - Indent
@@ -370,7 +370,7 @@ expression: tokens
 - Return
 - Ident: SerdeResult
 - LBracket
-- OkLiteral
+- Ident: ok
 - RBracket
 - ColonColon
 - Ident: err
@@ -513,12 +513,12 @@ expression: tokens
 - Return
 - Ident: SerdeResult
 - LBracket
-- OkLiteral
+- Ident: ok
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
-- OkLiteral
+- Ident: ok
 - RParen
 - Newline
 - Dedent
@@ -539,7 +539,7 @@ expression: tokens
 - Arrow
 - Ident: SerdeResult
 - LBracket
-- OkLiteral
+- Ident: ok
 - RBracket
 - Newline
 - Indent
@@ -561,7 +561,7 @@ expression: tokens
 - Return
 - Ident: SerdeResult
 - LBracket
-- OkLiteral
+- Ident: ok
 - RBracket
 - ColonColon
 - Ident: err
@@ -639,12 +639,12 @@ expression: tokens
 - Return
 - Ident: SerdeResult
 - LBracket
-- OkLiteral
+- Ident: ok
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
-- OkLiteral
+- Ident: ok
 - RParen
 - Newline
 - Dedent
@@ -665,7 +665,7 @@ expression: tokens
 - Arrow
 - Ident: SerdeResult
 - LBracket
-- OkLiteral
+- Ident: ok
 - RBracket
 - Newline
 - Indent
@@ -761,12 +761,12 @@ expression: tokens
 - Return
 - Ident: SerdeResult
 - LBracket
-- OkLiteral
+- Ident: ok
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
-- OkLiteral
+- Ident: ok
 - RParen
 - Newline
 - Dedent
@@ -789,7 +789,7 @@ expression: tokens
 - Arrow
 - Ident: SerdeResult
 - LBracket
-- OkLiteral
+- Ident: ok
 - RBracket
 - Newline
 - Indent
@@ -826,7 +826,7 @@ expression: tokens
 - Return
 - Ident: SerdeResult
 - LBracket
-- OkLiteral
+- Ident: ok
 - RBracket
 - ColonColon
 - Ident: err
@@ -885,12 +885,12 @@ expression: tokens
 - Return
 - Ident: SerdeResult
 - LBracket
-- OkLiteral
+- Ident: ok
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
-- OkLiteral
+- Ident: ok
 - RParen
 - Newline
 - Dedent
@@ -913,7 +913,7 @@ expression: tokens
 - Arrow
 - Ident: SerdeResult
 - LBracket
-- OkLiteral
+- Ident: ok
 - RBracket
 - Newline
 - Indent
@@ -943,7 +943,7 @@ expression: tokens
 - Arrow
 - Ident: SerdeResult
 - LBracket
-- OkLiteral
+- Ident: ok
 - RBracket
 - Newline
 - Indent
@@ -992,7 +992,7 @@ expression: tokens
 - Arrow
 - Ident: SerdeResult
 - LBracket
-- OkLiteral
+- Ident: ok
 - RBracket
 - Newline
 - Indent
@@ -1030,7 +1030,7 @@ expression: tokens
 - Arrow
 - Ident: SerdeResult
 - LBracket
-- OkLiteral
+- Ident: ok
 - RBracket
 - Newline
 - Indent
@@ -1072,7 +1072,7 @@ expression: tokens
 - Ident: write_fn
 - Colon
 - Star
-- Fn
+- Func
 - LParen
 - Star
 - Mut
@@ -1083,13 +1083,13 @@ expression: tokens
 - Arrow
 - Ident: SerdeResult
 - LBracket
-- OkLiteral
+- Ident: ok
 - RBracket
 - RParen
 - Arrow
 - Ident: SerdeResult
 - LBracket
-- OkLiteral
+- Ident: ok
 - RBracket
 - Newline
 - Indent
@@ -1287,7 +1287,7 @@ expression: tokens
 - U8
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
 - Ident: value
 - RParen
@@ -1405,7 +1405,7 @@ expression: tokens
 - U16
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
 - Ident: value
 - RParen
@@ -1579,7 +1579,7 @@ expression: tokens
 - U32
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
 - Ident: value
 - RParen
@@ -1711,7 +1711,7 @@ expression: tokens
 - U64
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
 - Ident: value
 - RParen
@@ -1785,7 +1785,7 @@ expression: tokens
 - Eq
 - Ident: byte_result
 - Dot
-- OkLiteral
+- Ident: ok
 - Newline
 - Ident: value
 - Eq
@@ -1843,7 +1843,7 @@ expression: tokens
 - U64
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
 - Ident: value
 - RParen
@@ -1882,7 +1882,7 @@ expression: tokens
 - Eq
 - Ident: len_result
 - Dot
-- OkLiteral
+- Ident: ok
 - As
 - USize
 - Newline
@@ -1959,7 +1959,7 @@ expression: tokens
 - RBracket
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
 - Ident: slice
 - RParen
@@ -2023,7 +2023,7 @@ expression: tokens
 - Eq
 - Ident: byte_result
 - Dot
-- OkLiteral
+- Ident: ok
 - Newline
 - If
 - Ident: byte
@@ -2040,7 +2040,7 @@ expression: tokens
 - Bool
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
 - "False"
 - RParen
@@ -2052,7 +2052,7 @@ expression: tokens
 - Bool
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
 - "True"
 - RParen
@@ -2089,7 +2089,7 @@ expression: tokens
 - Eq
 - Ident: bits_result
 - Dot
-- OkLiteral
+- Ident: ok
 - Newline
 - Let
 - Ident: value
@@ -2105,7 +2105,7 @@ expression: tokens
 - F32
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
 - Ident: value
 - RParen
@@ -2142,7 +2142,7 @@ expression: tokens
 - Eq
 - Ident: bits_result
 - Dot
-- OkLiteral
+- Ident: ok
 - Newline
 - Let
 - Ident: value
@@ -2158,7 +2158,7 @@ expression: tokens
 - F64
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
 - Ident: value
 - RParen
@@ -2180,7 +2180,7 @@ expression: tokens
 - Ident: read_fn
 - Colon
 - Star
-- Fn
+- Func
 - LParen
 - Star
 - Mut
@@ -2214,7 +2214,7 @@ expression: tokens
 - Eq
 - Ident: has_value_result
 - Dot
-- OkLiteral
+- Ident: ok
 - Newline
 - If
 - Bang
@@ -2228,7 +2228,7 @@ expression: tokens
 - Ident: T
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
 - "Null"
 - RParen
@@ -2247,7 +2247,7 @@ expression: tokens
 - Eq
 - Ident: value_result
 - Dot
-- OkLiteral
+- Ident: ok
 - Newline
 - Return
 - Ident: SerdeResult
@@ -2256,7 +2256,7 @@ expression: tokens
 - Ident: T
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
 - Ident: value
 - RParen
@@ -2371,7 +2371,7 @@ expression: tokens
 - Arrow
 - Ident: SerdeResult
 - LBracket
-- OkLiteral
+- Ident: ok
 - RBracket
 - Newline
 - Indent
@@ -2433,12 +2433,12 @@ expression: tokens
 - Return
 - Ident: SerdeResult
 - LBracket
-- OkLiteral
+- Ident: ok
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
-- OkLiteral
+- Ident: ok
 - RParen
 - Newline
 - Dedent
@@ -2470,7 +2470,7 @@ expression: tokens
 - LParen
 - RParen
 - Dot
-- OkLiteral
+- Ident: ok
 - Newline
 - Let
 - Ident: name
@@ -2481,7 +2481,7 @@ expression: tokens
 - LParen
 - RParen
 - Dot
-- OkLiteral
+- Ident: ok
 - Newline
 - Let
 - Ident: age
@@ -2492,7 +2492,7 @@ expression: tokens
 - LParen
 - RParen
 - Dot
-- OkLiteral
+- Ident: ok
 - Newline
 - Let
 - Ident: email
@@ -2512,7 +2512,7 @@ expression: tokens
 - Ident: read_string
 - RParen
 - Dot
-- OkLiteral
+- Ident: ok
 - Newline
 - Let
 - Ident: active
@@ -2523,7 +2523,7 @@ expression: tokens
 - LParen
 - RParen
 - Dot
-- OkLiteral
+- Ident: ok
 - Newline
 - Let
 - Ident: person
@@ -2565,7 +2565,7 @@ expression: tokens
 - Ident: Person
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
 - Ident: person
 - RParen
@@ -2593,7 +2593,7 @@ expression: tokens
 - Ident: write_fn
 - Colon
 - Star
-- Fn
+- Func
 - LParen
 - Star
 - Mut
@@ -2604,13 +2604,13 @@ expression: tokens
 - Arrow
 - Ident: SerdeResult
 - LBracket
-- OkLiteral
+- Ident: ok
 - RBracket
 - RParen
 - Arrow
 - Ident: SerdeResult
 - LBracket
-- OkLiteral
+- Ident: ok
 - RBracket
 - Newline
 - Indent
@@ -2658,12 +2658,12 @@ expression: tokens
 - Return
 - Ident: SerdeResult
 - LBracket
-- OkLiteral
+- Ident: ok
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
-- OkLiteral
+- Ident: ok
 - RParen
 - Newline
 - Dedent
@@ -2683,7 +2683,7 @@ expression: tokens
 - Ident: read_fn
 - Colon
 - Star
-- Fn
+- Func
 - LParen
 - Star
 - Mut
@@ -2718,7 +2718,7 @@ expression: tokens
 - Eq
 - Ident: len_result
 - Dot
-- OkLiteral
+- Ident: ok
 - As
 - USize
 - Newline
@@ -2759,7 +2759,7 @@ expression: tokens
 - Eq
 - Ident: value_result
 - Dot
-- OkLiteral
+- Ident: ok
 - Newline
 - Ident: arr
 - Dot
@@ -2777,7 +2777,7 @@ expression: tokens
 - RBracket
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
 - Ident: arr
 - RParen

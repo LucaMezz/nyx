@@ -11,7 +11,8 @@ items:
         is_effect: false
         receiver: ~
         name: fill
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params:
           - name: dst
@@ -25,7 +26,11 @@ items:
           - name: len
             ty: USize
         return_types:
-          - Ok
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
       body:
         statements:
           - Pass
@@ -37,7 +42,8 @@ items:
         is_effect: false
         receiver: ~
         name: copy
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params:
           - name: src
@@ -55,7 +61,11 @@ items:
           - name: len
             ty: USize
         return_types:
-          - Ok
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
       body:
         statements:
           - Pass
@@ -67,7 +77,8 @@ items:
         is_effect: false
         receiver: ~
         name: read_byte
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params:
           - name: ptr

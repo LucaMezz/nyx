@@ -1,4 +1,0 @@
-// Edge case: while with no body (body-less while)
-// According to grammar, while has no mandatory body
-func no_body_while() -> ok
-    while true

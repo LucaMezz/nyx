@@ -6,7 +6,9 @@ items:
   - TypeAlias:
       visibility: Default
       annotations: []
-      name: HashMap
+      name:
+        segments:
+          - HashMap
       generic_params:
         - Type:
             name: K
@@ -18,22 +20,27 @@ items:
             default_type: ~
       aliased_type:
         Path:
-          segments:
-            - core
-            - Map
+          path:
+            segments:
+              - core
+              - Map
           generic_args:
             - Path:
-                segments:
-                  - K
+                path:
+                  segments:
+                    - K
                 generic_args: []
             - Path:
-                segments:
-                  - V
+                path:
+                  segments:
+                    - V
                 generic_args: []
   - TypeAlias:
       visibility: Default
       annotations: []
-      name: Set
+      name:
+        segments:
+          - Set
       generic_params:
         - Type:
             name: T
@@ -41,12 +48,14 @@ items:
             default_type: ~
       aliased_type:
         Path:
-          segments:
-            - std
-            - collections
-            - HashSet
+          path:
+            segments:
+              - std
+              - collections
+              - HashSet
           generic_args:
             - Path:
-                segments:
-                  - T
+                path:
+                  segments:
+                    - T
                 generic_args: []

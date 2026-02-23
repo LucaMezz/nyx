@@ -11,11 +11,16 @@ items:
         is_effect: false
         receiver: ~
         name: nop
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params: []
         return_types:
-          - Ok
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
       body:
         statements:
           - Pass
@@ -27,7 +32,8 @@ items:
         is_effect: false
         receiver: ~
         name: always_true
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params: []
         return_types:
@@ -43,11 +49,16 @@ items:
         is_effect: false
         receiver: ~
         name: unit_work
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params: []
         return_types:
-          - Ok
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
       body:
         statements:
           - Pass

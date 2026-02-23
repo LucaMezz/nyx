@@ -1,0 +1,231 @@
+---
+source: crates/fig-parser/tests/integration_tests.rs
+expression: ast
+---
+items:
+  - Interface:
+      visibility: Default
+      annotations: []
+      name:
+        segments:
+          - Iterator
+      generic_params:
+        - Type:
+            name: T
+            bounds: []
+            default_type: ~
+      extends: []
+      methods:
+        - visibility: Default
+          annotations: []
+          is_extern: false
+          is_effect: false
+          receiver: ~
+          name: next
+          outer_generic_params: []
+          func_generic_params: []
+          self_param:
+            is_pointer: true
+            is_mutable: true
+          params: []
+          return_types:
+            - Nullable:
+                Path:
+                  path:
+                    segments:
+                      - T
+                  generic_args: []
+        - visibility: Default
+          annotations: []
+          is_extern: false
+          is_effect: false
+          receiver: ~
+          name: has_next
+          outer_generic_params: []
+          func_generic_params: []
+          self_param:
+            is_pointer: true
+            is_mutable: false
+          params: []
+          return_types:
+            - Bool
+  - Struct:
+      visibility: Default
+      annotations: []
+      is_packed: false
+      name:
+        segments:
+          - Range
+      generic_params: []
+      requires: []
+      fields:
+        - name: current
+          ty: I64
+          visibility: Default
+          annotations: []
+        - name: end
+          ty: I64
+          visibility: Default
+          annotations: []
+        - name: step
+          ty: I64
+          visibility: Default
+          annotations: []
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: false
+        receiver:
+          - name: Range
+            generic_args: []
+        name: new
+        outer_generic_params: []
+        func_generic_params: []
+        self_param: ~
+        params:
+          - name: start
+            ty: I64
+          - name: end
+            ty: I64
+          - name: step
+            ty: I64
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - Range
+              generic_args: []
+      body:
+        statements:
+          - Pass
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: false
+        receiver:
+          - name: Range
+            generic_args: []
+        name: next
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params: []
+        return_types:
+          - Nullable: I64
+      body:
+        statements:
+          - If:
+              condition:
+                BinaryOp:
+                  lhs:
+                    FieldAccess:
+                      object: SelfValue
+                      field: current
+                      is_propagating: false
+                  op: GreaterThanOrEqual
+                  rhs:
+                    FieldAccess:
+                      object: SelfValue
+                      field: end
+                      is_propagating: false
+              then_body:
+                statements:
+                  - Return: NullLiteral
+              elif_clauses: []
+              else_body: ~
+          - Let:
+              annotations: []
+              name: val
+              ty: ~
+              value:
+                FieldAccess:
+                  object: SelfValue
+                  field: current
+                  is_propagating: false
+          - Expression:
+              Assign:
+                lhs:
+                  FieldAccess:
+                    object: SelfValue
+                    field: current
+                    is_propagating: false
+                op: Assign
+                rhs:
+                  BinaryOp:
+                    lhs:
+                      FieldAccess:
+                        object: SelfValue
+                        field: current
+                        is_propagating: false
+                    op: Add
+                    rhs:
+                      FieldAccess:
+                        object: SelfValue
+                        field: step
+                        is_propagating: false
+          - Return:
+              Path:
+                segments:
+                  - val
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: false
+        receiver:
+          - name: Range
+            generic_args: []
+        name: has_next
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: false
+        params: []
+        return_types:
+          - Bool
+      body:
+        statements:
+          - Return:
+              BinaryOp:
+                lhs:
+                  FieldAccess:
+                    object: SelfValue
+                    field: current
+                    is_propagating: false
+                op: LessThan
+                rhs:
+                  FieldAccess:
+                    object: SelfValue
+                    field: end
+                    is_propagating: false
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: false
+        receiver: ~
+        name: collect_range
+        outer_generic_params: []
+        func_generic_params: []
+        self_param: ~
+        params:
+          - name: start
+            ty: I64
+          - name: end
+            ty: I64
+        return_types:
+          - Array:
+              element_type: I64
+              size: ~
+      body:
+        statements:
+          - Pass

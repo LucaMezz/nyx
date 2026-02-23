@@ -6,22 +6,26 @@ items:
   - Union:
       visibility: Default
       annotations: []
-      name: Comparable
+      name:
+        segments:
+          - Comparable
       generic_params:
         - Type:
             name: A
             bounds:
               - Path:
-                  segments:
-                    - Ord
+                  path:
+                    segments:
+                      - Ord
                   generic_args: []
             default_type: ~
         - Type:
             name: B
             bounds:
               - Path:
-                  segments:
-                    - Ord
+                  path:
+                    segments:
+                      - Ord
                   generic_args: []
             default_type: ~
       requires: []
@@ -29,12 +33,14 @@ items:
         - name: first
           ty:
             Path:
-              segments:
-                - A
+              path:
+                segments:
+                  - A
               generic_args: []
         - name: second
           ty:
             Path:
-              segments:
-                - B
+              path:
+                segments:
+                  - B
               generic_args: []

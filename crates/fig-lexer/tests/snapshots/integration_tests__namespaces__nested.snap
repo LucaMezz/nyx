@@ -3,7 +3,7 @@ source: crates/fig-lexer/tests/integration_tests.rs
 expression: tokens
 ---
 - Namespace
-- Std
+- Ident: std
 - Newline
 - Indent
 - Namespace

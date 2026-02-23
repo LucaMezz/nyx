@@ -3,7 +3,7 @@ source: crates/fig-lexer/tests/integration_tests.rs
 expression: tokens
 ---
 - Using
-- Core
+- Ident: core
 - ColonColon
 - Ident: memory
 - Newline
@@ -158,7 +158,7 @@ expression: tokens
 - Newline
 - Indent
 - Mut
-- Alloc
+- Ident: alloc
 - Eq
 - Ident: BuddyAllocator
 - LParen
@@ -206,14 +206,14 @@ expression: tokens
 - Dedent
 - RParen
 - Newline
-- Alloc
+- Ident: alloc
 - Dot
 - Ident: init
 - LParen
 - RParen
 - Newline
 - Return
-- Alloc
+- Ident: alloc
 - Newline
 - Dedent
 - Func
@@ -227,7 +227,7 @@ expression: tokens
 - SelfLower
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - Let
@@ -654,7 +654,7 @@ expression: tokens
 - USize
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - For
@@ -688,7 +688,7 @@ expression: tokens
 - Newline
 - Indent
 - Return
-- OkLiteral
+- Ident: ok
 - Newline
 - Dedent
 - Let
@@ -792,7 +792,7 @@ expression: tokens
 - U8
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - If
@@ -802,7 +802,7 @@ expression: tokens
 - Newline
 - Indent
 - Return
-- OkLiteral
+- Ident: ok
 - Newline
 - Dedent
 - Let
@@ -890,7 +890,7 @@ expression: tokens
 - Ident: BlockHeader
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - Let
@@ -1134,7 +1134,7 @@ expression: tokens
 - USize
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - Block
@@ -1218,7 +1218,7 @@ expression: tokens
 - USize
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - If

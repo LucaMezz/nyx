@@ -11,7 +11,8 @@ items:
         is_effect: false
         receiver: ~
         name: comparison_ops
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params:
           - name: a
@@ -19,7 +20,11 @@ items:
           - name: b
             ty: I32
         return_types:
-          - Ok
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
       body:
         statements:
           - Let:
@@ -32,13 +37,11 @@ items:
                     Path:
                       segments:
                         - a
-                      generic_args: []
                   op: LessThan
                   rhs:
                     Path:
                       segments:
                         - b
-                      generic_args: []
           - Let:
               annotations: []
               name: gt
@@ -49,13 +52,11 @@ items:
                     Path:
                       segments:
                         - a
-                      generic_args: []
                   op: GreaterThan
                   rhs:
                     Path:
                       segments:
                         - b
-                      generic_args: []
           - Let:
               annotations: []
               name: le
@@ -66,13 +67,11 @@ items:
                     Path:
                       segments:
                         - a
-                      generic_args: []
                   op: LessThanOrEqual
                   rhs:
                     Path:
                       segments:
                         - b
-                      generic_args: []
           - Let:
               annotations: []
               name: ge
@@ -83,13 +82,11 @@ items:
                     Path:
                       segments:
                         - a
-                      generic_args: []
                   op: GreaterThanOrEqual
                   rhs:
                     Path:
                       segments:
                         - b
-                      generic_args: []
           - Let:
               annotations: []
               name: eq
@@ -100,13 +97,11 @@ items:
                     Path:
                       segments:
                         - a
-                      generic_args: []
                   op: Equal
                   rhs:
                     Path:
                       segments:
                         - b
-                      generic_args: []
           - Let:
               annotations: []
               name: ne
@@ -117,11 +112,9 @@ items:
                     Path:
                       segments:
                         - a
-                      generic_args: []
                   op: NotEqual
                   rhs:
                     Path:
                       segments:
                         - b
-                      generic_args: []
           - Pass

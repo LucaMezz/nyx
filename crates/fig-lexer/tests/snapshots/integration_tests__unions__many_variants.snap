@@ -8,7 +8,7 @@ expression: tokens
 - Indent
 - Ident: null_val
 - Colon
-- OkLiteral
+- Ident: ok
 - Newline
 - Ident: bool_val
 - Colon

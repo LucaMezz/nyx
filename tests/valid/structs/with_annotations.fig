@@ -8,8 +8,8 @@ struct CStruct
 struct AlignedBuffer
     data: [u8; 64]
 
-#packed
+#unaligned
 #repr(C)
-struct PackedCStruct
+packed struct PackedCStruct
     a: u8
     b: u32

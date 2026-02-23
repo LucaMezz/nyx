@@ -11,8 +11,9 @@ items:
             - Path:
                 segments:
                   - C
-                generic_args: []
-      name: CEnum
+      name:
+        segments:
+          - CEnum
       representation: ~
       generic_params: []
       requires: []
@@ -31,12 +32,12 @@ items:
             - Path:
                 segments:
                   - Debug
-                generic_args: []
             - Path:
                 segments:
                   - Clone
-                generic_args: []
-      name: Season
+      name:
+        segments:
+          - Season
       representation: ~
       generic_params: []
       requires: []

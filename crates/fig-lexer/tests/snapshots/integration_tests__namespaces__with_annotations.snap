@@ -14,7 +14,7 @@ expression: tokens
 - LParen
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Dedent
 - Hash
@@ -29,6 +29,6 @@ expression: tokens
 - LParen
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Dedent

@@ -7,57 +7,97 @@ items:
       visibility: Default
       annotations: []
       is_packed: true
-      name: Bits8
+      name:
+        segments:
+          - Bits8
       generic_params: []
       requires: []
       fields:
         - name: a
           ty: U8
+          visibility: Default
+          annotations: []
         - name: b
           ty: U8
+          visibility: Default
+          annotations: []
   - Struct:
       visibility: Default
       annotations: []
       is_packed: true
-      name: Header
+      name:
+        segments:
+          - Header
       generic_params: []
       requires: []
       fields:
         - name: magic
           ty: U32
+          visibility: Default
+          annotations: []
         - name: version
           ty: U16
+          visibility: Default
+          annotations: []
         - name: flags
           ty: U8
+          visibility: Default
+          annotations: []
         - name: reserved
           ty: U8
+          visibility: Default
+          annotations: []
   - Struct:
       visibility: Default
       annotations: []
       is_packed: true
-      name: IPv4
+      name:
+        segments:
+          - IPv4
       generic_params: []
       requires: []
       fields:
         - name: version
           ty: U8
+          visibility: Default
+          annotations: []
         - name: ihl
           ty: U8
+          visibility: Default
+          annotations: []
         - name: tos
           ty: U8
+          visibility: Default
+          annotations: []
         - name: len
           ty: U16
+          visibility: Default
+          annotations: []
         - name: id
           ty: U16
+          visibility: Default
+          annotations: []
         - name: frag
           ty: U16
+          visibility: Default
+          annotations: []
         - name: ttl
           ty: U8
+          visibility: Default
+          annotations: []
         - name: proto
           ty: U8
+          visibility: Default
+          annotations: []
         - name: checksum
           ty: U16
+          visibility: Default
+          annotations: []
         - name: src
           ty: U32
+          visibility: Default
+          annotations: []
         - name: dst
           ty: U32
+          visibility: Default
+          annotations: []

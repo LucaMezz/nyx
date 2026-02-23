@@ -10,7 +10,7 @@ expression: tokens
 - Ident: V
 - RBracket
 - Eq
-- Core
+- Ident: core
 - ColonColon
 - Ident: Map
 - LBracket
@@ -25,7 +25,7 @@ expression: tokens
 - Ident: T
 - RBracket
 - Eq
-- Std
+- Ident: std
 - ColonColon
 - Ident: collections
 - ColonColon

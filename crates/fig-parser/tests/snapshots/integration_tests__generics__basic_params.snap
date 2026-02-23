@@ -1,0 +1,146 @@
+---
+source: crates/fig-parser/tests/integration_tests.rs
+expression: ast
+---
+items:
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: false
+        receiver: ~
+        name: identity
+        outer_generic_params: []
+        func_generic_params:
+          - Type:
+              name: T
+              bounds: []
+              default_type: ~
+        self_param: ~
+        params:
+          - name: x
+            ty:
+              Path:
+                path:
+                  segments:
+                    - T
+                generic_args: []
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - T
+              generic_args: []
+      body:
+        statements:
+          - Pass
+  - Struct:
+      visibility: Default
+      annotations: []
+      is_packed: false
+      name:
+        segments:
+          - Box
+      generic_params:
+        - Type:
+            name: T
+            bounds: []
+            default_type: ~
+      requires: []
+      fields:
+        - name: value
+          ty:
+            Path:
+              path:
+                segments:
+                  - T
+              generic_args: []
+          visibility: Default
+          annotations: []
+  - Interface:
+      visibility: Default
+      annotations: []
+      name:
+        segments:
+          - Container
+      generic_params:
+        - Type:
+            name: T
+            bounds: []
+            default_type: ~
+      extends: []
+      methods:
+        - visibility: Default
+          annotations: []
+          is_extern: false
+          is_effect: false
+          receiver: ~
+          name: get
+          outer_generic_params: []
+          func_generic_params: []
+          self_param:
+            is_pointer: true
+            is_mutable: false
+          params:
+            - name: i
+              ty: USize
+          return_types:
+            - Nullable:
+                Path:
+                  path:
+                    segments:
+                      - T
+                  generic_args: []
+  - TypeAlias:
+      visibility: Default
+      annotations: []
+      name:
+        segments:
+          - Pair
+      generic_params:
+        - Type:
+            name: A
+            bounds: []
+            default_type: ~
+        - Type:
+            name: B
+            bounds: []
+            default_type: ~
+      aliased_type:
+        Path:
+          path:
+            segments:
+              - ok
+          generic_args: []
+  - Union:
+      visibility: Default
+      annotations: []
+      name:
+        segments:
+          - Either
+      generic_params:
+        - Type:
+            name: L
+            bounds: []
+            default_type: ~
+        - Type:
+            name: R
+            bounds: []
+            default_type: ~
+      requires: []
+      variants:
+        - name: left
+          ty:
+            Path:
+              path:
+                segments:
+                  - L
+              generic_args: []
+        - name: right
+          ty:
+            Path:
+              path:
+                segments:
+                  - R
+              generic_args: []

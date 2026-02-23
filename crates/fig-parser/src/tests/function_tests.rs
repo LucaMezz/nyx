@@ -7,7 +7,7 @@ use crate::ast::*;
 use crate::{Lexer, parser};
 
 fn bound_name(ty: &Type) -> &str {
-    if let Type::Path(p) = ty { &p.segments[0] } else { panic!("Expected path type as bound") }
+    if let Type::Path { path: p, .. } = ty { &p.segments[0] } else { panic!("Expected path type as bound") }
 }
 
 #[test]
@@ -18,7 +18,7 @@ fn test_simple_function() {
     assert_eq!(sig.name, "add");
     assert_eq!(sig.params.len(), 2);
     assert_eq!(sig.return_types, vec![Type::I32]);
-    assert_eq!(sig.generic_params.len(), 0);
+    assert_eq!(sig.outer_generic_params.len(), 0);
 
     assert_eq!(sig.params[0].name, "x");
     assert_eq!(sig.params[0].ty, Type::I32);
@@ -63,10 +63,10 @@ fn test_function_with_generic_params() {
     let f = parser::FunctionParser::new().parse(Lexer::new(input)).unwrap();
     let sig = f.signature;
     assert_eq!(sig.name, "identity");
-    assert_eq!(sig.generic_params.len(), 1);
+    assert_eq!(sig.outer_generic_params.len(), 1);
     assert_eq!(sig.params.len(), 1);
 
-    if let GenericParameter::Type { name, bounds, .. } = &sig.generic_params[0] {
+    if let GenericParameter::Type { name, bounds, .. } = &sig.outer_generic_params[0] {
         assert_eq!(name, "T");
         assert_eq!(bounds.len(), 0);
     } else {
@@ -79,9 +79,9 @@ fn test_function_with_bounded_generic() {
     let input = "func[T: Clone] clone(x: T) -> T\n    pass\n";
     let f = parser::FunctionParser::new().parse(Lexer::new(input)).unwrap();
     let sig = f.signature;
-    assert_eq!(sig.generic_params.len(), 1);
+    assert_eq!(sig.outer_generic_params.len(), 1);
 
-    if let GenericParameter::Type { name, bounds, .. } = &sig.generic_params[0] {
+    if let GenericParameter::Type { name, bounds, .. } = &sig.outer_generic_params[0] {
         assert_eq!(name, "T");
         assert_eq!(bounds.len(), 1);
         assert_eq!(bound_name(&bounds[0]), "Clone");
@@ -95,7 +95,7 @@ fn test_function_with_multiple_generics() {
     let input = "func[T, U] pair(x: T, y: U) -> T\n    pass\n";
     let f = parser::FunctionParser::new().parse(Lexer::new(input)).unwrap();
     let sig = f.signature;
-    assert_eq!(sig.generic_params.len(), 2);
+    assert_eq!(sig.outer_generic_params.len(), 2);
     assert_eq!(sig.params.len(), 2);
 }
 
@@ -106,9 +106,9 @@ fn test_function_with_where_clause() {
     let f = parser::FunctionParser::new().parse(Lexer::new(input)).unwrap();
     let sig = f.signature;
     // T and U appear in generic_params with bounds merged in from the where clause
-    assert_eq!(sig.generic_params.len(), 2);
+    assert_eq!(sig.outer_generic_params.len(), 2);
 
-    if let GenericParameter::Type { name, bounds, .. } = &sig.generic_params[0] {
+    if let GenericParameter::Type { name, bounds, .. } = &sig.outer_generic_params[0] {
         assert_eq!(name, "T");
         assert_eq!(bounds.len(), 1);
         assert_eq!(bound_name(&bounds[0]), "Clone");
@@ -116,7 +116,7 @@ fn test_function_with_where_clause() {
         panic!("Expected T: Clone");
     }
 
-    if let GenericParameter::Type { name, bounds, .. } = &sig.generic_params[1] {
+    if let GenericParameter::Type { name, bounds, .. } = &sig.outer_generic_params[1] {
         assert_eq!(name, "U");
         assert_eq!(bounds.len(), 1);
         assert_eq!(bound_name(&bounds[0]), "Copy");
@@ -188,9 +188,9 @@ fn test_function_with_const_param() {
     let input = "func[const N: usize] array_func(x: i32) -> i32\n    pass\n";
     let f = parser::FunctionParser::new().parse(Lexer::new(input)).unwrap();
     let sig = f.signature;
-    assert_eq!(sig.generic_params.len(), 1);
+    assert_eq!(sig.outer_generic_params.len(), 1);
 
-    if let GenericParameter::Const { name, ty } = &sig.generic_params[0] {
+    if let GenericParameter::Const { name, ty } = &sig.outer_generic_params[0] {
         assert_eq!(name, "N");
         assert_eq!(ty, &Type::USize);
     } else {
@@ -203,17 +203,17 @@ fn test_function_with_mixed_generics() {
     let input = "func[T: Clone, const N: usize, U] complex(x: T, y: U) -> T\n    pass\n";
     let f = parser::FunctionParser::new().parse(Lexer::new(input)).unwrap();
     let sig = f.signature;
-    assert_eq!(sig.generic_params.len(), 3);
+    assert_eq!(sig.outer_generic_params.len(), 3);
 
-    if let GenericParameter::Type { name, bounds, .. } = &sig.generic_params[0] {
+    if let GenericParameter::Type { name, bounds, .. } = &sig.outer_generic_params[0] {
         assert_eq!(name, "T");
         assert_eq!(bounds.len(), 1);
     }
-    if let GenericParameter::Const { name, ty } = &sig.generic_params[1] {
+    if let GenericParameter::Const { name, ty } = &sig.outer_generic_params[1] {
         assert_eq!(name, "N");
         assert_eq!(ty, &Type::USize);
     }
-    if let GenericParameter::Type { name, bounds, .. } = &sig.generic_params[2] {
+    if let GenericParameter::Type { name, bounds, .. } = &sig.outer_generic_params[2] {
         assert_eq!(name, "U");
         assert_eq!(bounds.len(), 0);
     }
@@ -225,7 +225,7 @@ fn test_function_with_multiple_bounds() {
     let f = parser::FunctionParser::new().parse(Lexer::new(input)).unwrap();
     let sig = f.signature;
 
-    if let GenericParameter::Type { name, bounds, .. } = &sig.generic_params[0] {
+    if let GenericParameter::Type { name, bounds, .. } = &sig.outer_generic_params[0] {
         assert_eq!(name, "T");
         assert_eq!(bounds.len(), 3);
         assert_eq!(bound_name(&bounds[0]), "Clone");

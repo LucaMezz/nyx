@@ -3,24 +3,40 @@ source: crates/fig-lexer/tests/integration_tests.rs
 expression: tokens
 ---
 - Interface
-- Ident: RequiresAllocator
-- Newline
-- Indent
-- Requires
-- Newline
-- Indent
 - Ident: Allocator
+- LBracket
+- Ident: T
+- RBracket
+- Newline
+- Indent
+- Extends
+- Newline
+- Indent
+- Ident: Display
+- Newline
+- Ident: Debug
+- Newline
+- Dedent
+- Where
+- Newline
+- Indent
+- Ident: T
+- Colon
+- Ident: Mem
 - Newline
 - Dedent
 - Dedent
 - Interface
 - Ident: MustBeOrdered
+- LBracket
+- Ident: T
+- RBracket
 - Newline
 - Indent
 - Where
 - Newline
 - Indent
-- SelfKeyword
+- Ident: T
 - Colon
 - Ident: Ord
 - Newline

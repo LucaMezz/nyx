@@ -2,7 +2,7 @@
 func add(a: i32, b: i32) -> i32
     return a + b
 
-func demo() -> ok
+func demo() -> null
     let r1 = add(1, 2)
     let r2 = add(r1, r1)
     let r3 = add(add(1, 2), add(3, 4))

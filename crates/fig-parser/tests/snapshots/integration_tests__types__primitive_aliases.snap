@@ -6,48 +6,64 @@ items:
   - TypeAlias:
       visibility: Default
       annotations: []
-      name: Byte
+      name:
+        segments:
+          - Byte
       generic_params: []
       aliased_type: U8
   - TypeAlias:
       visibility: Default
       annotations: []
-      name: Short
+      name:
+        segments:
+          - Short
       generic_params: []
       aliased_type: I16
   - TypeAlias:
       visibility: Default
       annotations: []
-      name: Int
+      name:
+        segments:
+          - Int
       generic_params: []
       aliased_type: I32
   - TypeAlias:
       visibility: Default
       annotations: []
-      name: Long
+      name:
+        segments:
+          - Long
       generic_params: []
       aliased_type: I64
   - TypeAlias:
       visibility: Default
       annotations: []
-      name: UInt
+      name:
+        segments:
+          - UInt
       generic_params: []
       aliased_type: U32
   - TypeAlias:
       visibility: Default
       annotations: []
-      name: Float
+      name:
+        segments:
+          - Float
       generic_params: []
       aliased_type: F32
   - TypeAlias:
       visibility: Default
       annotations: []
-      name: Double
+      name:
+        segments:
+          - Double
       generic_params: []
       aliased_type: F64
   - TypeAlias:
       visibility: Default
       annotations: []
-      name: Bool
+      name:
+        segments:
+          - Bool
       generic_params: []
       aliased_type: Bool

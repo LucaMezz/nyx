@@ -1,0 +1,510 @@
+---
+source: crates/fig-parser/tests/integration_tests.rs
+expression: ast
+---
+items:
+  - Interface:
+      visibility: Default
+      annotations: []
+      name:
+        segments:
+          - Hasher
+      generic_params: []
+      extends: []
+      methods:
+        - visibility: Default
+          annotations: []
+          is_extern: false
+          is_effect: false
+          receiver: ~
+          name: hash
+          outer_generic_params: []
+          func_generic_params: []
+          self_param:
+            is_pointer: true
+            is_mutable: false
+          params:
+            - name: data
+              ty:
+                Pointer:
+                  nullable: false
+                  mutable: false
+                  element_type: U8
+            - name: len
+              ty: USize
+          return_types:
+            - U64
+  - Interface:
+      visibility: Default
+      annotations: []
+      name:
+        segments:
+          - Map
+      generic_params:
+        - Type:
+            name: K
+            bounds:
+              - Path:
+                  path:
+                    segments:
+                      - Hash
+                  generic_args: []
+              - Path:
+                  path:
+                    segments:
+                      - Eq
+                  generic_args: []
+            default_type: ~
+        - Type:
+            name: V
+            bounds: []
+            default_type: ~
+      extends: []
+      methods:
+        - visibility: Default
+          annotations: []
+          is_extern: false
+          is_effect: true
+          receiver: ~
+          name: insert
+          outer_generic_params: []
+          func_generic_params: []
+          self_param:
+            is_pointer: true
+            is_mutable: true
+          params:
+            - name: key
+              ty:
+                Path:
+                  path:
+                    segments:
+                      - K
+                  generic_args: []
+            - name: value
+              ty:
+                Path:
+                  path:
+                    segments:
+                      - V
+                  generic_args: []
+          return_types:
+            - Path:
+                path:
+                  segments:
+                    - ok
+                generic_args: []
+        - visibility: Default
+          annotations: []
+          is_extern: false
+          is_effect: false
+          receiver: ~
+          name: get
+          outer_generic_params: []
+          func_generic_params: []
+          self_param:
+            is_pointer: true
+            is_mutable: false
+          params:
+            - name: key
+              ty:
+                Pointer:
+                  nullable: false
+                  mutable: false
+                  element_type:
+                    Path:
+                      path:
+                        segments:
+                          - K
+                      generic_args: []
+          return_types:
+            - Nullable:
+                Pointer:
+                  nullable: false
+                  mutable: false
+                  element_type:
+                    Path:
+                      path:
+                        segments:
+                          - V
+                      generic_args: []
+        - visibility: Default
+          annotations: []
+          is_extern: false
+          is_effect: true
+          receiver: ~
+          name: remove
+          outer_generic_params: []
+          func_generic_params: []
+          self_param:
+            is_pointer: true
+            is_mutable: true
+          params:
+            - name: key
+              ty:
+                Pointer:
+                  nullable: false
+                  mutable: false
+                  element_type:
+                    Path:
+                      path:
+                        segments:
+                          - K
+                      generic_args: []
+          return_types:
+            - Nullable:
+                Path:
+                  path:
+                    segments:
+                      - V
+                  generic_args: []
+        - visibility: Default
+          annotations: []
+          is_extern: false
+          is_effect: false
+          receiver: ~
+          name: contains
+          outer_generic_params: []
+          func_generic_params: []
+          self_param:
+            is_pointer: true
+            is_mutable: false
+          params:
+            - name: key
+              ty:
+                Pointer:
+                  nullable: false
+                  mutable: false
+                  element_type:
+                    Path:
+                      path:
+                        segments:
+                          - K
+                      generic_args: []
+          return_types:
+            - Bool
+        - visibility: Default
+          annotations: []
+          is_extern: false
+          is_effect: false
+          receiver: ~
+          name: len
+          outer_generic_params: []
+          func_generic_params: []
+          self_param:
+            is_pointer: true
+            is_mutable: false
+          params: []
+          return_types:
+            - USize
+        - visibility: Default
+          annotations: []
+          is_extern: false
+          is_effect: false
+          receiver: ~
+          name: is_empty
+          outer_generic_params: []
+          func_generic_params: []
+          self_param:
+            is_pointer: true
+            is_mutable: false
+          params: []
+          return_types:
+            - Bool
+  - Struct:
+      visibility: Default
+      annotations: []
+      is_packed: false
+      name:
+        segments:
+          - HashMap
+      generic_params:
+        - Type:
+            name: K
+            bounds:
+              - Path:
+                  path:
+                    segments:
+                      - Hash
+                  generic_args: []
+              - Path:
+                  path:
+                    segments:
+                      - Eq
+                  generic_args: []
+            default_type: ~
+        - Type:
+            name: V
+            bounds: []
+            default_type: ~
+      requires: []
+      fields:
+        - name: buckets
+          ty:
+            Pointer:
+              nullable: false
+              mutable: true
+              element_type:
+                Path:
+                  path:
+                    segments:
+                      - Bucket
+                  generic_args:
+                    - Path:
+                        path:
+                          segments:
+                            - K
+                        generic_args: []
+                    - Path:
+                        path:
+                          segments:
+                            - V
+                        generic_args: []
+          visibility: Default
+          annotations: []
+        - name: bucket_count
+          ty: USize
+          visibility: Default
+          annotations: []
+        - name: len
+          ty: USize
+          visibility: Default
+          annotations: []
+  - Struct:
+      visibility: Default
+      annotations: []
+      is_packed: false
+      name:
+        segments:
+          - Bucket
+      generic_params:
+        - Type:
+            name: K
+            bounds: []
+            default_type: ~
+        - Type:
+            name: V
+            bounds: []
+            default_type: ~
+      requires: []
+      fields:
+        - name: key
+          ty:
+            Path:
+              path:
+                segments:
+                  - K
+              generic_args: []
+          visibility: Default
+          annotations: []
+        - name: value
+          ty:
+            Path:
+              path:
+                segments:
+                  - V
+              generic_args: []
+          visibility: Default
+          annotations: []
+        - name: next
+          ty:
+            Nullable:
+              Pointer:
+                nullable: false
+                mutable: false
+                element_type:
+                  Path:
+                    path:
+                      segments:
+                        - Bucket
+                    generic_args:
+                      - Path:
+                          path:
+                            segments:
+                              - K
+                          generic_args: []
+                      - Path:
+                          path:
+                            segments:
+                              - V
+                          generic_args: []
+          visibility: Default
+          annotations: []
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: HashMap
+            generic_args:
+              - Type:
+                  name: K
+                  bounds: []
+                  default_type: ~
+              - Type:
+                  name: V
+                  bounds: []
+                  default_type: ~
+        name: new
+        outer_generic_params:
+          - Type:
+              name: K
+              bounds:
+                - Path:
+                    path:
+                      segments:
+                        - Hash
+                    generic_args: []
+                - Path:
+                    path:
+                      segments:
+                        - Eq
+                    generic_args: []
+              default_type: ~
+        func_generic_params: []
+        self_param: ~
+        params: []
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - HashMap
+              generic_args:
+                - Path:
+                    path:
+                      segments:
+                        - K
+                    generic_args: []
+                - Path:
+                    path:
+                      segments:
+                        - V
+                    generic_args: []
+      body:
+        statements:
+          - Pass
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: HashMap
+            generic_args:
+              - Type:
+                  name: K
+                  bounds: []
+                  default_type: ~
+              - Type:
+                  name: V
+                  bounds: []
+                  default_type: ~
+        name: insert
+        outer_generic_params:
+          - Type:
+              name: K
+              bounds:
+                - Path:
+                    path:
+                      segments:
+                        - Hash
+                    generic_args: []
+                - Path:
+                    path:
+                      segments:
+                        - Eq
+                    generic_args: []
+              default_type: ~
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params:
+          - name: key
+            ty:
+              Path:
+                path:
+                  segments:
+                    - K
+                generic_args: []
+          - name: value
+            ty:
+              Path:
+                path:
+                  segments:
+                    - V
+                generic_args: []
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
+      body:
+        statements:
+          - Pass
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: false
+        receiver:
+          - name: HashMap
+            generic_args:
+              - Type:
+                  name: K
+                  bounds: []
+                  default_type: ~
+              - Type:
+                  name: V
+                  bounds: []
+                  default_type: ~
+        name: get
+        outer_generic_params:
+          - Type:
+              name: K
+              bounds:
+                - Path:
+                    path:
+                      segments:
+                        - Hash
+                    generic_args: []
+                - Path:
+                    path:
+                      segments:
+                        - Eq
+                    generic_args: []
+              default_type: ~
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: false
+        params:
+          - name: key
+            ty:
+              Pointer:
+                nullable: false
+                mutable: false
+                element_type:
+                  Path:
+                    path:
+                      segments:
+                        - K
+                    generic_args: []
+        return_types:
+          - Nullable:
+              Pointer:
+                nullable: false
+                mutable: false
+                element_type:
+                  Path:
+                    path:
+                      segments:
+                        - V
+                    generic_args: []
+      body:
+        statements:
+          - Pass

@@ -1,0 +1,70 @@
+---
+source: crates/fig-parser/tests/integration_tests.rs
+expression: ast
+---
+items:
+  - Enum:
+      visibility: Default
+      annotations: []
+      name:
+        segments:
+          - Dog
+          - Breed
+      representation: U8
+      generic_params: []
+      requires: []
+      variants:
+        - name: BULLDOG
+          value:
+            IntegerLiteral:
+              base: Decimal
+              digits: "0"
+              suffix: ~
+        - name: POODLE
+          value:
+            IntegerLiteral:
+              base: Decimal
+              digits: "1"
+              suffix: ~
+        - name: BEAGLE
+          value:
+            IntegerLiteral:
+              base: Decimal
+              digits: "2"
+              suffix: ~
+        - name: HUSKY
+          value:
+            IntegerLiteral:
+              base: Decimal
+              digits: "3"
+              suffix: ~
+  - Enum:
+      visibility: Default
+      annotations: []
+      name:
+        segments:
+          - core
+          - os
+          - Signal
+      representation: ~
+      generic_params: []
+      requires: []
+      variants:
+        - name: SIGINT
+          value:
+            IntegerLiteral:
+              base: Decimal
+              digits: "2"
+              suffix: ~
+        - name: SIGTERM
+          value:
+            IntegerLiteral:
+              base: Decimal
+              digits: "15"
+              suffix: ~
+        - name: SIGKILL
+          value:
+            IntegerLiteral:
+              base: Decimal
+              digits: "9"
+              suffix: ~

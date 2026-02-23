@@ -6,17 +6,21 @@ items:
   - Enum:
       visibility: Default
       annotations: []
-      name: Error
+      name:
+        segments:
+          - Error
       representation: U8
       generic_params: []
       requires:
         - Path:
-            segments:
-              - Display
+            path:
+              segments:
+                - Display
             generic_args: []
         - Path:
-            segments:
-              - Debug
+            path:
+              segments:
+                - Debug
             generic_args: []
       variants:
         - name: NONE

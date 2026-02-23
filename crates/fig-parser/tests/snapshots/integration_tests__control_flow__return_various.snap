@@ -11,7 +11,8 @@ items:
         is_effect: false
         receiver: ~
         name: early_return
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params:
           - name: x
@@ -27,7 +28,6 @@ items:
                     Path:
                       segments:
                         - x
-                      generic_args: []
                   op: LessThan
                   rhs:
                     IntegerLiteral:
@@ -53,7 +53,6 @@ items:
                     Path:
                       segments:
                         - x
-                      generic_args: []
                   op: Multiply
                   rhs:
                     IntegerLiteral:
@@ -64,7 +63,6 @@ items:
               Path:
                 segments:
                   - result
-                generic_args: []
   - Function:
       signature:
         visibility: Default
@@ -73,7 +71,8 @@ items:
         is_effect: false
         receiver: ~
         name: multiple_returns
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params:
           - name: x
@@ -89,7 +88,6 @@ items:
                     Path:
                       segments:
                         - x
-                      generic_args: []
                   op: Equal
                   rhs:
                     IntegerLiteral:
@@ -110,7 +108,6 @@ items:
                         Path:
                           segments:
                             - x
-                          generic_args: []
                       op: Equal
                       rhs:
                         IntegerLiteral:
@@ -132,10 +129,8 @@ items:
                           Path:
                             segments:
                               - x
-                            generic_args: []
                         op: Multiply
                         rhs:
                           Path:
                             segments:
                               - x
-                            generic_args: []

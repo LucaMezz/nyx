@@ -1,0 +1,63 @@
+---
+source: crates/fig-parser/tests/integration_tests.rs
+expression: ast
+---
+items:
+  - Union:
+      visibility: Public
+      annotations: []
+      name:
+        segments:
+          - PublicResult
+      generic_params:
+        - Type:
+            name: T
+            bounds: []
+            default_type: ~
+        - Type:
+            name: E
+            bounds: []
+            default_type: ~
+      requires: []
+      variants:
+        - name: ok
+          ty:
+            Path:
+              path:
+                segments:
+                  - T
+              generic_args: []
+        - name: err
+          ty:
+            Path:
+              path:
+                segments:
+                  - E
+              generic_args: []
+  - Union:
+      visibility: Export
+      annotations: []
+      name:
+        segments:
+          - ExportedMaybe
+      generic_params:
+        - Type:
+            name: T
+            bounds: []
+            default_type: ~
+      requires: []
+      variants:
+        - name: some
+          ty:
+            Path:
+              path:
+                segments:
+                  - T
+              generic_args: []
+        - name: none
+          ty:
+            Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []

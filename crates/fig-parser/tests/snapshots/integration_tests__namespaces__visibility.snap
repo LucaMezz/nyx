@@ -9,7 +9,6 @@ items:
       name:
         segments:
           - api
-        generic_args: []
       items:
         - FunctionDeclaration:
             signature:
@@ -19,7 +18,8 @@ items:
               is_effect: false
               receiver: ~
               name: version
-              generic_params: []
+              outer_generic_params: []
+              func_generic_params: []
               self_param: ~
               params: []
               return_types:
@@ -32,18 +32,22 @@ items:
               is_effect: false
               receiver: ~
               name: help
-              generic_params: []
+              outer_generic_params: []
+              func_generic_params: []
               self_param: ~
               params: []
               return_types:
-                - Ok
+                - Path:
+                    path:
+                      segments:
+                        - ok
+                    generic_args: []
   - Namespace:
       visibility: Export
       annotations: []
       name:
         segments:
           - runtime
-        generic_args: []
       items:
         - FunctionDeclaration:
             signature:
@@ -53,11 +57,16 @@ items:
               is_effect: false
               receiver: ~
               name: init
-              generic_params: []
+              outer_generic_params: []
+              func_generic_params: []
               self_param: ~
               params: []
               return_types:
-                - Ok
+                - Path:
+                    path:
+                      segments:
+                        - ok
+                    generic_args: []
         - FunctionDeclaration:
             signature:
               visibility: Public
@@ -66,8 +75,13 @@ items:
               is_effect: false
               receiver: ~
               name: shutdown
-              generic_params: []
+              outer_generic_params: []
+              func_generic_params: []
               self_param: ~
               params: []
               return_types:
-                - Ok
+                - Path:
+                    path:
+                      segments:
+                        - ok
+                    generic_args: []

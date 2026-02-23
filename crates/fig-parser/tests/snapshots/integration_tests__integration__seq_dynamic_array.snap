@@ -1,0 +1,559 @@
+---
+source: crates/fig-parser/tests/integration_tests.rs
+expression: ast
+---
+items:
+  - Using:
+      visibility: Default
+      annotations: []
+      path:
+        segments:
+          - core
+          - memory
+  - Struct:
+      visibility: Default
+      annotations: []
+      is_packed: false
+      name:
+        segments:
+          - SeqBuffer
+      generic_params:
+        - Type:
+            name: T
+            bounds: []
+            default_type: ~
+      requires: []
+      fields:
+        - name: ptr
+          ty:
+            Pointer:
+              nullable: false
+              mutable: true
+              element_type:
+                Path:
+                  path:
+                    segments:
+                      - T
+                  generic_args: []
+          visibility: Default
+          annotations: []
+        - name: cap
+          ty: USize
+          visibility: Default
+          annotations: []
+        - name: len
+          ty: USize
+          visibility: Default
+          annotations: []
+  - Struct:
+      visibility: Export
+      annotations: []
+      is_packed: false
+      name:
+        segments:
+          - Seq
+      generic_params:
+        - Type:
+            name: T
+            bounds: []
+            default_type: ~
+      requires: []
+      fields:
+        - name: buffer
+          ty:
+            Path:
+              path:
+                segments:
+                  - SeqBuffer
+              generic_args:
+                - Path:
+                    path:
+                      segments:
+                        - T
+                    generic_args: []
+          visibility: Default
+          annotations: []
+  - Const:
+      visibility: Default
+      annotations: []
+      generic_params:
+        - Type:
+            name: T
+            bounds: []
+            default_type: ~
+      receiver:
+        - name: Seq
+          generic_args:
+            - Path:
+                path:
+                  segments:
+                    - T
+                generic_args: []
+      name: DEFAULT_CAPACITY
+      ty: USize
+      value:
+        IntegerLiteral:
+          base: Decimal
+          digits: "4"
+          suffix: ~
+  - Const:
+      visibility: Default
+      annotations: []
+      generic_params:
+        - Type:
+            name: T
+            bounds: []
+            default_type: ~
+      receiver:
+        - name: Seq
+          generic_args:
+            - Path:
+                path:
+                  segments:
+                    - T
+                generic_args: []
+      name: GROW_FACTOR
+      ty: USize
+      value:
+        IntegerLiteral:
+          base: Decimal
+          digits: "2"
+          suffix: ~
+  - Function:
+      signature:
+        visibility: Export
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: Seq
+            generic_args:
+              - Type:
+                  name: T
+                  bounds: []
+                  default_type: ~
+        name: new
+        outer_generic_params: []
+        func_generic_params: []
+        self_param: ~
+        params: []
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - Seq
+              generic_args:
+                - Path:
+                    path:
+                      segments:
+                        - T
+                    generic_args: []
+      body:
+        statements:
+          - Pass
+  - Function:
+      signature:
+        visibility: Export
+        annotations: []
+        is_extern: false
+        is_effect: false
+        receiver:
+          - name: Seq
+            generic_args:
+              - Type:
+                  name: T
+                  bounds: []
+                  default_type: ~
+        name: len
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: false
+        params: []
+        return_types:
+          - USize
+      body:
+        statements:
+          - Return:
+              FieldAccess:
+                object:
+                  FieldAccess:
+                    object: SelfValue
+                    field: buffer
+                    is_propagating: false
+                field: len
+                is_propagating: false
+  - Function:
+      signature:
+        visibility: Export
+        annotations: []
+        is_extern: false
+        is_effect: false
+        receiver:
+          - name: Seq
+            generic_args:
+              - Type:
+                  name: T
+                  bounds: []
+                  default_type: ~
+        name: is_empty
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: false
+        params: []
+        return_types:
+          - Bool
+      body:
+        statements:
+          - Return:
+              BinaryOp:
+                lhs:
+                  FieldAccess:
+                    object:
+                      FieldAccess:
+                        object: SelfValue
+                        field: buffer
+                        is_propagating: false
+                    field: len
+                    is_propagating: false
+                op: Equal
+                rhs:
+                  IntegerLiteral:
+                    base: Decimal
+                    digits: "0"
+                    suffix: ~
+  - Function:
+      signature:
+        visibility: Export
+        annotations: []
+        is_extern: false
+        is_effect: false
+        receiver:
+          - name: Seq
+            generic_args:
+              - Type:
+                  name: T
+                  bounds: []
+                  default_type: ~
+        name: cap
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: false
+        params: []
+        return_types:
+          - USize
+      body:
+        statements:
+          - Return:
+              FieldAccess:
+                object:
+                  FieldAccess:
+                    object: SelfValue
+                    field: buffer
+                    is_propagating: false
+                field: cap
+                is_propagating: false
+  - Function:
+      signature:
+        visibility: Export
+        annotations: []
+        is_extern: false
+        is_effect: false
+        receiver:
+          - name: Seq
+            generic_args:
+              - Type:
+                  name: T
+                  bounds: []
+                  default_type: ~
+        name: get
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: false
+        params:
+          - name: index
+            ty: USize
+        return_types:
+          - Nullable:
+              Pointer:
+                nullable: false
+                mutable: false
+                element_type:
+                  Path:
+                    path:
+                      segments:
+                        - T
+                    generic_args: []
+      body:
+        statements:
+          - If:
+              condition:
+                BinaryOp:
+                  lhs:
+                    Path:
+                      segments:
+                        - index
+                  op: GreaterThanOrEqual
+                  rhs:
+                    FieldAccess:
+                      object:
+                        FieldAccess:
+                          object: SelfValue
+                          field: buffer
+                          is_propagating: false
+                      field: len
+                      is_propagating: false
+              then_body:
+                statements:
+                  - Return: NullLiteral
+              elif_clauses: []
+              else_body: ~
+          - Pass
+  - Function:
+      signature:
+        visibility: Export
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: Seq
+            generic_args:
+              - Type:
+                  name: T
+                  bounds: []
+                  default_type: ~
+        name: push
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params:
+          - name: item
+            ty:
+              Path:
+                path:
+                  segments:
+                    - T
+                generic_args: []
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
+      body:
+        statements:
+          - If:
+              condition:
+                BinaryOp:
+                  lhs:
+                    FieldAccess:
+                      object:
+                        FieldAccess:
+                          object: SelfValue
+                          field: buffer
+                          is_propagating: false
+                      field: len
+                      is_propagating: false
+                  op: Equal
+                  rhs:
+                    FieldAccess:
+                      object:
+                        FieldAccess:
+                          object: SelfValue
+                          field: buffer
+                          is_propagating: false
+                      field: cap
+                      is_propagating: false
+              then_body:
+                statements:
+                  - Expression:
+                      Call:
+                        callee:
+                          FieldAccess:
+                            object: SelfValue
+                            field: grow
+                            is_propagating: false
+                        args: []
+                        generic_args: ~
+                        is_propagating: false
+              elif_clauses: []
+              else_body: ~
+          - Pass
+  - Function:
+      signature:
+        visibility: Export
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: Seq
+            generic_args:
+              - Type:
+                  name: T
+                  bounds: []
+                  default_type: ~
+        name: pop
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params: []
+        return_types:
+          - Nullable:
+              Path:
+                path:
+                  segments:
+                    - T
+                generic_args: []
+      body:
+        statements:
+          - If:
+              condition:
+                BinaryOp:
+                  lhs:
+                    FieldAccess:
+                      object:
+                        FieldAccess:
+                          object: SelfValue
+                          field: buffer
+                          is_propagating: false
+                      field: len
+                      is_propagating: false
+                  op: Equal
+                  rhs:
+                    IntegerLiteral:
+                      base: Decimal
+                      digits: "0"
+                      suffix: ~
+              then_body:
+                statements:
+                  - Return: NullLiteral
+              elif_clauses: []
+              else_body: ~
+          - Expression:
+              Assign:
+                lhs:
+                  FieldAccess:
+                    object:
+                      FieldAccess:
+                        object: SelfValue
+                        field: buffer
+                        is_propagating: false
+                    field: len
+                    is_propagating: false
+                op: Assign
+                rhs:
+                  BinaryOp:
+                    lhs:
+                      FieldAccess:
+                        object:
+                          FieldAccess:
+                            object: SelfValue
+                            field: buffer
+                            is_propagating: false
+                        field: len
+                        is_propagating: false
+                    op: Subtract
+                    rhs:
+                      IntegerLiteral:
+                        base: Decimal
+                        digits: "1"
+                        suffix: ~
+          - Pass
+  - Function:
+      signature:
+        visibility: Export
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: Seq
+            generic_args:
+              - Type:
+                  name: T
+                  bounds: []
+                  default_type: ~
+        name: grow
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params: []
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
+      body:
+        statements:
+          - Let:
+              annotations: []
+              name: new_cap
+              ty: ~
+              value:
+                BinaryOp:
+                  lhs:
+                    FieldAccess:
+                      object:
+                        FieldAccess:
+                          object: SelfValue
+                          field: buffer
+                          is_propagating: false
+                      field: cap
+                      is_propagating: false
+                  op: Multiply
+                  rhs:
+                    TypeAccess:
+                      object:
+                        Index:
+                          object:
+                            Path:
+                              segments:
+                                - Seq
+                          index:
+                            Path:
+                              segments:
+                                - T
+                      member: GROW_FACTOR
+          - Pass
+  - Function:
+      signature:
+        visibility: Export
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: Seq
+            generic_args:
+              - Type:
+                  name: T
+                  bounds: []
+                  default_type: ~
+        name: free
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params: []
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
+      body:
+        statements:
+          - Pass

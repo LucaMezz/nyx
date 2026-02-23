@@ -3,17 +3,17 @@ source: crates/fig-lexer/tests/integration_tests.rs
 expression: tokens
 ---
 - Using
-- Std
+- Ident: std
 - ColonColon
 - Ident: io
 - Newline
 - Using
-- Core
+- Ident: core
 - ColonColon
 - Ident: memory
 - Newline
 - Using
-- Core
+- Ident: core
 - ColonColon
 - Ident: iter
 - Newline

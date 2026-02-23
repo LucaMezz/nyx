@@ -7,7 +7,7 @@ expression: tokens
 - LParen
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - Let
@@ -18,7 +18,7 @@ expression: tokens
 - Let
 - Ident: y
 - Eq
-- Std
+- Ident: std
 - ColonColon
 - Ident: io
 - ColonColon
@@ -27,7 +27,7 @@ expression: tokens
 - Let
 - Ident: z
 - Eq
-- Core
+- Ident: core
 - ColonColon
 - Ident: math
 - ColonColon

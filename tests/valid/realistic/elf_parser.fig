@@ -181,9 +181,21 @@ func! ElfParser::parse_header(*mut self) -> ElfResult[ElfHeader]
     let machine_raw = self.read_u16()
     let file_version = self.read_u32()
     
-    let entry_point = if self.is_64bit then self.read_u64() else self.read_u32() as u64
-    let program_header_offset = if self.is_64bit then self.read_u64() else self.read_u32() as u64
-    let section_header_offset = if self.is_64bit then self.read_u64() else self.read_u32() as u64
+    let entry_point: u64 = 0
+    let program_header_offset: u64 = 0
+    let section_header_offset: u64 = 0
+    if self.is_64bit
+        entry_point = self.read_u64()
+    else 
+        entry_point = self.read_u32() as u64
+    if self.is_64bit
+        program_header_offset = self.read_u64()
+    else 
+        program_header_offset = self.read_u32() as u64
+    if self.is_64bit
+        section_header_offset = self.read_u64()
+    else
+        section_header_offset = self.read_u32() as u64
     
     let flags = self.read_u32()
     let header_size = self.read_u16()

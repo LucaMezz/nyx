@@ -7,12 +7,16 @@ items:
       visibility: Default
       annotations: []
       is_packed: false
-      name: Counter
+      name:
+        segments:
+          - Counter
       generic_params: []
       requires: []
       fields:
         - name: value
           ty: I32
+          visibility: Default
+          annotations: []
   - Function:
       signature:
         visibility: Default
@@ -20,11 +24,11 @@ items:
         is_extern: false
         is_effect: false
         receiver:
-          segments:
-            - Counter
-          generic_args: []
+          - name: Counter
+            generic_args: []
         name: get
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param:
           is_pointer: false
           is_mutable: false
@@ -41,17 +45,21 @@ items:
         is_extern: false
         is_effect: false
         receiver:
-          segments:
-            - Counter
-          generic_args: []
+          - name: Counter
+            generic_args: []
         name: increment
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param:
           is_pointer: true
           is_mutable: true
         params: []
         return_types:
-          - Ok
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
       body:
         statements:
           - Pass
@@ -62,17 +70,21 @@ items:
         is_extern: false
         is_effect: false
         receiver:
-          segments:
-            - Counter
-          generic_args: []
+          - name: Counter
+            generic_args: []
         name: reset
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param:
           is_pointer: true
           is_mutable: true
         params: []
         return_types:
-          - Ok
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
       body:
         statements:
           - Pass
@@ -83,11 +95,11 @@ items:
         is_extern: false
         is_effect: false
         receiver:
-          segments:
-            - Counter
-          generic_args: []
+          - name: Counter
+            generic_args: []
         name: get_ref
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param:
           is_pointer: true
           is_mutable: false

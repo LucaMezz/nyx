@@ -2,7 +2,20 @@ use lalrpop_util::lalrpop_mod;
 use fig_lexer::{IndentLexer, Token};
 
 pub mod ast;
+pub mod diagnostics;
 pub mod pretty_print;
+
+// Re-export the most commonly needed diagnostics items at the crate root
+// so downstream code doesn't have to reach into the sub-module.
+pub use diagnostics::{
+    build_diagnostic,
+    emit_parse_error,
+    format_parse_error,
+    simple_diagnostic,
+    token_name,
+    DiagnosticError,
+    FigParseError,
+};
 
 /// Split the raw content of an interpolated-string literal into text and
 /// expression-placeholder parts.
@@ -86,6 +99,7 @@ pub type Spanned<Tok, Loc, Error> = Result<(Loc, Tok, Loc), Error>;
 pub struct Lexer<'input> {
     indent_lexer: IndentLexer<'input>,
     position: usize,
+    input: &'input str,
 }
 
 impl<'input> Lexer<'input> {
@@ -93,7 +107,13 @@ impl<'input> Lexer<'input> {
         Self {
             indent_lexer: IndentLexer::new(input),
             position: 0,
+            input,
         }
+    }
+
+    /// Return the original source string this lexer was created from.
+    pub fn source(&self) -> &'input str {
+        self.input
     }
 }
 
@@ -115,4 +135,20 @@ impl<'input> Iterator for Lexer<'input> {
             None => None,
         }
     }
+}
+
+// ============================================================================
+// Byte-offset utilities (kept for use by diagnostics and other passes)
+// ============================================================================
+
+/// Convert a UTF-8 byte offset into a 1-based `(line, column)` pair.
+///
+/// Both line and column are 1-based.  If `offset` exceeds the length of
+/// `source` it is clamped to the last valid position.
+pub fn offset_to_line_col(source: &str, offset: usize) -> (usize, usize) {
+    let offset = offset.min(source.len());
+    let prefix = &source[..offset];
+    let line = prefix.chars().filter(|&c| c == '\n').count() + 1;
+    let col = prefix.rfind('\n').map_or(offset, |nl| offset - nl - 1) + 1;
+    (line, col)
 }

@@ -11,13 +11,18 @@ items:
         is_effect: false
         receiver: ~
         name: count_down
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params:
           - name: n
             ty: I32
         return_types:
-          - Ok
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
       body:
         statements:
           - While:
@@ -27,7 +32,6 @@ items:
                     Path:
                       segments:
                         - n
-                      generic_args: []
                   op: GreaterThan
                   rhs:
                     IntegerLiteral:

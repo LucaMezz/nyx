@@ -10,7 +10,6 @@ items:
         segments:
           - std
           - io
-        generic_args: []
   - Using:
       visibility: Default
       annotations: []
@@ -18,7 +17,6 @@ items:
         segments:
           - core
           - memory
-        generic_args: []
   - Using:
       visibility: Default
       annotations: []
@@ -26,4 +24,3 @@ items:
         segments:
           - core
           - iter
-        generic_args: []

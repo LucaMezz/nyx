@@ -3,12 +3,12 @@ source: crates/fig-lexer/tests/integration_tests.rs
 expression: tokens
 ---
 - Using
-- Core
+- Ident: core
 - ColonColon
 - Ident: memory
 - Newline
 - Using
-- Std
+- Ident: std
 - ColonColon
 - Ident: sync
 - Newline
@@ -54,7 +54,7 @@ expression: tokens
 - RBracket
 - Newline
 - Indent
-- OkLiteral
+- Ident: ok
 - Colon
 - Ident: T
 - Newline
@@ -66,7 +66,7 @@ expression: tokens
 - Newline
 - Ident: cancelled
 - Colon
-- OkLiteral
+- Ident: ok
 - Newline
 - Dedent
 - Struct
@@ -83,7 +83,7 @@ expression: tokens
 - Ident: work
 - Colon
 - Star
-- Fn
+- Func
 - LParen
 - RParen
 - Arrow
@@ -189,7 +189,7 @@ expression: tokens
 - Colon
 - Ident: TaskQueue
 - LBracket
-- OkLiteral
+- Ident: ok
 - RBracket
 - Newline
 - Ident: shutdown
@@ -244,7 +244,7 @@ expression: tokens
 - Colon
 - Ident: TaskQueue
 - LBracket
-- OkLiteral
+- Ident: ok
 - RBracket
 - ColonColon
 - Ident: new
@@ -325,7 +325,7 @@ expression: tokens
 - SelfLower
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - For
@@ -378,7 +378,7 @@ expression: tokens
 - Ident: work
 - Colon
 - Star
-- Fn
+- Func
 - LParen
 - RParen
 - Arrow
@@ -479,7 +479,7 @@ expression: tokens
 - Ident: work
 - Colon
 - Star
-- Fn
+- Func
 - LParen
 - RParen
 - Arrow
@@ -582,7 +582,7 @@ expression: tokens
 - U64
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - For
@@ -633,7 +633,7 @@ expression: tokens
 - Newline
 - Indent
 - Return
-- OkLiteral
+- Ident: ok
 - Newline
 - Dedent
 - Ident: thread_sleep
@@ -703,7 +703,7 @@ expression: tokens
 - SelfLower
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - SelfLower
@@ -768,7 +768,7 @@ expression: tokens
 - SelfLower
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - SelfLower
@@ -1107,7 +1107,7 @@ expression: tokens
 - Ident: Worker
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - For
@@ -1199,10 +1199,10 @@ expression: tokens
 - Eq
 - Ident: TaskResult
 - LBracket
-- OkLiteral
+- Ident: ok
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
 - Ident: result
 - RParen
@@ -1245,7 +1245,7 @@ expression: tokens
 - SelfLower
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - SelfLower
@@ -1363,7 +1363,7 @@ expression: tokens
 - RBracket
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - SelfLower
@@ -1504,7 +1504,7 @@ expression: tokens
 - U8
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - SelfLower
@@ -1829,7 +1829,7 @@ expression: tokens
 - SelfLower
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - SelfLower
@@ -1892,7 +1892,7 @@ expression: tokens
 - SelfLower
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - SelfLower
@@ -1957,7 +1957,7 @@ expression: tokens
 - USize
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - Pass
@@ -2027,7 +2027,7 @@ expression: tokens
 - SelfLower
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - Pass
@@ -2044,7 +2044,7 @@ expression: tokens
 - SelfLower
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - Pass
@@ -2086,7 +2086,7 @@ expression: tokens
 - Ident: Mutex
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - Pass
@@ -2112,7 +2112,7 @@ expression: tokens
 - U32
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - Pass
@@ -2129,7 +2129,7 @@ expression: tokens
 - SelfLower
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - Pass
@@ -2146,7 +2146,7 @@ expression: tokens
 - SelfLower
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - Pass
@@ -2161,16 +2161,16 @@ expression: tokens
 - Ident: T
 - RBracket
 - LParen
-- Func
+- Ident: fun
 - Colon
 - Star
-- Fn
+- Func
 - LParen
 - Star
 - Ident: T
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Comma
 - Ident: arg
 - Colon
@@ -2220,7 +2220,7 @@ expression: tokens
 - SelfLower
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - Pass
@@ -2235,7 +2235,7 @@ expression: tokens
 - U32
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - Pass

@@ -11,7 +11,6 @@ items:
           - std
           - collections
           - hash_map
-        generic_args: []
   - Using:
       visibility: Default
       annotations: []
@@ -21,4 +20,3 @@ items:
           - mem
           - layout
           - allocator
-        generic_args: []

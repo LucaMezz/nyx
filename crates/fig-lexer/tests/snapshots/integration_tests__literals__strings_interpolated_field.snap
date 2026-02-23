@@ -23,7 +23,7 @@ expression: tokens
 - Ident: Point
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - Let

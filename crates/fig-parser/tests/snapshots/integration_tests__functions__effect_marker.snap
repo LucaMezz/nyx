@@ -1,0 +1,91 @@
+---
+source: crates/fig-parser/tests/integration_tests.rs
+expression: ast
+---
+items:
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver: ~
+        name: read_file
+        outer_generic_params: []
+        func_generic_params: []
+        self_param: ~
+        params:
+          - name: path
+            ty:
+              Array:
+                element_type: U8
+                size: ~
+        return_types:
+          - Array:
+              element_type: U8
+              size: ~
+      body:
+        statements:
+          - Pass
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver: ~
+        name: write_file
+        outer_generic_params: []
+        func_generic_params: []
+        self_param: ~
+        params:
+          - name: path
+            ty:
+              Array:
+                element_type: U8
+                size: ~
+          - name: data
+            ty:
+              Array:
+                element_type: U8
+                size: ~
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
+      body:
+        statements:
+          - Pass
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver: ~
+        name: allocate
+        outer_generic_params: []
+        func_generic_params:
+          - Type:
+              name: T
+              bounds: []
+              default_type: ~
+        self_param: ~
+        params:
+          - name: count
+            ty: USize
+        return_types:
+          - Pointer:
+              nullable: false
+              mutable: true
+              element_type:
+                Path:
+                  path:
+                    segments:
+                      - T
+                  generic_args: []
+      body:
+        statements:
+          - Pass

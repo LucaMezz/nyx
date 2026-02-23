@@ -3,12 +3,12 @@ source: crates/fig-lexer/tests/integration_tests.rs
 expression: tokens
 ---
 - Using
-- Std
+- Ident: std
 - ColonColon
 - Ident: io
 - Newline
 - Using
-- Std
+- Ident: std
 - ColonColon
 - Ident: collections
 - Newline
@@ -185,7 +185,7 @@ expression: tokens
 - Newline
 - Ident: incomplete_request
 - Colon
-- OkLiteral
+- Ident: ok
 - Newline
 - Dedent
 - Union
@@ -195,7 +195,7 @@ expression: tokens
 - RBracket
 - Newline
 - Indent
-- OkLiteral
+- Ident: ok
 - Colon
 - Ident: T
 - Newline
@@ -328,7 +328,7 @@ expression: tokens
 - RBracket
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - SelfLower
@@ -423,7 +423,7 @@ expression: tokens
 - RBracket
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - SelfLower
@@ -1030,7 +1030,7 @@ expression: tokens
 - Ident: HttpRequest
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
 - Ident: request
 - RParen
@@ -1074,7 +1074,7 @@ expression: tokens
 - Ident: HttpMethod
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
 - Ident: HttpMethod
 - ColonColon
@@ -1094,7 +1094,7 @@ expression: tokens
 - Ident: HttpMethod
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
 - Ident: HttpMethod
 - ColonColon
@@ -1114,7 +1114,7 @@ expression: tokens
 - Ident: HttpMethod
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
 - Ident: HttpMethod
 - ColonColon
@@ -1134,7 +1134,7 @@ expression: tokens
 - Ident: HttpMethod
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
 - Ident: HttpMethod
 - ColonColon
@@ -1154,7 +1154,7 @@ expression: tokens
 - Ident: HttpMethod
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
 - Ident: HttpMethod
 - ColonColon
@@ -1174,7 +1174,7 @@ expression: tokens
 - Ident: HttpMethod
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
 - Ident: HttpMethod
 - ColonColon
@@ -1194,7 +1194,7 @@ expression: tokens
 - Ident: HttpMethod
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
 - Ident: HttpMethod
 - ColonColon
@@ -1214,7 +1214,7 @@ expression: tokens
 - Ident: HttpMethod
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
 - Ident: HttpMethod
 - ColonColon
@@ -1234,7 +1234,7 @@ expression: tokens
 - Ident: HttpMethod
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
 - Ident: HttpMethod
 - ColonColon
@@ -1317,7 +1317,7 @@ expression: tokens
 - RBracket
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
 - Ident: slice_before
 - LParen
@@ -1338,7 +1338,7 @@ expression: tokens
 - RBracket
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
 - Ident: path
 - RParen
@@ -1382,7 +1382,7 @@ expression: tokens
 - Ident: HttpVersion
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
 - Ident: HttpVersion
 - ColonColon
@@ -1402,7 +1402,7 @@ expression: tokens
 - Ident: HttpVersion
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
 - Ident: HttpVersion
 - ColonColon
@@ -1422,7 +1422,7 @@ expression: tokens
 - Ident: HttpVersion
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
 - Ident: HttpVersion
 - ColonColon
@@ -1562,7 +1562,7 @@ expression: tokens
 - Ident: HttpHeaders
 - RBracket
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
 - Ident: headers
 - RParen
@@ -1879,7 +1879,7 @@ expression: tokens
 - SelfLower
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - For
@@ -1943,7 +1943,7 @@ expression: tokens
 - SelfLower
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - If
@@ -2070,7 +2070,7 @@ expression: tokens
 - SelfLower
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - If
@@ -2183,7 +2183,7 @@ expression: tokens
 - Bang
 - Ident: HttpResponse
 - ColonColon
-- OkLiteral
+- Ident: ok
 - LParen
 - RParen
 - Arrow
@@ -2294,7 +2294,7 @@ expression: tokens
 - RBracket
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - SelfLower
@@ -2328,7 +2328,7 @@ expression: tokens
 - RBracket
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - SelfLower
@@ -2575,7 +2575,7 @@ expression: tokens
 - RBracket
 - RParen
 - Arrow
-- OkLiteral
+- Ident: ok
 - Newline
 - Indent
 - Pass

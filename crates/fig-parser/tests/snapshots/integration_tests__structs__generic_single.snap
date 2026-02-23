@@ -7,7 +7,9 @@ items:
       visibility: Default
       annotations: []
       is_packed: false
-      name: Box
+      name:
+        segments:
+          - Box
       generic_params:
         - Type:
             name: T
@@ -18,14 +20,19 @@ items:
         - name: value
           ty:
             Path:
-              segments:
-                - T
+              path:
+                segments:
+                  - T
               generic_args: []
+          visibility: Default
+          annotations: []
   - Struct:
       visibility: Default
       annotations: []
       is_packed: false
-      name: Pair
+      name:
+        segments:
+          - Pair
       generic_params:
         - Type:
             name: T
@@ -36,20 +43,28 @@ items:
         - name: first
           ty:
             Path:
-              segments:
-                - T
+              path:
+                segments:
+                  - T
               generic_args: []
+          visibility: Default
+          annotations: []
         - name: second
           ty:
             Path:
-              segments:
-                - T
+              path:
+                segments:
+                  - T
               generic_args: []
+          visibility: Default
+          annotations: []
   - Struct:
       visibility: Default
       annotations: []
       is_packed: false
-      name: Optional
+      name:
+        segments:
+          - Optional
       generic_params:
         - Type:
             name: T
@@ -59,9 +74,14 @@ items:
       fields:
         - name: has_value
           ty: Bool
+          visibility: Default
+          annotations: []
         - name: value
           ty:
             Path:
-              segments:
-                - T
+              path:
+                segments:
+                  - T
               generic_args: []
+          visibility: Default
+          annotations: []

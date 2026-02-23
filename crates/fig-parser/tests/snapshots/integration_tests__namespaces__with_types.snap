@@ -9,42 +9,61 @@ items:
       name:
         segments:
           - shapes
-        generic_args: []
       items:
         - Struct:
             visibility: Public
             annotations: []
             is_packed: false
-            name: Circle
+            name:
+              segments:
+                - Circle
             generic_params: []
             requires: []
             fields:
               - name: cx
                 ty: F64
+                visibility: Default
+                annotations: []
               - name: cy
                 ty: F64
+                visibility: Default
+                annotations: []
               - name: radius
                 ty: F64
+                visibility: Default
+                annotations: []
         - Struct:
             visibility: Public
             annotations: []
             is_packed: false
-            name: Rect
+            name:
+              segments:
+                - Rect
             generic_params: []
             requires: []
             fields:
               - name: x
                 ty: F64
+                visibility: Default
+                annotations: []
               - name: y
                 ty: F64
+                visibility: Default
+                annotations: []
               - name: w
                 ty: F64
+                visibility: Default
+                annotations: []
               - name: h
                 ty: F64
+                visibility: Default
+                annotations: []
         - Enum:
             visibility: Public
             annotations: []
-            name: ShapeKind
+            name:
+              segments:
+                - ShapeKind
             representation: ~
             generic_params: []
             requires: []

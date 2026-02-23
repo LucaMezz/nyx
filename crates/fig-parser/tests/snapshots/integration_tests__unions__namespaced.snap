@@ -1,0 +1,48 @@
+---
+source: crates/fig-parser/tests/integration_tests.rs
+expression: ast
+---
+items:
+  - Union:
+      visibility: Default
+      annotations: []
+      name:
+        segments:
+          - core
+          - error
+          - IoResult
+      generic_params:
+        - Type:
+            name: T
+            bounds: []
+            default_type: ~
+      requires: []
+      variants:
+        - name: ok
+          ty:
+            Path:
+              path:
+                segments:
+                  - T
+              generic_args: []
+        - name: err
+          ty:
+            Path:
+              path:
+                segments:
+                  - IoError
+              generic_args: []
+  - Union:
+      visibility: Default
+      annotations: []
+      name:
+        segments:
+          - math
+          - Number
+      generic_params: []
+      requires: []
+      variants:
+        - name: integer
+          ty: I64
+        - name: rational
+          ty: F64

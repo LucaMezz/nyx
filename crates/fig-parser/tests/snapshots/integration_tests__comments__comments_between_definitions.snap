@@ -11,7 +11,8 @@ items:
         is_effect: false
         receiver: ~
         name: greet
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params: []
         return_types: []
@@ -22,18 +23,26 @@ items:
       visibility: Default
       annotations: []
       is_packed: false
-      name: Point
+      name:
+        segments:
+          - Point
       generic_params: []
       requires: []
       fields:
         - name: x
           ty: I32
+          visibility: Default
+          annotations: []
         - name: y
           ty: I32
+          visibility: Default
+          annotations: []
   - Enum:
       visibility: Default
       annotations: []
-      name: Color
+      name:
+        segments:
+          - Color
       representation: ~
       generic_params: []
       requires: []

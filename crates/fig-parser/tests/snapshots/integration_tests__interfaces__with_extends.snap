@@ -6,18 +6,21 @@ items:
   - Interface:
       visibility: Default
       annotations: []
-      name: Ordered
+      name:
+        segments:
+          - Ordered
       generic_params: []
       extends:
         - Path:
-            segments:
-              - Eq
+            path:
+              segments:
+                - Eq
             generic_args: []
         - Path:
-            segments:
-              - PartialOrd
+            path:
+              segments:
+                - PartialOrd
             generic_args: []
-      requires: []
       methods:
         - visibility: Default
           annotations: []
@@ -25,7 +28,8 @@ items:
           is_effect: false
           receiver: ~
           name: compare
-          generic_params: []
+          outer_generic_params: []
+          func_generic_params: []
           self_param:
             is_pointer: true
             is_mutable: false
@@ -35,6 +39,11 @@ items:
                 Pointer:
                   nullable: false
                   mutable: false
-                  element_type: SelfType
+                  element_type:
+                    Path:
+                      path:
+                        segments:
+                          - Self
+                      generic_args: []
           return_types:
             - I32

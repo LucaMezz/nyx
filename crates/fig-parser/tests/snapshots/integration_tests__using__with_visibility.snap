@@ -10,7 +10,6 @@ items:
         segments:
           - api
           - types
-        generic_args: []
   - Using:
       visibility: Export
       annotations: []
@@ -18,7 +17,6 @@ items:
         segments:
           - core
           - primitives
-        generic_args: []
   - Using:
       visibility: Private
       annotations: []
@@ -26,4 +24,3 @@ items:
         segments:
           - internal
           - helpers
-        generic_args: []

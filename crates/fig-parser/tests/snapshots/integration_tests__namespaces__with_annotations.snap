@@ -11,7 +11,6 @@ items:
       name:
         segments:
           - legacy
-        generic_args: []
       items:
         - FunctionDeclaration:
             signature:
@@ -21,11 +20,16 @@ items:
               is_effect: false
               receiver: ~
               name: old_api
-              generic_params: []
+              outer_generic_params: []
+              func_generic_params: []
               self_param: ~
               params: []
               return_types:
-                - Ok
+                - Path:
+                    path:
+                      segments:
+                        - ok
+                    generic_args: []
   - Namespace:
       visibility: Default
       annotations:
@@ -34,7 +38,6 @@ items:
       name:
         segments:
           - nightly
-        generic_args: []
       items:
         - FunctionDeclaration:
             signature:
@@ -44,8 +47,13 @@ items:
               is_effect: false
               receiver: ~
               name: new_feature
-              generic_params: []
+              outer_generic_params: []
+              func_generic_params: []
               self_param: ~
               params: []
               return_types:
-                - Ok
+                - Path:
+                    path:
+                      segments:
+                        - ok
+                    generic_args: []

@@ -7,16 +7,24 @@ items:
       visibility: Default
       annotations: []
       is_packed: false
-      name: Foo
+      name:
+        segments:
+          - Foo
       generic_params: []
       requires: []
       fields:
         - name: a
           ty: U8
+          visibility: Default
+          annotations: []
         - name: b
           ty: U32
+          visibility: Default
+          annotations: []
         - name: c
           ty: U64
+          visibility: Default
+          annotations: []
   - Function:
       signature:
         visibility: Default
@@ -25,11 +33,16 @@ items:
         is_effect: false
         receiver: ~
         name: size_exprs
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params: []
         return_types:
-          - Ok
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
       body:
         statements:
           - Let:
@@ -39,8 +52,9 @@ items:
               value:
                 Sizeof:
                   Path:
-                    segments:
-                      - Foo
+                    path:
+                      segments:
+                        - Foo
                     generic_args: []
           - Let:
               annotations: []
@@ -49,8 +63,9 @@ items:
               value:
                 Alignof:
                   Path:
-                    segments:
-                      - Foo
+                    path:
+                      segments:
+                        - Foo
                     generic_args: []
           - Let:
               annotations: []
@@ -60,8 +75,9 @@ items:
                 Offsetof:
                   ty:
                     Path:
-                      segments:
-                        - Foo
+                      path:
+                        segments:
+                          - Foo
                       generic_args: []
                   field: b
           - Let:

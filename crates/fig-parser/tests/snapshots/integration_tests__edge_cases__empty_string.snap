@@ -11,7 +11,8 @@ items:
         is_effect: false
         receiver: ~
         name: takes_string
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params:
           - name: s
@@ -20,7 +21,11 @@ items:
                 element_type: U8
                 size: ~
         return_types:
-          - Ok
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
       body:
         statements:
           - Pass
@@ -32,11 +37,16 @@ items:
         is_effect: false
         receiver: ~
         name: use_empty
-        generic_params: []
+        outer_generic_params: []
+        func_generic_params: []
         self_param: ~
         params: []
         return_types:
-          - Ok
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
       body:
         statements:
           - Let:
@@ -57,8 +67,10 @@ items:
                   Path:
                     segments:
                       - takes_string
-                    generic_args: []
                 args:
-                  - StringLiteral: ""
+                  - name: ~
+                    value:
+                      StringLiteral: ""
+                generic_args: ~
                 is_propagating: false
           - Pass

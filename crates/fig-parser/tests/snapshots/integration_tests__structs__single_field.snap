@@ -7,9 +7,13 @@ items:
       visibility: Default
       annotations: []
       is_packed: false
-      name: Wrapper
+      name:
+        segments:
+          - Wrapper
       generic_params: []
       requires: []
       fields:
         - name: value
           ty: I32
+          visibility: Default
+          annotations: []

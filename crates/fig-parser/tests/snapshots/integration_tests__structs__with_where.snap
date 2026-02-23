@@ -7,22 +7,26 @@ items:
       visibility: Default
       annotations: []
       is_packed: false
-      name: Pair
+      name:
+        segments:
+          - Pair
       generic_params:
         - Type:
             name: A
             bounds:
               - Path:
-                  segments:
-                    - Eq
+                  path:
+                    segments:
+                      - Eq
                   generic_args: []
             default_type: ~
         - Type:
             name: B
             bounds:
               - Path:
-                  segments:
-                    - Ord
+                  path:
+                    segments:
+                      - Ord
                   generic_args: []
             default_type: ~
       requires: []
@@ -30,31 +34,41 @@ items:
         - name: first
           ty:
             Path:
-              segments:
-                - A
+              path:
+                segments:
+                  - A
               generic_args: []
+          visibility: Default
+          annotations: []
         - name: second
           ty:
             Path:
-              segments:
-                - B
+              path:
+                segments:
+                  - B
               generic_args: []
+          visibility: Default
+          annotations: []
   - Struct:
       visibility: Default
       annotations: []
       is_packed: false
-      name: Sorted
+      name:
+        segments:
+          - Sorted
       generic_params:
         - Type:
             name: T
             bounds:
               - Path:
-                  segments:
-                    - Ord
+                  path:
+                    segments:
+                      - Ord
                   generic_args: []
               - Path:
-                  segments:
-                    - Copy
+                  path:
+                    segments:
+                      - Copy
                   generic_args: []
             default_type: ~
       requires: []
@@ -64,9 +78,14 @@ items:
             Array:
               element_type:
                 Path:
-                  segments:
-                    - T
+                  path:
+                    segments:
+                      - T
                   generic_args: []
               size: ~
+          visibility: Default
+          annotations: []
         - name: len
           ty: USize
+          visibility: Default
+          annotations: []

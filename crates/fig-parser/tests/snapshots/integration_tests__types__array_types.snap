@@ -6,7 +6,9 @@ items:
   - TypeAlias:
       visibility: Default
       annotations: []
-      name: Buffer
+      name:
+        segments:
+          - Buffer
       generic_params: []
       aliased_type:
         Array:
@@ -19,7 +21,9 @@ items:
   - TypeAlias:
       visibility: Default
       annotations: []
-      name: Vec3
+      name:
+        segments:
+          - Vec3
       generic_params: []
       aliased_type:
         Array:
@@ -32,7 +36,9 @@ items:
   - TypeAlias:
       visibility: Default
       annotations: []
-      name: Grid
+      name:
+        segments:
+          - Grid
       generic_params: []
       aliased_type:
         Array:

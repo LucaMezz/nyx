@@ -1,10 +1,12 @@
 mod float;
 mod integer;
 mod error;
+pub mod diagnostics;
 
 pub use float::{parse_float, FloatExponent, FloatLiteral, FloatSuffix};
 pub use integer::{parse_integer, Base, IntegerLiteral, IntegerSuffix};
 pub use error::LexicalError;
+pub use diagnostics::{build_lex_diagnostic, emit_lex_error, format_lex_error, format_lex_errors, DiagnosticError};
 
 use logos::Logos;
 use serde::Serialize;
@@ -23,8 +25,6 @@ pub enum Token {
     // Keywords
     #[token("func")]
     Func,
-    #[token("fn")]
-    Fn,
     #[token("let")]
     Let,
     #[token("mut")]
@@ -41,22 +41,14 @@ pub enum Token {
     Union,
     #[token("interface")]
     Interface,
-    #[token("ext")]
-    Ext,
     #[token("impl")]
     Impl,
     #[token("true")]
     True,
     #[token("false")]
     False,
-    #[token("ok")]
-    OkLiteral,
     #[token("null")]
     Null,
-    #[token("raw")]
-    Raw,
-    #[token("super")]
-    Super,
     #[token("self")]
     SelfLower,
     #[token("if")]
@@ -77,10 +69,6 @@ pub enum Token {
     Match,
     #[token("return")]
     Return,
-    #[token("mutable")]
-    Mutable,
-    #[token("Self")]
-    SelfKeyword,
     #[token("in")]
     In,
     #[token("where")]
@@ -115,12 +103,6 @@ pub enum Token {
     Alignof,
     #[token("offsetof")]
     Offsetof,
-    #[token("std")]
-    Std,
-    #[token("core")]
-    Core,
-    #[token("alloc")]
-    Alloc,
 
     // Primitive Types
     #[token("u8")]
@@ -565,9 +547,8 @@ mod tests {
     #[test]
     fn test_keywords() {
         lexer_test_helper(
-            "fn let mut const type struct union interface ext impl true false ok raw super if else for while break continue match return mutable usize Self in",
+            "let mut const type struct union interface impl true false if else for while break continue match return usize in",
             vec![
-                Token::Fn,
                 Token::Let,
                 Token::Mut,
                 Token::Const,
@@ -575,13 +556,9 @@ mod tests {
                 Token::Struct,
                 Token::Union,
                 Token::Interface,
-                Token::Ext,
                 Token::Impl,
                 Token::True,
                 Token::False,
-                Token::OkLiteral,
-                Token::Raw,
-                Token::Super,
                 Token::If,
                 Token::Else,
                 Token::For,
@@ -590,9 +567,7 @@ mod tests {
                 Token::Continue,
                 Token::Match,
                 Token::Return,
-                Token::Mutable,
                 Token::USize,
-                Token::SelfKeyword,
                 Token::In,
             ],
         );
@@ -989,9 +964,9 @@ mod tests {
 
     #[test]
     fn test_complex_expression() {
-        let input = "fn add(a: i32, b: i32) -> i32 { return a + b; }";
+        let input = "func add(a: i32, b: i32) -> i32 { return a + b; }";
         let expected = vec![
-            Token::Fn,
+            Token::Func,
             Token::Ident("add".to_string()),
             Token::LParen,
             Token::Ident("a".to_string()),
@@ -1162,9 +1137,9 @@ mod tests {
 
     #[test]
     fn test_basic_indentation() {
-        let input = "fn test\n    let x\n    let y";
+        let input = "func test\n    let x\n    let y";
         let expected = vec![
-            Token::Fn,
+            Token::Func,
             Token::Ident("test".to_string()),
             Token::Newline,
             Token::Indent,
@@ -1180,9 +1155,9 @@ mod tests {
 
     #[test]
     fn test_indentation_increase_and_decrease() {
-        let input = "fn test\n    if true\n        let x\nlet y";
+        let input = "func test\n    if true\n        let x\nlet y";
         let expected = vec![
-            Token::Fn,
+            Token::Func,
             Token::Ident("test".to_string()),
             Token::Newline,
             Token::Indent,
@@ -1203,17 +1178,17 @@ mod tests {
 
     #[test]
     fn test_multiple_indent_levels() {
-        let input = "fn outer\n    fn middle\n        fn inner\n            let x";
+        let input = "func outer\n    func middle\n        func inner\n            let x";
         let expected = vec![
-            Token::Fn,
+            Token::Func,
             Token::Ident("outer".to_string()),
             Token::Newline,
             Token::Indent,
-            Token::Fn,
+            Token::Func,
             Token::Ident("middle".to_string()),
             Token::Newline,
             Token::Indent,
-            Token::Fn,
+            Token::Func,
             Token::Ident("inner".to_string()),
             Token::Newline,
             Token::Indent,
@@ -1228,9 +1203,9 @@ mod tests {
 
     #[test]
     fn test_dedent_multiple_levels() {
-        let input = "fn test\n    if true\n        if false\n            let x\nlet y";
+        let input = "func test\n    if true\n        if false\n            let x\nlet y";
         let expected = vec![
-            Token::Fn,
+            Token::Func,
             Token::Ident("test".to_string()),
             Token::Newline,
             Token::Indent,
@@ -1272,9 +1247,9 @@ mod tests {
 
     #[test]
     fn test_blank_lines_ignored() {
-        let input = "fn test\n\n    let x\n\nlet y";
+        let input = "func test\n\n    let x\n\nlet y";
         let expected = vec![
-            Token::Fn,
+            Token::Func,
             Token::Ident("test".to_string()),
             Token::Newline,  // Multiple newlines collapsed into one
             Token::Indent,

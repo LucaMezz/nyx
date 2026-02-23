@@ -9,6 +9,5 @@ items:
       name:
         segments:
           - App
-        generic_args: []
       items:
         - Pass

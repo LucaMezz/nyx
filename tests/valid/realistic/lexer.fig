@@ -67,7 +67,7 @@ enum TokenType
     SLASH_ASSIGN
 
 export struct Token
-    type: TokenType
+    typ: TokenType
     lexeme: [u8]
     line: usize
     column: usize
@@ -418,7 +418,7 @@ func Lexer::token_lexeme(*self) -> [u8]
 
 func Lexer::make_token(*self, token_type: TokenType) -> Token
     return Token(
-        type: token_type,
+        typ: token_type,
         lexeme: self.token_lexeme(),
         line: self.line,
         column: self.column - (self.position - self.token_start),
