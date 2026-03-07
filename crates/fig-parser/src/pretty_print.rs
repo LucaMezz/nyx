@@ -426,6 +426,24 @@ impl PrettyPrinter {
                 self.format_type(&cast.target_type, output, true);
                 self.indent_level -= 2;
             }
+            Expression::GenericInstantiation(base, type_args) => {
+                writeln!(output, "{}GenericInstantiation", p).unwrap();
+                self.indent_level += 1;
+                writeln!(output, "{}base:", self.indent()).unwrap();
+                self.indent_level += 1;
+                self.format_expression(base, output, true);
+                self.indent_level -= 1;
+                if !type_args.is_empty() {
+                    writeln!(output, "{}type_args:", self.indent()).unwrap();
+                    self.indent_level += 1;
+                    let last = type_args.len() - 1;
+                    for (i, ty) in type_args.iter().enumerate() {
+                        self.format_type(ty, output, i == last);
+                    }
+                    self.indent_level -= 1;
+                }
+                self.indent_level -= 1;
+            }
             Expression::Sizeof(ty) => {
                 writeln!(output, "{}Sizeof", p).unwrap();
                 self.indent_level += 1;
@@ -461,6 +479,9 @@ impl PrettyPrinter {
                 self.indent_level += 1;
                 self.format_expression(&assign.rhs, output, true);
                 self.indent_level -= 2;
+            }
+            Expression::Error => {
+                writeln!(output, "{}Error", p).unwrap();
             }
         }
     }
@@ -845,6 +866,18 @@ impl PrettyPrinter {
                 self.format_expression(&s.value, output, true);
                 self.indent_level -= 2;
             }
+            Statement::LetDecl(s) => {
+                writeln!(output, "{}LetDecl: {}: {}", p, s.name, s.ty).unwrap();
+                self.indent_level += 1;
+                self.format_annotations_section(&s.annotations, output);
+                self.indent_level -= 1;
+            }
+            Statement::MutDecl(s) => {
+                writeln!(output, "{}MutDecl: {}: {}", p, s.name, s.ty).unwrap();
+                self.indent_level += 1;
+                self.format_annotations_section(&s.annotations, output);
+                self.indent_level -= 1;
+            }
             Statement::Const(s) => {
                 let vis = Self::format_visibility_inline(&s.visibility);
                 let gp = if s.generic_params.is_empty() { String::new() } else {
@@ -985,6 +1018,9 @@ impl PrettyPrinter {
                 self.format_namespace(ns, output);
                 self.indent_level -= 1;
             }
+            Statement::Error => {
+                writeln!(output, "{}Error", p).unwrap();
+            }
         }
     }
 
@@ -1111,6 +1147,9 @@ impl PrettyPrinter {
                 };
                 let ty_str = s.ty.as_ref().map(|t| format!(": {}", t)).unwrap_or_default();
                 writeln!(output, "{}Const: {}{}{}{}{}", p, vis, gp, recv, s.name, ty_str).unwrap();
+            }
+            NamespaceItem::Error => {
+                writeln!(output, "{}Error", p).unwrap();
             }
         }
     }

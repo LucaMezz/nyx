@@ -1,0 +1,3550 @@
+---
+source: crates/fig-parser/tests/integration_tests.rs
+assertion_line: 49
+expression: ast
+---
+items:
+  - Using:
+      visibility: Default
+      annotations: []
+      path:
+        segments:
+          - std
+          - io
+  - Union:
+      visibility: Default
+      annotations: []
+      name:
+        segments:
+          - JsonValue
+      generic_params: []
+      requires: []
+      variants:
+        - name: null_val
+          ty:
+            Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
+        - name: bool_val
+          ty: Bool
+        - name: number_val
+          ty: F64
+        - name: string_val
+          ty:
+            Array:
+              element_type: U8
+              size: ~
+        - name: array_val
+          ty:
+            Pointer:
+              nullable: false
+              mutable: false
+              element_type:
+                Path:
+                  path:
+                    segments:
+                      - JsonArray
+                  generic_args: []
+        - name: object_val
+          ty:
+            Pointer:
+              nullable: false
+              mutable: false
+              element_type:
+                Path:
+                  path:
+                    segments:
+                      - JsonObject
+                  generic_args: []
+  - Struct:
+      visibility: Default
+      annotations: []
+      is_packed: false
+      name:
+        segments:
+          - JsonArray
+      generic_params: []
+      requires: []
+      fields:
+        - name: values
+          ty:
+            Pointer:
+              nullable: false
+              mutable: true
+              element_type:
+                Path:
+                  path:
+                    segments:
+                      - JsonValue
+                  generic_args: []
+          visibility: Default
+          annotations: []
+        - name: len
+          ty: USize
+          visibility: Default
+          annotations: []
+        - name: cap
+          ty: USize
+          visibility: Default
+          annotations: []
+  - Struct:
+      visibility: Default
+      annotations: []
+      is_packed: false
+      name:
+        segments:
+          - JsonObject
+      generic_params: []
+      requires: []
+      fields:
+        - name: entries
+          ty:
+            Pointer:
+              nullable: false
+              mutable: true
+              element_type:
+                Path:
+                  path:
+                    segments:
+                      - JsonEntry
+                  generic_args: []
+          visibility: Default
+          annotations: []
+        - name: len
+          ty: USize
+          visibility: Default
+          annotations: []
+        - name: cap
+          ty: USize
+          visibility: Default
+          annotations: []
+  - Struct:
+      visibility: Default
+      annotations: []
+      is_packed: false
+      name:
+        segments:
+          - JsonEntry
+      generic_params: []
+      requires: []
+      fields:
+        - name: key
+          ty:
+            Array:
+              element_type: U8
+              size: ~
+          visibility: Default
+          annotations: []
+        - name: value
+          ty:
+            Path:
+              path:
+                segments:
+                  - JsonValue
+              generic_args: []
+          visibility: Default
+          annotations: []
+  - Union:
+      visibility: Default
+      annotations: []
+      name:
+        segments:
+          - ParseError
+      generic_params: []
+      requires: []
+      variants:
+        - name: unexpected_eof
+          ty:
+            Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
+        - name: unexpected_char
+          ty: U8
+        - name: invalid_number
+          ty:
+            Array:
+              element_type: U8
+              size: ~
+        - name: invalid_escape
+          ty: U8
+        - name: unclosed_string
+          ty:
+            Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
+        - name: unclosed_array
+          ty:
+            Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
+        - name: unclosed_object
+          ty:
+            Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
+  - Union:
+      visibility: Default
+      annotations: []
+      name:
+        segments:
+          - ParseResult
+      generic_params:
+        - Type:
+            name: T
+            bounds: []
+            default_type: ~
+      requires: []
+      variants:
+        - name: ok
+          ty:
+            Path:
+              path:
+                segments:
+                  - T
+              generic_args: []
+        - name: err
+          ty:
+            Path:
+              path:
+                segments:
+                  - ParseError
+              generic_args: []
+  - Struct:
+      visibility: Default
+      annotations: []
+      is_packed: false
+      name:
+        segments:
+          - JsonParser
+      generic_params: []
+      requires: []
+      fields:
+        - name: input
+          ty:
+            Array:
+              element_type: U8
+              size: ~
+          visibility: Default
+          annotations: []
+        - name: pos
+          ty: USize
+          visibility: Default
+          annotations: []
+        - name: line
+          ty: USize
+          visibility: Default
+          annotations: []
+        - name: col
+          ty: USize
+          visibility: Default
+          annotations: []
+  - Function:
+      signature:
+        visibility: Export
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: JsonParser
+            generic_args: []
+        name: new
+        outer_generic_params: []
+        func_generic_params: []
+        self_param: ~
+        params:
+          - name: input
+            ty:
+              Array:
+                element_type: U8
+                size: ~
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - JsonParser
+              generic_args: []
+      body:
+        statements:
+          - Return:
+              Call:
+                callee:
+                  Path:
+                    segments:
+                      - JsonParser
+                args:
+                  - name: input
+                    value:
+                      Path:
+                        segments:
+                          - input
+                  - name: pos
+                    value:
+                      IntegerLiteral:
+                        base: Decimal
+                        digits: "0"
+                        suffix: ~
+                  - name: line
+                    value:
+                      IntegerLiteral:
+                        base: Decimal
+                        digits: "1"
+                        suffix: ~
+                  - name: col
+                    value:
+                      IntegerLiteral:
+                        base: Decimal
+                        digits: "1"
+                        suffix: ~
+                generic_args: ~
+                is_propagating: false
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: JsonParser
+            generic_args: []
+        name: parse
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params: []
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - ParseResult
+              generic_args:
+                - Path:
+                    path:
+                      segments:
+                        - JsonValue
+                    generic_args: []
+      body:
+        statements:
+          - Expression:
+              Call:
+                callee:
+                  FieldAccess:
+                    object: SelfValue
+                    field: skip_whitespace
+                    is_propagating: false
+                args: []
+                generic_args: ~
+                is_propagating: false
+          - Return:
+              Call:
+                callee:
+                  FieldAccess:
+                    object: SelfValue
+                    field: parse_value
+                    is_propagating: false
+                args: []
+                generic_args: ~
+                is_propagating: false
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: JsonParser
+            generic_args: []
+        name: parse_value
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params: []
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - ParseResult
+              generic_args:
+                - Path:
+                    path:
+                      segments:
+                        - JsonValue
+                    generic_args: []
+      body:
+        statements:
+          - Expression:
+              Call:
+                callee:
+                  FieldAccess:
+                    object: SelfValue
+                    field: skip_whitespace
+                    is_propagating: false
+                args: []
+                generic_args: ~
+                is_propagating: false
+          - If:
+              condition:
+                Call:
+                  callee:
+                    FieldAccess:
+                      object: SelfValue
+                      field: is_eof
+                      is_propagating: false
+                  args: []
+                  generic_args: ~
+                  is_propagating: false
+              then_body:
+                statements:
+                  - Return:
+                      Call:
+                        callee:
+                          TypeAccess:
+                            object:
+                              Index:
+                                object:
+                                  Path:
+                                    segments:
+                                      - ParseResult
+                                index:
+                                  Path:
+                                    segments:
+                                      - JsonValue
+                            member: err
+                        args:
+                          - name: ~
+                            value:
+                              Call:
+                                callee:
+                                  TypeAccess:
+                                    object:
+                                      Path:
+                                        segments:
+                                          - ParseError
+                                    member: unexpected_eof
+                                args:
+                                  - name: ~
+                                    value:
+                                      Path:
+                                        segments:
+                                          - ok
+                                generic_args: ~
+                                is_propagating: false
+                        generic_args: ~
+                        is_propagating: false
+              elif_clauses: []
+              else_body: ~
+          - Let:
+              annotations: []
+              name: ch
+              ty: ~
+              value:
+                Call:
+                  callee:
+                    FieldAccess:
+                      object: SelfValue
+                      field: peek
+                      is_propagating: false
+                  args: []
+                  generic_args: ~
+                  is_propagating: false
+          - If:
+              condition:
+                BinaryOp:
+                  lhs:
+                    Path:
+                      segments:
+                        - ch
+                  op: Equal
+                  rhs:
+                    IntegerLiteral:
+                      base: Decimal
+                      digits: "110"
+                      suffix: ~
+              then_body:
+                statements:
+                  - Return:
+                      Call:
+                        callee:
+                          FieldAccess:
+                            object: SelfValue
+                            field: parse_null
+                            is_propagating: false
+                        args: []
+                        generic_args: ~
+                        is_propagating: false
+              elif_clauses:
+                - condition:
+                    BinaryOp:
+                      lhs:
+                        BinaryOp:
+                          lhs:
+                            Path:
+                              segments:
+                                - ch
+                          op: Equal
+                          rhs:
+                            BinaryOp:
+                              lhs:
+                                IntegerLiteral:
+                                  base: Decimal
+                                  digits: "116"
+                                  suffix: ~
+                              op: LogicalOr
+                              rhs:
+                                Path:
+                                  segments:
+                                    - ch
+                      op: Equal
+                      rhs:
+                        IntegerLiteral:
+                          base: Decimal
+                          digits: "102"
+                          suffix: ~
+                  body:
+                    statements:
+                      - Return:
+                          Call:
+                            callee:
+                              FieldAccess:
+                                object: SelfValue
+                                field: parse_bool
+                                is_propagating: false
+                            args: []
+                            generic_args: ~
+                            is_propagating: false
+                - condition:
+                    BinaryOp:
+                      lhs:
+                        Path:
+                          segments:
+                            - ch
+                      op: Equal
+                      rhs:
+                        IntegerLiteral:
+                          base: Decimal
+                          digits: "34"
+                          suffix: ~
+                  body:
+                    statements:
+                      - Return:
+                          Call:
+                            callee:
+                              FieldAccess:
+                                object: SelfValue
+                                field: parse_string_value
+                                is_propagating: false
+                            args: []
+                            generic_args: ~
+                            is_propagating: false
+                - condition:
+                    BinaryOp:
+                      lhs:
+                        Path:
+                          segments:
+                            - ch
+                      op: Equal
+                      rhs:
+                        IntegerLiteral:
+                          base: Decimal
+                          digits: "91"
+                          suffix: ~
+                  body:
+                    statements:
+                      - Return:
+                          Call:
+                            callee:
+                              FieldAccess:
+                                object: SelfValue
+                                field: parse_array
+                                is_propagating: false
+                            args: []
+                            generic_args: ~
+                            is_propagating: false
+                - condition:
+                    BinaryOp:
+                      lhs:
+                        Path:
+                          segments:
+                            - ch
+                      op: Equal
+                      rhs:
+                        IntegerLiteral:
+                          base: Decimal
+                          digits: "123"
+                          suffix: ~
+                  body:
+                    statements:
+                      - Return:
+                          Call:
+                            callee:
+                              FieldAccess:
+                                object: SelfValue
+                                field: parse_object
+                                is_propagating: false
+                            args: []
+                            generic_args: ~
+                            is_propagating: false
+                - condition:
+                    BinaryOp:
+                      lhs:
+                        BinaryOp:
+                          lhs:
+                            Call:
+                              callee:
+                                FieldAccess:
+                                  object: SelfValue
+                                  field: is_digit
+                                  is_propagating: false
+                              args:
+                                - name: ~
+                                  value:
+                                    Path:
+                                      segments:
+                                        - ch
+                              generic_args: ~
+                              is_propagating: false
+                          op: LogicalOr
+                          rhs:
+                            Path:
+                              segments:
+                                - ch
+                      op: Equal
+                      rhs:
+                        IntegerLiteral:
+                          base: Decimal
+                          digits: "45"
+                          suffix: ~
+                  body:
+                    statements:
+                      - Return:
+                          Call:
+                            callee:
+                              FieldAccess:
+                                object: SelfValue
+                                field: parse_number
+                                is_propagating: false
+                            args: []
+                            generic_args: ~
+                            is_propagating: false
+              else_body:
+                statements:
+                  - Return:
+                      Call:
+                        callee:
+                          TypeAccess:
+                            object:
+                              Index:
+                                object:
+                                  Path:
+                                    segments:
+                                      - ParseResult
+                                index:
+                                  Path:
+                                    segments:
+                                      - JsonValue
+                            member: err
+                        args:
+                          - name: ~
+                            value:
+                              Call:
+                                callee:
+                                  TypeAccess:
+                                    object:
+                                      Path:
+                                        segments:
+                                          - ParseError
+                                    member: unexpected_char
+                                args:
+                                  - name: ~
+                                    value:
+                                      Path:
+                                        segments:
+                                          - ch
+                                generic_args: ~
+                                is_propagating: false
+                        generic_args: ~
+                        is_propagating: false
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: JsonParser
+            generic_args: []
+        name: parse_null
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params: []
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - ParseResult
+              generic_args:
+                - Path:
+                    path:
+                      segments:
+                        - JsonValue
+                    generic_args: []
+      body:
+        statements:
+          - If:
+              condition:
+                Call:
+                  callee:
+                    FieldAccess:
+                      object: SelfValue
+                      field: expect_keyword
+                      is_propagating: false
+                  args:
+                    - name: ~
+                      value:
+                        StringLiteral: "null"
+                  generic_args: ~
+                  is_propagating: false
+              then_body:
+                statements:
+                  - Return:
+                      Call:
+                        callee:
+                          TypeAccess:
+                            object:
+                              Index:
+                                object:
+                                  Path:
+                                    segments:
+                                      - ParseResult
+                                index:
+                                  Path:
+                                    segments:
+                                      - JsonValue
+                            member: ok
+                        args:
+                          - name: ~
+                            value:
+                              Call:
+                                callee:
+                                  TypeAccess:
+                                    object:
+                                      Path:
+                                        segments:
+                                          - JsonValue
+                                    member: null_val
+                                args:
+                                  - name: ~
+                                    value:
+                                      Path:
+                                        segments:
+                                          - ok
+                                generic_args: ~
+                                is_propagating: false
+                        generic_args: ~
+                        is_propagating: false
+              elif_clauses: []
+              else_body: ~
+          - Return:
+              Call:
+                callee:
+                  TypeAccess:
+                    object:
+                      Index:
+                        object:
+                          Path:
+                            segments:
+                              - ParseResult
+                        index:
+                          Path:
+                            segments:
+                              - JsonValue
+                    member: err
+                args:
+                  - name: ~
+                    value:
+                      Call:
+                        callee:
+                          TypeAccess:
+                            object:
+                              Path:
+                                segments:
+                                  - ParseError
+                            member: unexpected_eof
+                        args:
+                          - name: ~
+                            value:
+                              Path:
+                                segments:
+                                  - ok
+                        generic_args: ~
+                        is_propagating: false
+                generic_args: ~
+                is_propagating: false
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: JsonParser
+            generic_args: []
+        name: parse_bool
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params: []
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - ParseResult
+              generic_args:
+                - Path:
+                    path:
+                      segments:
+                        - JsonValue
+                    generic_args: []
+      body:
+        statements:
+          - If:
+              condition:
+                Call:
+                  callee:
+                    FieldAccess:
+                      object: SelfValue
+                      field: expect_keyword
+                      is_propagating: false
+                  args:
+                    - name: ~
+                      value:
+                        StringLiteral: "true"
+                  generic_args: ~
+                  is_propagating: false
+              then_body:
+                statements:
+                  - Return:
+                      Call:
+                        callee:
+                          TypeAccess:
+                            object:
+                              Index:
+                                object:
+                                  Path:
+                                    segments:
+                                      - ParseResult
+                                index:
+                                  Path:
+                                    segments:
+                                      - JsonValue
+                            member: ok
+                        args:
+                          - name: ~
+                            value:
+                              Call:
+                                callee:
+                                  TypeAccess:
+                                    object:
+                                      Path:
+                                        segments:
+                                          - JsonValue
+                                    member: bool_val
+                                args:
+                                  - name: ~
+                                    value:
+                                      BooleanLiteral: true
+                                generic_args: ~
+                                is_propagating: false
+                        generic_args: ~
+                        is_propagating: false
+              elif_clauses:
+                - condition:
+                    Call:
+                      callee:
+                        FieldAccess:
+                          object: SelfValue
+                          field: expect_keyword
+                          is_propagating: false
+                      args:
+                        - name: ~
+                          value:
+                            StringLiteral: "false"
+                      generic_args: ~
+                      is_propagating: false
+                  body:
+                    statements:
+                      - Return:
+                          Call:
+                            callee:
+                              TypeAccess:
+                                object:
+                                  Index:
+                                    object:
+                                      Path:
+                                        segments:
+                                          - ParseResult
+                                    index:
+                                      Path:
+                                        segments:
+                                          - JsonValue
+                                member: ok
+                            args:
+                              - name: ~
+                                value:
+                                  Call:
+                                    callee:
+                                      TypeAccess:
+                                        object:
+                                          Path:
+                                            segments:
+                                              - JsonValue
+                                        member: bool_val
+                                    args:
+                                      - name: ~
+                                        value:
+                                          BooleanLiteral: false
+                                    generic_args: ~
+                                    is_propagating: false
+                            generic_args: ~
+                            is_propagating: false
+              else_body: ~
+          - Return:
+              Call:
+                callee:
+                  TypeAccess:
+                    object:
+                      Index:
+                        object:
+                          Path:
+                            segments:
+                              - ParseResult
+                        index:
+                          Path:
+                            segments:
+                              - JsonValue
+                    member: err
+                args:
+                  - name: ~
+                    value:
+                      Call:
+                        callee:
+                          TypeAccess:
+                            object:
+                              Path:
+                                segments:
+                                  - ParseError
+                            member: unexpected_eof
+                        args:
+                          - name: ~
+                            value:
+                              Path:
+                                segments:
+                                  - ok
+                        generic_args: ~
+                        is_propagating: false
+                generic_args: ~
+                is_propagating: false
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: JsonParser
+            generic_args: []
+        name: parse_string_value
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params: []
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - ParseResult
+              generic_args:
+                - Path:
+                    path:
+                      segments:
+                        - JsonValue
+                    generic_args: []
+      body:
+        statements:
+          - Let:
+              annotations: []
+              name: str_result
+              ty: ~
+              value:
+                Call:
+                  callee:
+                    FieldAccess:
+                      object: SelfValue
+                      field: parse_string
+                      is_propagating: false
+                  args: []
+                  generic_args: ~
+                  is_propagating: false
+          - Pass
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: JsonParser
+            generic_args: []
+        name: parse_string
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params: []
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - ParseResult
+              generic_args:
+                - Array:
+                    element_type: U8
+                    size: ~
+      body:
+        statements:
+          - If:
+              condition:
+                Call:
+                  callee:
+                    FieldAccess:
+                      object:
+                        UnaryOp:
+                          op: LogicalNot
+                          operand: SelfValue
+                      field: expect_char
+                      is_propagating: false
+                  args:
+                    - name: ~
+                      value:
+                        IntegerLiteral:
+                          base: Decimal
+                          digits: "34"
+                          suffix: ~
+                  generic_args: ~
+                  is_propagating: false
+              then_body:
+                statements:
+                  - Return:
+                      Call:
+                        callee:
+                          TypeAccess:
+                            object:
+                              GenericInstantiation:
+                                - Path:
+                                    segments:
+                                      - ParseResult
+                                - - Array:
+                                      element_type: U8
+                                      size: ~
+                            member: err
+                        args:
+                          - name: ~
+                            value:
+                              Call:
+                                callee:
+                                  TypeAccess:
+                                    object:
+                                      Path:
+                                        segments:
+                                          - ParseError
+                                    member: unexpected_eof
+                                args:
+                                  - name: ~
+                                    value:
+                                      Path:
+                                        segments:
+                                          - ok
+                                generic_args: ~
+                                is_propagating: false
+                        generic_args: ~
+                        is_propagating: false
+              elif_clauses: []
+              else_body: ~
+          - Mut:
+              annotations: []
+              name: buffer
+              ty:
+                Array:
+                  element_type: U8
+                  size: ~
+              value:
+                ArrayLiteral:
+                  elements: []
+          - For:
+              pattern: i
+              iterable:
+                Call:
+                  callee:
+                    Path:
+                      segments:
+                        - range
+                  args:
+                    - name: ~
+                      value:
+                        IntegerLiteral:
+                          base: Decimal
+                          digits: "0"
+                          suffix: ~
+                    - name: ~
+                      value:
+                        IntegerLiteral:
+                          base: Decimal
+                          digits: "1000"
+                          suffix: ~
+                  generic_args: ~
+                  is_propagating: false
+              body:
+                statements:
+                  - If:
+                      condition:
+                        Call:
+                          callee:
+                            FieldAccess:
+                              object: SelfValue
+                              field: is_eof
+                              is_propagating: false
+                          args: []
+                          generic_args: ~
+                          is_propagating: false
+                      then_body:
+                        statements:
+                          - Return:
+                              Call:
+                                callee:
+                                  TypeAccess:
+                                    object:
+                                      GenericInstantiation:
+                                        - Path:
+                                            segments:
+                                              - ParseResult
+                                        - - Array:
+                                              element_type: U8
+                                              size: ~
+                                    member: err
+                                args:
+                                  - name: ~
+                                    value:
+                                      Call:
+                                        callee:
+                                          TypeAccess:
+                                            object:
+                                              Path:
+                                                segments:
+                                                  - ParseError
+                                            member: unclosed_string
+                                        args:
+                                          - name: ~
+                                            value:
+                                              Path:
+                                                segments:
+                                                  - ok
+                                        generic_args: ~
+                                        is_propagating: false
+                                generic_args: ~
+                                is_propagating: false
+                      elif_clauses: []
+                      else_body: ~
+                  - Let:
+                      annotations: []
+                      name: ch
+                      ty: ~
+                      value:
+                        Call:
+                          callee:
+                            FieldAccess:
+                              object: SelfValue
+                              field: advance
+                              is_propagating: false
+                          args: []
+                          generic_args: ~
+                          is_propagating: false
+                  - If:
+                      condition:
+                        BinaryOp:
+                          lhs:
+                            Path:
+                              segments:
+                                - ch
+                          op: Equal
+                          rhs:
+                            IntegerLiteral:
+                              base: Decimal
+                              digits: "34"
+                              suffix: ~
+                      then_body:
+                        statements:
+                          - Return:
+                              Call:
+                                callee:
+                                  TypeAccess:
+                                    object:
+                                      GenericInstantiation:
+                                        - Path:
+                                            segments:
+                                              - ParseResult
+                                        - - Array:
+                                              element_type: U8
+                                              size: ~
+                                    member: ok
+                                args:
+                                  - name: ~
+                                    value:
+                                      Path:
+                                        segments:
+                                          - buffer
+                                generic_args: ~
+                                is_propagating: false
+                      elif_clauses:
+                        - condition:
+                            BinaryOp:
+                              lhs:
+                                Path:
+                                  segments:
+                                    - ch
+                              op: Equal
+                              rhs:
+                                IntegerLiteral:
+                                  base: Decimal
+                                  digits: "92"
+                                  suffix: ~
+                          body:
+                            statements:
+                              - Let:
+                                  annotations: []
+                                  name: escaped
+                                  ty: ~
+                                  value:
+                                    Call:
+                                      callee:
+                                        FieldAccess:
+                                          object: SelfValue
+                                          field: parse_escape
+                                          is_propagating: false
+                                      args: []
+                                      generic_args: ~
+                                      is_propagating: false
+                              - Pass
+                      else_body:
+                        statements:
+                          - Pass
+          - Return:
+              Call:
+                callee:
+                  TypeAccess:
+                    object:
+                      GenericInstantiation:
+                        - Path:
+                            segments:
+                              - ParseResult
+                        - - Array:
+                              element_type: U8
+                              size: ~
+                    member: err
+                args:
+                  - name: ~
+                    value:
+                      Call:
+                        callee:
+                          TypeAccess:
+                            object:
+                              Path:
+                                segments:
+                                  - ParseError
+                            member: unclosed_string
+                        args:
+                          - name: ~
+                            value:
+                              Path:
+                                segments:
+                                  - ok
+                        generic_args: ~
+                        is_propagating: false
+                generic_args: ~
+                is_propagating: false
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: JsonParser
+            generic_args: []
+        name: parse_escape
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params: []
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - ParseResult
+              generic_args:
+                - U8
+      body:
+        statements:
+          - If:
+              condition:
+                Call:
+                  callee:
+                    FieldAccess:
+                      object: SelfValue
+                      field: is_eof
+                      is_propagating: false
+                  args: []
+                  generic_args: ~
+                  is_propagating: false
+              then_body:
+                statements:
+                  - Return:
+                      Call:
+                        callee:
+                          TypeAccess:
+                            object:
+                              GenericInstantiation:
+                                - Path:
+                                    segments:
+                                      - ParseResult
+                                - - U8
+                            member: err
+                        args:
+                          - name: ~
+                            value:
+                              Call:
+                                callee:
+                                  TypeAccess:
+                                    object:
+                                      Path:
+                                        segments:
+                                          - ParseError
+                                    member: unexpected_eof
+                                args:
+                                  - name: ~
+                                    value:
+                                      Path:
+                                        segments:
+                                          - ok
+                                generic_args: ~
+                                is_propagating: false
+                        generic_args: ~
+                        is_propagating: false
+              elif_clauses: []
+              else_body: ~
+          - Let:
+              annotations: []
+              name: ch
+              ty: ~
+              value:
+                Call:
+                  callee:
+                    FieldAccess:
+                      object: SelfValue
+                      field: advance
+                      is_propagating: false
+                  args: []
+                  generic_args: ~
+                  is_propagating: false
+          - If:
+              condition:
+                BinaryOp:
+                  lhs:
+                    Path:
+                      segments:
+                        - ch
+                  op: Equal
+                  rhs:
+                    IntegerLiteral:
+                      base: Decimal
+                      digits: "110"
+                      suffix: ~
+              then_body:
+                statements:
+                  - Return:
+                      Call:
+                        callee:
+                          TypeAccess:
+                            object:
+                              GenericInstantiation:
+                                - Path:
+                                    segments:
+                                      - ParseResult
+                                - - U8
+                            member: ok
+                        args:
+                          - name: ~
+                            value:
+                              IntegerLiteral:
+                                base: Decimal
+                                digits: "10"
+                                suffix: ~
+                        generic_args: ~
+                        is_propagating: false
+              elif_clauses:
+                - condition:
+                    BinaryOp:
+                      lhs:
+                        Path:
+                          segments:
+                            - ch
+                      op: Equal
+                      rhs:
+                        IntegerLiteral:
+                          base: Decimal
+                          digits: "116"
+                          suffix: ~
+                  body:
+                    statements:
+                      - Return:
+                          Call:
+                            callee:
+                              TypeAccess:
+                                object:
+                                  GenericInstantiation:
+                                    - Path:
+                                        segments:
+                                          - ParseResult
+                                    - - U8
+                                member: ok
+                            args:
+                              - name: ~
+                                value:
+                                  IntegerLiteral:
+                                    base: Decimal
+                                    digits: "9"
+                                    suffix: ~
+                            generic_args: ~
+                            is_propagating: false
+                - condition:
+                    BinaryOp:
+                      lhs:
+                        Path:
+                          segments:
+                            - ch
+                      op: Equal
+                      rhs:
+                        IntegerLiteral:
+                          base: Decimal
+                          digits: "114"
+                          suffix: ~
+                  body:
+                    statements:
+                      - Return:
+                          Call:
+                            callee:
+                              TypeAccess:
+                                object:
+                                  GenericInstantiation:
+                                    - Path:
+                                        segments:
+                                          - ParseResult
+                                    - - U8
+                                member: ok
+                            args:
+                              - name: ~
+                                value:
+                                  IntegerLiteral:
+                                    base: Decimal
+                                    digits: "13"
+                                    suffix: ~
+                            generic_args: ~
+                            is_propagating: false
+                - condition:
+                    BinaryOp:
+                      lhs:
+                        BinaryOp:
+                          lhs:
+                            BinaryOp:
+                              lhs:
+                                Path:
+                                  segments:
+                                    - ch
+                              op: Equal
+                              rhs:
+                                BinaryOp:
+                                  lhs:
+                                    IntegerLiteral:
+                                      base: Decimal
+                                      digits: "34"
+                                      suffix: ~
+                                  op: LogicalOr
+                                  rhs:
+                                    Path:
+                                      segments:
+                                        - ch
+                          op: Equal
+                          rhs:
+                            BinaryOp:
+                              lhs:
+                                IntegerLiteral:
+                                  base: Decimal
+                                  digits: "92"
+                                  suffix: ~
+                              op: LogicalOr
+                              rhs:
+                                Path:
+                                  segments:
+                                    - ch
+                      op: Equal
+                      rhs:
+                        IntegerLiteral:
+                          base: Decimal
+                          digits: "47"
+                          suffix: ~
+                  body:
+                    statements:
+                      - Return:
+                          Call:
+                            callee:
+                              TypeAccess:
+                                object:
+                                  GenericInstantiation:
+                                    - Path:
+                                        segments:
+                                          - ParseResult
+                                    - - U8
+                                member: ok
+                            args:
+                              - name: ~
+                                value:
+                                  Path:
+                                    segments:
+                                      - ch
+                            generic_args: ~
+                            is_propagating: false
+              else_body:
+                statements:
+                  - Return:
+                      Call:
+                        callee:
+                          TypeAccess:
+                            object:
+                              GenericInstantiation:
+                                - Path:
+                                    segments:
+                                      - ParseResult
+                                - - U8
+                            member: err
+                        args:
+                          - name: ~
+                            value:
+                              Call:
+                                callee:
+                                  TypeAccess:
+                                    object:
+                                      Path:
+                                        segments:
+                                          - ParseError
+                                    member: invalid_escape
+                                args:
+                                  - name: ~
+                                    value:
+                                      Path:
+                                        segments:
+                                          - ch
+                                generic_args: ~
+                                is_propagating: false
+                        generic_args: ~
+                        is_propagating: false
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: JsonParser
+            generic_args: []
+        name: parse_number
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params: []
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - ParseResult
+              generic_args:
+                - Path:
+                    path:
+                      segments:
+                        - JsonValue
+                    generic_args: []
+      body:
+        statements:
+          - Mut:
+              annotations: []
+              name: num_str
+              ty:
+                Array:
+                  element_type: U8
+                  size: ~
+              value:
+                ArrayLiteral:
+                  elements: []
+          - If:
+              condition:
+                BinaryOp:
+                  lhs:
+                    Call:
+                      callee:
+                        FieldAccess:
+                          object: SelfValue
+                          field: peek
+                          is_propagating: false
+                      args: []
+                      generic_args: ~
+                      is_propagating: false
+                  op: Equal
+                  rhs:
+                    IntegerLiteral:
+                      base: Decimal
+                      digits: "45"
+                      suffix: ~
+              then_body:
+                statements:
+                  - Expression:
+                      Call:
+                        callee:
+                          FieldAccess:
+                            object: SelfValue
+                            field: advance
+                            is_propagating: false
+                        args: []
+                        generic_args: ~
+                        is_propagating: false
+              elif_clauses: []
+              else_body: ~
+          - For:
+              pattern: i
+              iterable:
+                Call:
+                  callee:
+                    Path:
+                      segments:
+                        - range
+                  args:
+                    - name: ~
+                      value:
+                        IntegerLiteral:
+                          base: Decimal
+                          digits: "0"
+                          suffix: ~
+                    - name: ~
+                      value:
+                        IntegerLiteral:
+                          base: Decimal
+                          digits: "100"
+                          suffix: ~
+                  generic_args: ~
+                  is_propagating: false
+              body:
+                statements:
+                  - If:
+                      condition:
+                        BinaryOp:
+                          lhs:
+                            BinaryOp:
+                              lhs:
+                                BinaryOp:
+                                  lhs:
+                                    Call:
+                                      callee:
+                                        FieldAccess:
+                                          object: SelfValue
+                                          field: is_eof
+                                          is_propagating: false
+                                      args: []
+                                      generic_args: ~
+                                      is_propagating: false
+                                  op: LogicalOr
+                                  rhs:
+                                    Call:
+                                      callee:
+                                        FieldAccess:
+                                          object:
+                                            UnaryOp:
+                                              op: LogicalNot
+                                              operand: SelfValue
+                                          field: is_digit
+                                          is_propagating: false
+                                      args:
+                                        - name: ~
+                                          value:
+                                            Call:
+                                              callee:
+                                                FieldAccess:
+                                                  object: SelfValue
+                                                  field: peek
+                                                  is_propagating: false
+                                              args: []
+                                              generic_args: ~
+                                              is_propagating: false
+                                      generic_args: ~
+                                      is_propagating: false
+                              op: LogicalAnd
+                              rhs:
+                                Call:
+                                  callee:
+                                    FieldAccess:
+                                      object: SelfValue
+                                      field: peek
+                                      is_propagating: false
+                                  args: []
+                                  generic_args: ~
+                                  is_propagating: false
+                          op: NotEqual
+                          rhs:
+                            IntegerLiteral:
+                              base: Decimal
+                              digits: "46"
+                              suffix: ~
+                      then_body:
+                        statements:
+                          - Break
+                      elif_clauses: []
+                      else_body: ~
+                  - Expression:
+                      Call:
+                        callee:
+                          FieldAccess:
+                            object: SelfValue
+                            field: advance
+                            is_propagating: false
+                        args: []
+                        generic_args: ~
+                        is_propagating: false
+          - Return:
+              Call:
+                callee:
+                  TypeAccess:
+                    object:
+                      Index:
+                        object:
+                          Path:
+                            segments:
+                              - ParseResult
+                        index:
+                          Path:
+                            segments:
+                              - JsonValue
+                    member: ok
+                args:
+                  - name: ~
+                    value:
+                      Call:
+                        callee:
+                          TypeAccess:
+                            object:
+                              Path:
+                                segments:
+                                  - JsonValue
+                            member: number_val
+                        args:
+                          - name: ~
+                            value:
+                              FloatLiteral:
+                                digits: "0.0"
+                                exponent: ~
+                                suffix: ~
+                        generic_args: ~
+                        is_propagating: false
+                generic_args: ~
+                is_propagating: false
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: JsonParser
+            generic_args: []
+        name: parse_array
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params: []
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - ParseResult
+              generic_args:
+                - Path:
+                    path:
+                      segments:
+                        - JsonValue
+                    generic_args: []
+      body:
+        statements:
+          - If:
+              condition:
+                Call:
+                  callee:
+                    FieldAccess:
+                      object:
+                        UnaryOp:
+                          op: LogicalNot
+                          operand: SelfValue
+                      field: expect_char
+                      is_propagating: false
+                  args:
+                    - name: ~
+                      value:
+                        IntegerLiteral:
+                          base: Decimal
+                          digits: "91"
+                          suffix: ~
+                  generic_args: ~
+                  is_propagating: false
+              then_body:
+                statements:
+                  - Return:
+                      Call:
+                        callee:
+                          TypeAccess:
+                            object:
+                              Index:
+                                object:
+                                  Path:
+                                    segments:
+                                      - ParseResult
+                                index:
+                                  Path:
+                                    segments:
+                                      - JsonValue
+                            member: err
+                        args:
+                          - name: ~
+                            value:
+                              Call:
+                                callee:
+                                  TypeAccess:
+                                    object:
+                                      Path:
+                                        segments:
+                                          - ParseError
+                                    member: unexpected_eof
+                                args:
+                                  - name: ~
+                                    value:
+                                      Path:
+                                        segments:
+                                          - ok
+                                generic_args: ~
+                                is_propagating: false
+                        generic_args: ~
+                        is_propagating: false
+              elif_clauses: []
+              else_body: ~
+          - Mut:
+              annotations: []
+              name: arr
+              ty: ~
+              value:
+                Call:
+                  callee:
+                    Path:
+                      segments:
+                        - JsonArray
+                  args:
+                    - name: values
+                      value: NullLiteral
+                    - name: len
+                      value:
+                        IntegerLiteral:
+                          base: Decimal
+                          digits: "0"
+                          suffix: ~
+                    - name: cap
+                      value:
+                        IntegerLiteral:
+                          base: Decimal
+                          digits: "0"
+                          suffix: ~
+                  generic_args: ~
+                  is_propagating: false
+          - Expression:
+              Call:
+                callee:
+                  FieldAccess:
+                    object: SelfValue
+                    field: skip_whitespace
+                    is_propagating: false
+                args: []
+                generic_args: ~
+                is_propagating: false
+          - If:
+              condition:
+                BinaryOp:
+                  lhs:
+                    Call:
+                      callee:
+                        FieldAccess:
+                          object: SelfValue
+                          field: peek
+                          is_propagating: false
+                      args: []
+                      generic_args: ~
+                      is_propagating: false
+                  op: Equal
+                  rhs:
+                    IntegerLiteral:
+                      base: Decimal
+                      digits: "93"
+                      suffix: ~
+              then_body:
+                statements:
+                  - Expression:
+                      Call:
+                        callee:
+                          FieldAccess:
+                            object: SelfValue
+                            field: advance
+                            is_propagating: false
+                        args: []
+                        generic_args: ~
+                        is_propagating: false
+                  - Return:
+                      Call:
+                        callee:
+                          TypeAccess:
+                            object:
+                              Index:
+                                object:
+                                  Path:
+                                    segments:
+                                      - ParseResult
+                                index:
+                                  Path:
+                                    segments:
+                                      - JsonValue
+                            member: ok
+                        args:
+                          - name: ~
+                            value:
+                              Call:
+                                callee:
+                                  TypeAccess:
+                                    object:
+                                      Path:
+                                        segments:
+                                          - JsonValue
+                                    member: array_val
+                                args:
+                                  - name: ~
+                                    value:
+                                      UnaryOp:
+                                        op: AddressOf
+                                        operand:
+                                          Path:
+                                            segments:
+                                              - arr
+                                generic_args: ~
+                                is_propagating: false
+                        generic_args: ~
+                        is_propagating: false
+              elif_clauses: []
+              else_body: ~
+          - For:
+              pattern: i
+              iterable:
+                Call:
+                  callee:
+                    Path:
+                      segments:
+                        - range
+                  args:
+                    - name: ~
+                      value:
+                        IntegerLiteral:
+                          base: Decimal
+                          digits: "0"
+                          suffix: ~
+                    - name: ~
+                      value:
+                        IntegerLiteral:
+                          base: Decimal
+                          digits: "1000"
+                          suffix: ~
+                  generic_args: ~
+                  is_propagating: false
+              body:
+                statements:
+                  - Let:
+                      annotations: []
+                      name: value_result
+                      ty: ~
+                      value:
+                        Call:
+                          callee:
+                            FieldAccess:
+                              object: SelfValue
+                              field: parse_value
+                              is_propagating: false
+                          args: []
+                          generic_args: ~
+                          is_propagating: false
+                  - Expression:
+                      Call:
+                        callee:
+                          FieldAccess:
+                            object: SelfValue
+                            field: skip_whitespace
+                            is_propagating: false
+                        args: []
+                        generic_args: ~
+                        is_propagating: false
+                  - If:
+                      condition:
+                        BinaryOp:
+                          lhs:
+                            Call:
+                              callee:
+                                FieldAccess:
+                                  object: SelfValue
+                                  field: peek
+                                  is_propagating: false
+                              args: []
+                              generic_args: ~
+                              is_propagating: false
+                          op: Equal
+                          rhs:
+                            IntegerLiteral:
+                              base: Decimal
+                              digits: "93"
+                              suffix: ~
+                      then_body:
+                        statements:
+                          - Expression:
+                              Call:
+                                callee:
+                                  FieldAccess:
+                                    object: SelfValue
+                                    field: advance
+                                    is_propagating: false
+                                args: []
+                                generic_args: ~
+                                is_propagating: false
+                          - Return:
+                              Call:
+                                callee:
+                                  TypeAccess:
+                                    object:
+                                      Index:
+                                        object:
+                                          Path:
+                                            segments:
+                                              - ParseResult
+                                        index:
+                                          Path:
+                                            segments:
+                                              - JsonValue
+                                    member: ok
+                                args:
+                                  - name: ~
+                                    value:
+                                      Call:
+                                        callee:
+                                          TypeAccess:
+                                            object:
+                                              Path:
+                                                segments:
+                                                  - JsonValue
+                                            member: array_val
+                                        args:
+                                          - name: ~
+                                            value:
+                                              UnaryOp:
+                                                op: AddressOf
+                                                operand:
+                                                  Path:
+                                                    segments:
+                                                      - arr
+                                        generic_args: ~
+                                        is_propagating: false
+                                generic_args: ~
+                                is_propagating: false
+                      elif_clauses:
+                        - condition:
+                            BinaryOp:
+                              lhs:
+                                Call:
+                                  callee:
+                                    FieldAccess:
+                                      object: SelfValue
+                                      field: peek
+                                      is_propagating: false
+                                  args: []
+                                  generic_args: ~
+                                  is_propagating: false
+                              op: Equal
+                              rhs:
+                                IntegerLiteral:
+                                  base: Decimal
+                                  digits: "44"
+                                  suffix: ~
+                          body:
+                            statements:
+                              - Expression:
+                                  Call:
+                                    callee:
+                                      FieldAccess:
+                                        object: SelfValue
+                                        field: advance
+                                        is_propagating: false
+                                    args: []
+                                    generic_args: ~
+                                    is_propagating: false
+                              - Expression:
+                                  Call:
+                                    callee:
+                                      FieldAccess:
+                                        object: SelfValue
+                                        field: skip_whitespace
+                                        is_propagating: false
+                                    args: []
+                                    generic_args: ~
+                                    is_propagating: false
+                      else_body:
+                        statements:
+                          - Return:
+                              Call:
+                                callee:
+                                  TypeAccess:
+                                    object:
+                                      Index:
+                                        object:
+                                          Path:
+                                            segments:
+                                              - ParseResult
+                                        index:
+                                          Path:
+                                            segments:
+                                              - JsonValue
+                                    member: err
+                                args:
+                                  - name: ~
+                                    value:
+                                      Call:
+                                        callee:
+                                          TypeAccess:
+                                            object:
+                                              Path:
+                                                segments:
+                                                  - ParseError
+                                            member: unclosed_array
+                                        args:
+                                          - name: ~
+                                            value:
+                                              Path:
+                                                segments:
+                                                  - ok
+                                        generic_args: ~
+                                        is_propagating: false
+                                generic_args: ~
+                                is_propagating: false
+          - Return:
+              Call:
+                callee:
+                  TypeAccess:
+                    object:
+                      Index:
+                        object:
+                          Path:
+                            segments:
+                              - ParseResult
+                        index:
+                          Path:
+                            segments:
+                              - JsonValue
+                    member: err
+                args:
+                  - name: ~
+                    value:
+                      Call:
+                        callee:
+                          TypeAccess:
+                            object:
+                              Path:
+                                segments:
+                                  - ParseError
+                            member: unclosed_array
+                        args:
+                          - name: ~
+                            value:
+                              Path:
+                                segments:
+                                  - ok
+                        generic_args: ~
+                        is_propagating: false
+                generic_args: ~
+                is_propagating: false
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: JsonParser
+            generic_args: []
+        name: parse_object
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params: []
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - ParseResult
+              generic_args:
+                - Path:
+                    path:
+                      segments:
+                        - JsonValue
+                    generic_args: []
+      body:
+        statements:
+          - If:
+              condition:
+                Call:
+                  callee:
+                    FieldAccess:
+                      object:
+                        UnaryOp:
+                          op: LogicalNot
+                          operand: SelfValue
+                      field: expect_char
+                      is_propagating: false
+                  args:
+                    - name: ~
+                      value:
+                        IntegerLiteral:
+                          base: Decimal
+                          digits: "123"
+                          suffix: ~
+                  generic_args: ~
+                  is_propagating: false
+              then_body:
+                statements:
+                  - Return:
+                      Call:
+                        callee:
+                          TypeAccess:
+                            object:
+                              Index:
+                                object:
+                                  Path:
+                                    segments:
+                                      - ParseResult
+                                index:
+                                  Path:
+                                    segments:
+                                      - JsonValue
+                            member: err
+                        args:
+                          - name: ~
+                            value:
+                              Call:
+                                callee:
+                                  TypeAccess:
+                                    object:
+                                      Path:
+                                        segments:
+                                          - ParseError
+                                    member: unexpected_eof
+                                args:
+                                  - name: ~
+                                    value:
+                                      Path:
+                                        segments:
+                                          - ok
+                                generic_args: ~
+                                is_propagating: false
+                        generic_args: ~
+                        is_propagating: false
+              elif_clauses: []
+              else_body: ~
+          - Mut:
+              annotations: []
+              name: obj
+              ty: ~
+              value:
+                Call:
+                  callee:
+                    Path:
+                      segments:
+                        - JsonObject
+                  args:
+                    - name: entries
+                      value: NullLiteral
+                    - name: len
+                      value:
+                        IntegerLiteral:
+                          base: Decimal
+                          digits: "0"
+                          suffix: ~
+                    - name: cap
+                      value:
+                        IntegerLiteral:
+                          base: Decimal
+                          digits: "0"
+                          suffix: ~
+                  generic_args: ~
+                  is_propagating: false
+          - Expression:
+              Call:
+                callee:
+                  FieldAccess:
+                    object: SelfValue
+                    field: skip_whitespace
+                    is_propagating: false
+                args: []
+                generic_args: ~
+                is_propagating: false
+          - If:
+              condition:
+                BinaryOp:
+                  lhs:
+                    Call:
+                      callee:
+                        FieldAccess:
+                          object: SelfValue
+                          field: peek
+                          is_propagating: false
+                      args: []
+                      generic_args: ~
+                      is_propagating: false
+                  op: Equal
+                  rhs:
+                    IntegerLiteral:
+                      base: Decimal
+                      digits: "125"
+                      suffix: ~
+              then_body:
+                statements:
+                  - Expression:
+                      Call:
+                        callee:
+                          FieldAccess:
+                            object: SelfValue
+                            field: advance
+                            is_propagating: false
+                        args: []
+                        generic_args: ~
+                        is_propagating: false
+                  - Return:
+                      Call:
+                        callee:
+                          TypeAccess:
+                            object:
+                              Index:
+                                object:
+                                  Path:
+                                    segments:
+                                      - ParseResult
+                                index:
+                                  Path:
+                                    segments:
+                                      - JsonValue
+                            member: ok
+                        args:
+                          - name: ~
+                            value:
+                              Call:
+                                callee:
+                                  TypeAccess:
+                                    object:
+                                      Path:
+                                        segments:
+                                          - JsonValue
+                                    member: object_val
+                                args:
+                                  - name: ~
+                                    value:
+                                      UnaryOp:
+                                        op: AddressOf
+                                        operand:
+                                          Path:
+                                            segments:
+                                              - obj
+                                generic_args: ~
+                                is_propagating: false
+                        generic_args: ~
+                        is_propagating: false
+              elif_clauses: []
+              else_body: ~
+          - For:
+              pattern: i
+              iterable:
+                Call:
+                  callee:
+                    Path:
+                      segments:
+                        - range
+                  args:
+                    - name: ~
+                      value:
+                        IntegerLiteral:
+                          base: Decimal
+                          digits: "0"
+                          suffix: ~
+                    - name: ~
+                      value:
+                        IntegerLiteral:
+                          base: Decimal
+                          digits: "1000"
+                          suffix: ~
+                  generic_args: ~
+                  is_propagating: false
+              body:
+                statements:
+                  - Let:
+                      annotations: []
+                      name: key_result
+                      ty: ~
+                      value:
+                        Call:
+                          callee:
+                            FieldAccess:
+                              object: SelfValue
+                              field: parse_string
+                              is_propagating: false
+                          args: []
+                          generic_args: ~
+                          is_propagating: false
+                  - Expression:
+                      Call:
+                        callee:
+                          FieldAccess:
+                            object: SelfValue
+                            field: skip_whitespace
+                            is_propagating: false
+                        args: []
+                        generic_args: ~
+                        is_propagating: false
+                  - If:
+                      condition:
+                        Call:
+                          callee:
+                            FieldAccess:
+                              object:
+                                UnaryOp:
+                                  op: LogicalNot
+                                  operand: SelfValue
+                              field: expect_char
+                              is_propagating: false
+                          args:
+                            - name: ~
+                              value:
+                                IntegerLiteral:
+                                  base: Decimal
+                                  digits: "58"
+                                  suffix: ~
+                          generic_args: ~
+                          is_propagating: false
+                      then_body:
+                        statements:
+                          - Return:
+                              Call:
+                                callee:
+                                  TypeAccess:
+                                    object:
+                                      Index:
+                                        object:
+                                          Path:
+                                            segments:
+                                              - ParseResult
+                                        index:
+                                          Path:
+                                            segments:
+                                              - JsonValue
+                                    member: err
+                                args:
+                                  - name: ~
+                                    value:
+                                      Call:
+                                        callee:
+                                          TypeAccess:
+                                            object:
+                                              Path:
+                                                segments:
+                                                  - ParseError
+                                            member: unexpected_eof
+                                        args:
+                                          - name: ~
+                                            value:
+                                              Path:
+                                                segments:
+                                                  - ok
+                                        generic_args: ~
+                                        is_propagating: false
+                                generic_args: ~
+                                is_propagating: false
+                      elif_clauses: []
+                      else_body: ~
+                  - Let:
+                      annotations: []
+                      name: value_result
+                      ty: ~
+                      value:
+                        Call:
+                          callee:
+                            FieldAccess:
+                              object: SelfValue
+                              field: parse_value
+                              is_propagating: false
+                          args: []
+                          generic_args: ~
+                          is_propagating: false
+                  - Expression:
+                      Call:
+                        callee:
+                          FieldAccess:
+                            object: SelfValue
+                            field: skip_whitespace
+                            is_propagating: false
+                        args: []
+                        generic_args: ~
+                        is_propagating: false
+                  - If:
+                      condition:
+                        BinaryOp:
+                          lhs:
+                            Call:
+                              callee:
+                                FieldAccess:
+                                  object: SelfValue
+                                  field: peek
+                                  is_propagating: false
+                              args: []
+                              generic_args: ~
+                              is_propagating: false
+                          op: Equal
+                          rhs:
+                            IntegerLiteral:
+                              base: Decimal
+                              digits: "125"
+                              suffix: ~
+                      then_body:
+                        statements:
+                          - Expression:
+                              Call:
+                                callee:
+                                  FieldAccess:
+                                    object: SelfValue
+                                    field: advance
+                                    is_propagating: false
+                                args: []
+                                generic_args: ~
+                                is_propagating: false
+                          - Return:
+                              Call:
+                                callee:
+                                  TypeAccess:
+                                    object:
+                                      Index:
+                                        object:
+                                          Path:
+                                            segments:
+                                              - ParseResult
+                                        index:
+                                          Path:
+                                            segments:
+                                              - JsonValue
+                                    member: ok
+                                args:
+                                  - name: ~
+                                    value:
+                                      Call:
+                                        callee:
+                                          TypeAccess:
+                                            object:
+                                              Path:
+                                                segments:
+                                                  - JsonValue
+                                            member: object_val
+                                        args:
+                                          - name: ~
+                                            value:
+                                              UnaryOp:
+                                                op: AddressOf
+                                                operand:
+                                                  Path:
+                                                    segments:
+                                                      - obj
+                                        generic_args: ~
+                                        is_propagating: false
+                                generic_args: ~
+                                is_propagating: false
+                      elif_clauses:
+                        - condition:
+                            BinaryOp:
+                              lhs:
+                                Call:
+                                  callee:
+                                    FieldAccess:
+                                      object: SelfValue
+                                      field: peek
+                                      is_propagating: false
+                                  args: []
+                                  generic_args: ~
+                                  is_propagating: false
+                              op: Equal
+                              rhs:
+                                IntegerLiteral:
+                                  base: Decimal
+                                  digits: "44"
+                                  suffix: ~
+                          body:
+                            statements:
+                              - Expression:
+                                  Call:
+                                    callee:
+                                      FieldAccess:
+                                        object: SelfValue
+                                        field: advance
+                                        is_propagating: false
+                                    args: []
+                                    generic_args: ~
+                                    is_propagating: false
+                              - Expression:
+                                  Call:
+                                    callee:
+                                      FieldAccess:
+                                        object: SelfValue
+                                        field: skip_whitespace
+                                        is_propagating: false
+                                    args: []
+                                    generic_args: ~
+                                    is_propagating: false
+                      else_body:
+                        statements:
+                          - Return:
+                              Call:
+                                callee:
+                                  TypeAccess:
+                                    object:
+                                      Index:
+                                        object:
+                                          Path:
+                                            segments:
+                                              - ParseResult
+                                        index:
+                                          Path:
+                                            segments:
+                                              - JsonValue
+                                    member: err
+                                args:
+                                  - name: ~
+                                    value:
+                                      Call:
+                                        callee:
+                                          TypeAccess:
+                                            object:
+                                              Path:
+                                                segments:
+                                                  - ParseError
+                                            member: unclosed_object
+                                        args:
+                                          - name: ~
+                                            value:
+                                              Path:
+                                                segments:
+                                                  - ok
+                                        generic_args: ~
+                                        is_propagating: false
+                                generic_args: ~
+                                is_propagating: false
+          - Return:
+              Call:
+                callee:
+                  TypeAccess:
+                    object:
+                      Index:
+                        object:
+                          Path:
+                            segments:
+                              - ParseResult
+                        index:
+                          Path:
+                            segments:
+                              - JsonValue
+                    member: err
+                args:
+                  - name: ~
+                    value:
+                      Call:
+                        callee:
+                          TypeAccess:
+                            object:
+                              Path:
+                                segments:
+                                  - ParseError
+                            member: unclosed_object
+                        args:
+                          - name: ~
+                            value:
+                              Path:
+                                segments:
+                                  - ok
+                        generic_args: ~
+                        is_propagating: false
+                generic_args: ~
+                is_propagating: false
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: false
+        receiver:
+          - name: JsonParser
+            generic_args: []
+        name: is_eof
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: false
+        params: []
+        return_types:
+          - Bool
+      body:
+        statements:
+          - Return:
+              BinaryOp:
+                lhs:
+                  FieldAccess:
+                    object: SelfValue
+                    field: pos
+                    is_propagating: false
+                op: GreaterThanOrEqual
+                rhs:
+                  FieldAccess:
+                    object:
+                      FieldAccess:
+                        object: SelfValue
+                        field: input
+                        is_propagating: false
+                    field: len
+                    is_propagating: false
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: false
+        receiver:
+          - name: JsonParser
+            generic_args: []
+        name: peek
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: false
+        params: []
+        return_types:
+          - U8
+      body:
+        statements:
+          - If:
+              condition:
+                Call:
+                  callee:
+                    FieldAccess:
+                      object: SelfValue
+                      field: is_eof
+                      is_propagating: false
+                  args: []
+                  generic_args: ~
+                  is_propagating: false
+              then_body:
+                statements:
+                  - Return:
+                      IntegerLiteral:
+                        base: Decimal
+                        digits: "0"
+                        suffix: ~
+              elif_clauses: []
+              else_body: ~
+          - Return:
+              Index:
+                object:
+                  FieldAccess:
+                    object: SelfValue
+                    field: input
+                    is_propagating: false
+                index:
+                  FieldAccess:
+                    object: SelfValue
+                    field: pos
+                    is_propagating: false
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: JsonParser
+            generic_args: []
+        name: advance
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params: []
+        return_types:
+          - U8
+      body:
+        statements:
+          - Let:
+              annotations: []
+              name: ch
+              ty: ~
+              value:
+                Call:
+                  callee:
+                    FieldAccess:
+                      object: SelfValue
+                      field: peek
+                      is_propagating: false
+                  args: []
+                  generic_args: ~
+                  is_propagating: false
+          - Expression:
+              Assign:
+                lhs:
+                  FieldAccess:
+                    object: SelfValue
+                    field: pos
+                    is_propagating: false
+                op: Assign
+                rhs:
+                  BinaryOp:
+                    lhs:
+                      FieldAccess:
+                        object: SelfValue
+                        field: pos
+                        is_propagating: false
+                    op: Add
+                    rhs:
+                      IntegerLiteral:
+                        base: Decimal
+                        digits: "1"
+                        suffix: ~
+          - If:
+              condition:
+                BinaryOp:
+                  lhs:
+                    Path:
+                      segments:
+                        - ch
+                  op: Equal
+                  rhs:
+                    IntegerLiteral:
+                      base: Decimal
+                      digits: "10"
+                      suffix: ~
+              then_body:
+                statements:
+                  - Expression:
+                      Assign:
+                        lhs:
+                          FieldAccess:
+                            object: SelfValue
+                            field: line
+                            is_propagating: false
+                        op: Assign
+                        rhs:
+                          BinaryOp:
+                            lhs:
+                              FieldAccess:
+                                object: SelfValue
+                                field: line
+                                is_propagating: false
+                            op: Add
+                            rhs:
+                              IntegerLiteral:
+                                base: Decimal
+                                digits: "1"
+                                suffix: ~
+                  - Expression:
+                      Assign:
+                        lhs:
+                          FieldAccess:
+                            object: SelfValue
+                            field: col
+                            is_propagating: false
+                        op: Assign
+                        rhs:
+                          IntegerLiteral:
+                            base: Decimal
+                            digits: "1"
+                            suffix: ~
+              elif_clauses: []
+              else_body:
+                statements:
+                  - Expression:
+                      Assign:
+                        lhs:
+                          FieldAccess:
+                            object: SelfValue
+                            field: col
+                            is_propagating: false
+                        op: Assign
+                        rhs:
+                          BinaryOp:
+                            lhs:
+                              FieldAccess:
+                                object: SelfValue
+                                field: col
+                                is_propagating: false
+                            op: Add
+                            rhs:
+                              IntegerLiteral:
+                                base: Decimal
+                                digits: "1"
+                                suffix: ~
+          - Return:
+              Path:
+                segments:
+                  - ch
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: JsonParser
+            generic_args: []
+        name: skip_whitespace
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params: []
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
+      body:
+        statements:
+          - For:
+              pattern: i
+              iterable:
+                Call:
+                  callee:
+                    Path:
+                      segments:
+                        - range
+                  args:
+                    - name: ~
+                      value:
+                        IntegerLiteral:
+                          base: Decimal
+                          digits: "0"
+                          suffix: ~
+                    - name: ~
+                      value:
+                        IntegerLiteral:
+                          base: Decimal
+                          digits: "10000"
+                          suffix: ~
+                  generic_args: ~
+                  is_propagating: false
+              body:
+                statements:
+                  - If:
+                      condition:
+                        Call:
+                          callee:
+                            FieldAccess:
+                              object: SelfValue
+                              field: is_eof
+                              is_propagating: false
+                          args: []
+                          generic_args: ~
+                          is_propagating: false
+                      then_body:
+                        statements:
+                          - Break
+                      elif_clauses: []
+                      else_body: ~
+                  - Let:
+                      annotations: []
+                      name: ch
+                      ty: ~
+                      value:
+                        Call:
+                          callee:
+                            FieldAccess:
+                              object: SelfValue
+                              field: peek
+                              is_propagating: false
+                          args: []
+                          generic_args: ~
+                          is_propagating: false
+                  - If:
+                      condition:
+                        BinaryOp:
+                          lhs:
+                            BinaryOp:
+                              lhs:
+                                BinaryOp:
+                                  lhs:
+                                    BinaryOp:
+                                      lhs:
+                                        Path:
+                                          segments:
+                                            - ch
+                                      op: Equal
+                                      rhs:
+                                        BinaryOp:
+                                          lhs:
+                                            IntegerLiteral:
+                                              base: Decimal
+                                              digits: "32"
+                                              suffix: ~
+                                          op: LogicalOr
+                                          rhs:
+                                            Path:
+                                              segments:
+                                                - ch
+                                  op: Equal
+                                  rhs:
+                                    BinaryOp:
+                                      lhs:
+                                        IntegerLiteral:
+                                          base: Decimal
+                                          digits: "9"
+                                          suffix: ~
+                                      op: LogicalOr
+                                      rhs:
+                                        Path:
+                                          segments:
+                                            - ch
+                              op: Equal
+                              rhs:
+                                BinaryOp:
+                                  lhs:
+                                    IntegerLiteral:
+                                      base: Decimal
+                                      digits: "10"
+                                      suffix: ~
+                                  op: LogicalOr
+                                  rhs:
+                                    Path:
+                                      segments:
+                                        - ch
+                          op: Equal
+                          rhs:
+                            IntegerLiteral:
+                              base: Decimal
+                              digits: "13"
+                              suffix: ~
+                      then_body:
+                        statements:
+                          - Expression:
+                              Call:
+                                callee:
+                                  FieldAccess:
+                                    object: SelfValue
+                                    field: advance
+                                    is_propagating: false
+                                args: []
+                                generic_args: ~
+                                is_propagating: false
+                      elif_clauses: []
+                      else_body:
+                        statements:
+                          - Break
+          - Pass
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: JsonParser
+            generic_args: []
+        name: expect_char
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params:
+          - name: expected
+            ty: U8
+        return_types:
+          - Bool
+      body:
+        statements:
+          - If:
+              condition:
+                BinaryOp:
+                  lhs:
+                    Call:
+                      callee:
+                        FieldAccess:
+                          object: SelfValue
+                          field: peek
+                          is_propagating: false
+                      args: []
+                      generic_args: ~
+                      is_propagating: false
+                  op: Equal
+                  rhs:
+                    Path:
+                      segments:
+                        - expected
+              then_body:
+                statements:
+                  - Expression:
+                      Call:
+                        callee:
+                          FieldAccess:
+                            object: SelfValue
+                            field: advance
+                            is_propagating: false
+                        args: []
+                        generic_args: ~
+                        is_propagating: false
+                  - Return:
+                      BooleanLiteral: true
+              elif_clauses: []
+              else_body: ~
+          - Return:
+              BooleanLiteral: false
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver:
+          - name: JsonParser
+            generic_args: []
+        name: expect_keyword
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: true
+        params:
+          - name: keyword
+            ty:
+              Array:
+                element_type: U8
+                size: ~
+        return_types:
+          - Bool
+      body:
+        statements:
+          - For:
+              pattern: i
+              iterable:
+                Call:
+                  callee:
+                    Path:
+                      segments:
+                        - range
+                  args:
+                    - name: ~
+                      value:
+                        IntegerLiteral:
+                          base: Decimal
+                          digits: "0"
+                          suffix: ~
+                    - name: ~
+                      value:
+                        FieldAccess:
+                          object:
+                            Path:
+                              segments:
+                                - keyword
+                          field: len
+                          is_propagating: false
+                  generic_args: ~
+                  is_propagating: false
+              body:
+                statements:
+                  - If:
+                      condition:
+                        BinaryOp:
+                          lhs:
+                            BinaryOp:
+                              lhs:
+                                Call:
+                                  callee:
+                                    FieldAccess:
+                                      object: SelfValue
+                                      field: is_eof
+                                      is_propagating: false
+                                  args: []
+                                  generic_args: ~
+                                  is_propagating: false
+                              op: LogicalOr
+                              rhs:
+                                Call:
+                                  callee:
+                                    FieldAccess:
+                                      object: SelfValue
+                                      field: peek
+                                      is_propagating: false
+                                  args: []
+                                  generic_args: ~
+                                  is_propagating: false
+                          op: NotEqual
+                          rhs:
+                            Index:
+                              object:
+                                Path:
+                                  segments:
+                                    - keyword
+                              index:
+                                Path:
+                                  segments:
+                                    - i
+                      then_body:
+                        statements:
+                          - Return:
+                              BooleanLiteral: false
+                      elif_clauses: []
+                      else_body: ~
+                  - Expression:
+                      Call:
+                        callee:
+                          FieldAccess:
+                            object: SelfValue
+                            field: advance
+                            is_propagating: false
+                        args: []
+                        generic_args: ~
+                        is_propagating: false
+          - Return:
+              BooleanLiteral: true
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: false
+        receiver:
+          - name: JsonParser
+            generic_args: []
+        name: is_digit
+        outer_generic_params: []
+        func_generic_params: []
+        self_param:
+          is_pointer: true
+          is_mutable: false
+        params:
+          - name: ch
+            ty: U8
+        return_types:
+          - Bool
+      body:
+        statements:
+          - Return:
+              BinaryOp:
+                lhs:
+                  BinaryOp:
+                    lhs:
+                      Path:
+                        segments:
+                          - ch
+                    op: GreaterThanOrEqual
+                    rhs:
+                      BinaryOp:
+                        lhs:
+                          IntegerLiteral:
+                            base: Decimal
+                            digits: "48"
+                            suffix: ~
+                        op: LogicalAnd
+                        rhs:
+                          Path:
+                            segments:
+                              - ch
+                op: LessThanOrEqual
+                rhs:
+                  IntegerLiteral:
+                    base: Decimal
+                    digits: "57"
+                    suffix: ~
+  - Function:
+      signature:
+        visibility: Export
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver: ~
+        name: json_serialize
+        outer_generic_params: []
+        func_generic_params: []
+        self_param: ~
+        params:
+          - name: value
+            ty:
+              Pointer:
+                nullable: false
+                mutable: false
+                element_type:
+                  Path:
+                    path:
+                      segments:
+                        - JsonValue
+                    generic_args: []
+        return_types:
+          - Array:
+              element_type: U8
+              size: ~
+      body:
+        statements:
+          - Mut:
+              annotations: []
+              name: buffer
+              ty:
+                Array:
+                  element_type: U8
+                  size: ~
+              value:
+                ArrayLiteral:
+                  elements: []
+          - Expression:
+              Call:
+                callee:
+                  Path:
+                    segments:
+                      - serialize_value
+                args:
+                  - name: ~
+                    value:
+                      Path:
+                        segments:
+                          - value
+                  - name: ~
+                    value:
+                      UnaryOp:
+                        op: AddressOf
+                        operand:
+                          Path:
+                            segments:
+                              - buffer
+                generic_args: ~
+                is_propagating: false
+          - Return:
+              Path:
+                segments:
+                  - buffer
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver: ~
+        name: serialize_value
+        outer_generic_params: []
+        func_generic_params: []
+        self_param: ~
+        params:
+          - name: value
+            ty:
+              Pointer:
+                nullable: false
+                mutable: false
+                element_type:
+                  Path:
+                    path:
+                      segments:
+                        - JsonValue
+                    generic_args: []
+          - name: buffer
+            ty:
+              Pointer:
+                nullable: false
+                mutable: true
+                element_type:
+                  Array:
+                    element_type: U8
+                    size: ~
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
+      body:
+        statements:
+          - Pass
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver: ~
+        name: serialize_string
+        outer_generic_params: []
+        func_generic_params: []
+        self_param: ~
+        params:
+          - name: s
+            ty:
+              Array:
+                element_type: U8
+                size: ~
+          - name: buffer
+            ty:
+              Pointer:
+                nullable: false
+                mutable: true
+                element_type:
+                  Array:
+                    element_type: U8
+                    size: ~
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
+      body:
+        statements:
+          - Pass
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver: ~
+        name: serialize_array
+        outer_generic_params: []
+        func_generic_params: []
+        self_param: ~
+        params:
+          - name: arr
+            ty:
+              Pointer:
+                nullable: false
+                mutable: false
+                element_type:
+                  Path:
+                    path:
+                      segments:
+                        - JsonArray
+                    generic_args: []
+          - name: buffer
+            ty:
+              Pointer:
+                nullable: false
+                mutable: true
+                element_type:
+                  Array:
+                    element_type: U8
+                    size: ~
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
+      body:
+        statements:
+          - Pass
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: true
+        receiver: ~
+        name: serialize_object
+        outer_generic_params: []
+        func_generic_params: []
+        self_param: ~
+        params:
+          - name: obj
+            ty:
+              Pointer:
+                nullable: false
+                mutable: false
+                element_type:
+                  Path:
+                    path:
+                      segments:
+                        - JsonObject
+                    generic_args: []
+          - name: buffer
+            ty:
+              Pointer:
+                nullable: false
+                mutable: true
+                element_type:
+                  Array:
+                    element_type: U8
+                    size: ~
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
+      body:
+        statements:
+          - Pass

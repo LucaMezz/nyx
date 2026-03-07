@@ -1438,7 +1438,6 @@ expression: tokens
 - Ident: completion
 - Eq
 - And
-- Mut
 - SelfLower
 - Dot
 - Ident: io_completions
@@ -1513,7 +1512,6 @@ expression: tokens
 - Ident: timer
 - Eq
 - And
-- Mut
 - SelfLower
 - Dot
 - Ident: timers

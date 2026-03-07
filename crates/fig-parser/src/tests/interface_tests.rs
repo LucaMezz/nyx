@@ -1,7 +1,8 @@
 // Interface parsing tests for fig-parser
 // NOTE: Fig uses "func" (not "fn") for function declarations.
 
-use crate::{Lexer, ast::{GenericParameter, Type}, parser};
+use crate::ast::{GenericParameter, Type};
+use super::helpers;
 
 fn bound_name(ty: &Type) -> &str {
     if let Type::Path { path: p, .. } = ty { &p.segments[0] } else { panic!("Expected path type") }
@@ -13,7 +14,7 @@ fn extends_name(ty: &Type) -> &str {
 #[test]
 fn test_simple_interface() {
     let input = "interface Drawable\n    func get_width() -> i32\n    func get_height() -> i32\n";
-    let iface = parser::InterfaceParser::new().parse(Lexer::new(input)).unwrap();
+    let iface = helpers::parse_interface(input).unwrap();
 
     assert_eq!(iface.name.segments[0], "Drawable");
     assert_eq!(iface.generic_params.len(), 0);
@@ -32,7 +33,7 @@ fn test_simple_interface() {
 #[test]
 fn test_interface_with_generic_params() {
     let input = "interface Container[T]\n    func add(item: T)\n    func get(index: usize) -> T\n";
-    let iface = parser::InterfaceParser::new().parse(Lexer::new(input)).unwrap();
+    let iface = helpers::parse_interface(input).unwrap();
 
     assert_eq!(iface.name.segments[0], "Container");
     assert_eq!(iface.generic_params.len(), 1);
@@ -53,7 +54,7 @@ fn test_interface_with_generic_params() {
 #[test]
 fn test_interface_with_extends_clause() {
     let input = "interface Shape\n    extends\n        Drawable\n        Movable\n    func get_area() -> f64\n";
-    let iface = parser::InterfaceParser::new().parse(Lexer::new(input)).unwrap();
+    let iface = helpers::parse_interface(input).unwrap();
 
     assert_eq!(iface.name.segments[0], "Shape");
     assert_eq!(iface.extends.len(), 2);
@@ -66,7 +67,7 @@ fn test_interface_with_extends_clause() {
 fn test_interface_with_where_clause() {
     // where-clause constraints merged into generic_params
     let input = "interface Comparable[T]\n    where\n        T: Clone\n    func compare(other: T) -> i32\n";
-    let iface = parser::InterfaceParser::new().parse(Lexer::new(input)).unwrap();
+    let iface = helpers::parse_interface(input).unwrap();
 
     assert_eq!(iface.name.segments[0], "Comparable");
     assert_eq!(iface.generic_params.len(), 1);
@@ -81,7 +82,7 @@ fn test_interface_with_where_clause() {
 #[test]
 fn test_interface_with_extends_and_where() {
     let input = "interface AdvancedContainer[T, E]\n    extends\n        Container[T]\n    where\n        T: Clone\n        E: Copy\n    func get_or_error(index: usize) -> T\n    func set(index: usize, item: T)\n";
-    let iface = parser::InterfaceParser::new().parse(Lexer::new(input)).unwrap();
+    let iface = helpers::parse_interface(input).unwrap();
 
     assert_eq!(iface.name.segments[0], "AdvancedContainer");
     assert_eq!(iface.generic_params.len(), 2);
@@ -92,7 +93,7 @@ fn test_interface_with_extends_and_where() {
 #[test]
 fn test_interface_with_method_parameters() {
     let input = "interface Calculator\n    func add(a: i32, b: i32) -> i32\n    func multiply(a: i32, b: i32) -> i32\n";
-    let iface = parser::InterfaceParser::new().parse(Lexer::new(input)).unwrap();
+    let iface = helpers::parse_interface(input).unwrap();
 
     assert_eq!(iface.methods[0].params.len(), 2);
     assert_eq!(iface.methods[0].params[0].name, "a");
@@ -104,7 +105,7 @@ fn test_interface_with_method_parameters() {
 #[test]
 fn test_interface_with_complex_types() {
     let input = "interface Processor[T]\n    func process(input: ?*mut T) -> *T\n    func batch_process(inputs: [T]) -> [T]\n";
-    let iface = parser::InterfaceParser::new().parse(Lexer::new(input)).unwrap();
+    let iface = helpers::parse_interface(input).unwrap();
     assert_eq!(iface.methods.len(), 2);
 
     // First method: ?*mut T  →  Nullable(Pointer { nullable: false, mutable: true, .. })
@@ -135,7 +136,7 @@ fn test_interface_with_complex_types() {
 fn test_interface_no_body() {
     // An interface with just a name and no body (forward declaration)
     let input = "interface Marker\n";
-    let result = parser::InterfaceParser::new().parse(Lexer::new(input));
+    let result = helpers::parse_interface(input);
     if let Ok(iface) = result {
         assert_eq!(iface.name.segments[0], "Marker");
         assert_eq!(iface.methods.len(), 0);

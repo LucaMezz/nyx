@@ -1729,7 +1729,6 @@ expression: tokens
 - Ident: conn
 - Eq
 - And
-- Mut
 - SelfLower
 - Dot
 - Ident: connections
@@ -1747,7 +1746,6 @@ expression: tokens
 - Ident: read
 - LParen
 - And
-- Mut
 - Ident: conn
 - Dot
 - Ident: buffer
@@ -1959,7 +1957,6 @@ expression: tokens
 - Ident: conn
 - Eq
 - And
-- Mut
 - SelfLower
 - Dot
 - Ident: connections

@@ -1,0 +1,105 @@
+---
+source: crates/fig-parser/tests/integration_tests.rs
+assertion_line: 49
+expression: ast
+---
+items:
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: false
+        receiver: ~
+        name: use_generics
+        outer_generic_params: []
+        func_generic_params: []
+        self_param: ~
+        params: []
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
+      body:
+        statements:
+          - Let:
+              annotations: []
+              name: s
+              ty: ~
+              value:
+                Call:
+                  callee:
+                    TypeAccess:
+                      object:
+                        GenericInstantiation:
+                          - Path:
+                              segments:
+                                - Seq
+                          - - I32
+                      member: new
+                  args: []
+                  generic_args: ~
+                  is_propagating: false
+          - Let:
+              annotations: []
+              name: v
+              ty:
+                Path:
+                  path:
+                    segments:
+                      - Vec
+                  generic_args:
+                    - U8
+              value:
+                Call:
+                  callee:
+                    TypeAccess:
+                      object:
+                        GenericInstantiation:
+                          - Path:
+                              segments:
+                                - Vec
+                          - - U8
+                      member: with_capacity
+                  args:
+                    - name: ~
+                      value:
+                        IntegerLiteral:
+                          base: Decimal
+                          digits: "32"
+                          suffix: ~
+                  generic_args: ~
+                  is_propagating: false
+          - Let:
+              annotations: []
+              name: m
+              ty:
+                Path:
+                  path:
+                    segments:
+                      - Map
+                  generic_args:
+                    - I32
+                    - Array:
+                        element_type: U8
+                        size: ~
+              value:
+                Call:
+                  callee:
+                    TypeAccess:
+                      object:
+                        GenericInstantiation:
+                          - Path:
+                              segments:
+                                - Map
+                          - - I32
+                            - Array:
+                                element_type: U8
+                                size: ~
+                      member: new
+                  args: []
+                  generic_args: ~
+                  is_propagating: false
+          - Pass

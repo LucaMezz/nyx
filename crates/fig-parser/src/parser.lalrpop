@@ -2,8 +2,9 @@ use crate::LexicalError;
 use crate::ast::*;
 use crate::parse_interp_parts;
 use fig_lexer::{Token, FloatLiteral, IntegerLiteral};
+use lalrpop_util::ErrorRecovery;
 
-grammar;
+grammar<'err>(errors: &'err mut Vec<ErrorRecovery<usize, Token, LexicalError>>);
 
 // ============================================================================
 // Main Entry Point
@@ -23,6 +24,8 @@ SourceFileItem: NamespaceItem = {
     SourceFileItemDataType,
     SourceFileItemConst,
     SourceFileItemUsing,
+    // Error recovery: skip tokens up to the next top-level item boundary.
+    ! => { errors.push(<>); NamespaceItem::Error },
 };
 
 // ── Namespace items ──────────────────────────────────────────────────────────
@@ -150,13 +153,15 @@ Annotations: Vec<Annotation> = {
 };
 
 // ============================================================================
-// Expressions  (precedence levels 1 - 13)
+// Expressions  (precedence levels 1 - 12)
 // ============================================================================
 
-pub Expression: Expression = {
-    #[precedence(level="13")] #[assoc(side="left")]
-    <e: Expression> "as" <t: TopLevelType>
-        => Expression::Cast(CastExpr { expr: Box::new(e), target_type: Box::new(t) }),
+Expression: Expression = {
+    // Cast: `expr as Type` — level 12, tighter than all binary operators so
+    // `x as T + y` parses as `(x as T) + y` and `x as T == y` as `(x as T) == y`.
+    #[precedence(level="12")] #[assoc(side="left")]
+    <expr: Expression> "as" <ty: Type>
+        => Expression::Cast(CastExpr { expr: Box::new(expr), target_type: Box::new(ty) }),
 
     #[precedence(level="11")] #[assoc(side="left")]
     <lhs: Expression> "*" <rhs: Expression>
@@ -219,11 +224,6 @@ pub Expression: Expression = {
 };
 
 /// Handles all postfix operators with explicit left-recursion.
-/// This avoids lalrpop's `#[precedence]` state-splitting, which causes the
-/// resulting Expression to get "trapped" at level 12+, preventing lower-level
-/// binary operators (like `+`, `==`) from being applied after a field access
-/// or function call.
-///
 /// Precedence note: `Unary` handles prefix operators and bottoms out at `Atom`.
 /// `PostfixExpr` wraps `Unary` so postfix binds LESS tightly than prefix, i.e.
 /// `-p.x` == `(-p).x` (same behaviour as the previous grammar).
@@ -267,11 +267,97 @@ PostfixExpr: Expression = {
     // Multi-line generic call via turbofish: callee::[GenericArgs](\nINDENT\narg1,\nDEDENT)
     <callee: PostfixExpr> "::" <gp: GenericArgumentList> "(" "NEWLINE" "INDENT" <args: MultilineCallArgs> "DEDENT" ")"
         => Expression::Call(CallExpr { callee: Box::new(callee), args, generic_args: Some(gp), is_propagating: false }),
+    // Generic instantiation in expression position: obj[T...]
+    // ExprGenericArgList only matches cases that are unambiguous with the Index rule
+    // (primitive type keywords, nullable types, pointer-to-primitive, multi-arg with comma).
+    <obj: PostfixExpr> <ga: ExprGenericArgList>
+        => Expression::GenericInstantiation(Box::new(obj), ga),
     // Index: obj[idx]
     <obj: PostfixExpr> "[" <idx: Expression> "]"
         => Expression::Index(IndexExpr { object: Box::new(obj), index: Box::new(idx) }),
     // Base case: prefix-unary and atoms
     Unary,
+};
+
+/// A generic-argument list in expression position whose content is
+/// unambiguous with the index-expression rule `obj[idx]`.
+///
+/// The ambiguity arises when a single identifier appears inside the brackets:
+/// `obj[T]` could be an index (T = expression) or generic instantiation
+/// (T = type).  We resolve it by only covering cases where the bracket content
+/// **cannot** be parsed as an expression:
+///
+///  * Multiple arguments separated by commas — `,` is not in FOLLOW(Expression)
+///    inside `obj[expr]`, so LALR(1) always forces the first token to start a Type.
+///  * A single primitive-type keyword (`i32`, `u8`, `usize`, …) — these tokens
+///    are not valid expression starts.
+///  * A single nullable type `?T` — `?` cannot start an expression.
+///  * A single pointer-to-primitive `*mut? PrimType` — the primitive keyword
+///    disambiguates the inner position.
+///  * A single nested-slice type `[[T]]` where the inner element is a PrimType.
+// Primitive types that can appear inside ExprGenericArgList without causing
+// a reduce-reduce conflict with expression atoms.  "null" is excluded because
+// it also appears as Expression::NullLiteral in Atom, making it ambiguous.
+ExprPrimType: Type = {
+    "u8"    => Type::U8,
+    "u16"   => Type::U16,
+    "u32"   => Type::U32,
+    "u64"   => Type::U64,
+    "usize" => Type::USize,
+    "i8"    => Type::I8,
+    "i16"   => Type::I16,
+    "i32"   => Type::I32,
+    "i64"   => Type::I64,
+    "isize" => Type::ISize,
+    "f32"   => Type::F32,
+    "f64"   => Type::F64,
+    "bool"  => Type::Bool,
+    // Note: "null" deliberately omitted — it's also Expression::NullLiteral
+};
+
+// Generic type argument for use inside ExprGenericArgList only.
+// Deliberately restricted to NON-ident-starting alternatives so that
+// after `PostfixExpr "["` the parser can unambiguously choose between
+// GenericTypeArg (type-arg) and Expression (index expression).
+// ident-starting paths are NOT included here because they share the same
+// LR(1) predecessor state as expression idents, causing irresolvable conflicts.
+GenericTypeArg: Type = {
+    ExprPrimType,
+    // Nullable: ?T
+    "?" <inner: GenericTypeArg>
+        => Type::Nullable(Box::new(inner)),
+    // Pointer: *T or *mut T (only with non-ident inner type to stay unambiguous)
+    "*" "mut" <inner: GenericTypeArg>
+        => Type::Pointer { nullable: false, mutable: true,  element_type: Box::new(inner) },
+    "*" <inner: GenericTypeArg>
+        => Type::Pointer { nullable: false, mutable: false, element_type: Box::new(inner) },
+    // Slice: [T]
+    "[" <elem: GenericTypeArg> "]"
+        => Type::Array { element_type: Box::new(elem), size: None },
+};
+
+ExprGenericArgList: Vec<Type> = {
+    // ── Two or more type args (comma after first is unambiguous with Index) ───
+    // e.g. HashMap[K, V],  BPlusTree[K, V]
+    "[" <first: GenericTypeArg> "," <rest: Comma<GenericTypeArg>> "]"
+        => { let mut v = vec![first]; v.extend(rest); v },
+
+    // ── Single primitive-type keyword (unambiguous: primitives aren't exprs) ──
+    // e.g. Seq[i32],  Future[usize],  SerdeResult[u8]
+    "[" <ty: ExprPrimType> "]" => vec![ty],
+
+    // ── Single nullable type (`?` cannot start an expression) ────────────────
+    // e.g. Opt[?T]
+    "[" "?" <inner: GenericTypeArg> "]" => vec![Type::Nullable(Box::new(inner))],
+
+    // ── Single pointer-to-primitive (`*u8`, `*mut i32`, …) ──────────────────
+    "[" "*" <mutable: "mut"?> <prim: ExprPrimType> "]"
+        => vec![Type::Pointer { nullable: false, mutable: mutable.is_some(),
+                                element_type: Box::new(prim) }],
+
+    // ── Single nested slice (`[[u8]]`): `[[` can't start an index expression ─
+    "[" "[" <elem: GenericTypeArg> "]" "]"
+        => vec![Type::Array { element_type: Box::new(elem), size: None }],
 };
 
 Unary: Expression = {
@@ -359,8 +445,8 @@ PathSegment: String = {
     <s: "ident">  => s,
 };
 
-pub Path: Path = {
-    <segments: (<PathSegment> "::")*> <last: PathSegment>
+Path: Path = {
+    <segments: (<PathSegment> "::")* > <last: PathSegment>
         => {
             let mut s = segments;
             s.push(last);
@@ -372,11 +458,11 @@ pub Path: Path = {
 // Generic Parsing
 // ============================================================================
 
-pub GenericArgumentList: Vec<Type> = {
+GenericArgumentList: Vec<Type> = {
     "[" <args: Comma<Type>> "]" => args,
 };
 
-pub GenericParameterList: Vec<GenericParameter> = {
+GenericParameterList: Vec<GenericParameter> = {
     "[" <params: Comma<GenericParameter>> "]" => params,
 };
 
@@ -423,7 +509,7 @@ TypeBound: Type = {
 
 /// General type rule — does NOT include error-union `T ! E`.
 /// This keeps `!` out of the general follow-set and avoids LR(1) conflicts.
-pub Type: Type = {
+Type: Type = {
     "?" <inner: Type>
         => Type::Nullable(Box::new(inner)),
     PointerType,
@@ -432,7 +518,7 @@ pub Type: Type = {
 /// Top-level type that allows error-union `T ! E`.  Only used in positions
 /// where `!` cannot appear in the follow set (function return types, type-alias
 /// targets), so the shift/reduce conflict with unary `!` never arises.
-pub TopLevelType: Type = {
+TopLevelType: Type = {
     <ok: Type> "!" <err: Type>
         => Type::ErrorUnion { ok_type: Box::new(ok), err_type: Box::new(err) },
     Type,
@@ -480,7 +566,7 @@ NamedType: Type = {
     <path: Path> <ga: GenericArgumentList?> => Type::Path { path, generic_args: ga.unwrap_or_default() },
 };
 
-pub PrimitiveType: Type = {
+PrimitiveType: Type = {
     "u8"    => Type::U8,
     "u16"   => Type::U16,
     "u32"   => Type::U32,
@@ -569,11 +655,16 @@ Statement: Statement = {
 /// Annotations).  By routing them through this single rule, the LALR automaton
 /// avoids duplicating those item sets for every declaration type.
 Declaration: Statement = {
-    // let / mut (only use annotations, no visibility — we accept v silently)
+    // let / mut with assignment (only use annotations, no visibility — we accept v silently)
     <h: DeclHead> "let" <name: "ident"> <ty: (":" <Type>)?> "=" <val: Expression> "NEWLINE"
         => { let (_, a) = h; Statement::Let(LetStatement { annotations: a, name, ty, value: Box::new(val) }) },
     <h: DeclHead> "mut" <name: "ident"> <ty: (":" <Type>)?> "=" <val: Expression> "NEWLINE"
         => { let (_, a) = h; Statement::Mut(MutStatement { annotations: a, name, ty, value: Box::new(val) }) },
+    // let / mut without assignment — declaration only (type required)
+    <h: DeclHead> "let" <name: "ident"> ":" <ty: Type> "NEWLINE"
+        => { let (_, a) = h; Statement::LetDecl(LetDeclStatement { annotations: a, name, ty }) },
+    <h: DeclHead> "mut" <name: "ident"> ":" <ty: Type> "NEWLINE"
+        => { let (_, a) = h; Statement::MutDecl(MutDeclStatement { annotations: a, name, ty }) },
     <h: DeclHead> "const" <cn: ConstNamePath> <ty: (":" <Type>)?> "=" <val: Expression> "NEWLINE"
         => { let (v, a) = h; let (gp, recv, name) = cn; Statement::Const(ConstStatement { visibility: v.unwrap_or_default(), annotations: a, generic_params: gp, receiver: recv, name, ty, value: Box::new(val) }) },
     <h: DeclHead> "using" <path: Path> "NEWLINE"
@@ -663,7 +754,7 @@ EnumTail: Enum = {
         },
 };
 
-pub Enum: Enum = {
+Enum: Enum = {
     <h: DeclHead> <e: EnumTail>
         => { let (v, a) = h; Enum { visibility: v.unwrap_or_default(), annotations: a, ..e } },
 };
@@ -699,7 +790,7 @@ UnionTail: Union = {
         },
 };
 
-pub Union: Union = {
+Union: Union = {
     <h: DeclHead> <u: UnionTail>
         => { let (v, a) = h; Union { visibility: v.unwrap_or_default(), annotations: a, ..u } },
 };
@@ -740,7 +831,7 @@ StructTail: Struct = {
         },
 };
 
-pub Struct: Struct = {
+Struct: Struct = {
     <h: DeclHead> <s: StructTail>
         => { let (v, a) = h; Struct { visibility: v.unwrap_or_default(), annotations: a, ..s } },
 };
@@ -761,7 +852,7 @@ FunctionSignatureBase: FunctionSignature = {
     <gp: GenericParameterList?>
     <hd: FunctionNamePath>
     "(" <ps: FunctionParams> ")"
-    <ret: ("->" <Comma<TopLevelType>>)?>
+    <ret: ReturnTypeSpec?>
         => {
             let (recv, name, fp) = hd;
             let (self_p, params) = ps;
@@ -781,7 +872,15 @@ FunctionSignatureBase: FunctionSignature = {
         },
 };
 
-pub Function: Function = {
+/// Return type specification after `->` in a function signature.
+///   Single return value:    `-> T`
+///   Multiple return values: `-> (T1, T2, ...)` — parenthesised, two or more types
+ReturnTypeSpec: Vec<Type> = {
+    "->" "(" <types: Comma<TopLevelType>> ")" => types,
+    "->" <ty: TopLevelType> => vec![ty],
+};
+
+Function: Function = {
     <h: DeclHead> <sig: FunctionSignatureBase> "NEWLINE" "INDENT" <wc: WhereClause?> <body: Block> "DEDENT"
         => {
             let (v, a) = h;
@@ -795,7 +894,7 @@ pub Function: Function = {
         },
 };
 
-pub FunctionDeclaration: FunctionDeclaration = {
+FunctionDeclaration: FunctionDeclaration = {
     <h: DeclHead> <sig: FunctionSignatureBase> "NEWLINE"
         => {
             let (v, a) = h;
@@ -893,7 +992,7 @@ InterfaceTail: Interface = {
         },
 };
 
-pub Interface: Interface = {
+Interface: Interface = {
     <h: DeclHead> <i: InterfaceTail>
         => { let (v, a) = h; Interface { visibility: v.unwrap_or_default(), annotations: a, ..i } },
 };
@@ -907,7 +1006,7 @@ InterfaceMethod: FunctionSignature = {
 // Namespace (standalone rule)
 // ============================================================================
 
-pub Namespace: Namespace = {
+Namespace: Namespace = {
     <h: DeclHead> "namespace" <name: Path> "NEWLINE" "INDENT" <items: Statement*> "DEDENT"
         => { let (v, a) = h; Namespace { visibility: v.unwrap_or_default(), annotations: a, name, items } },
     <h: DeclHead> "namespace" <name: Path> "NEWLINE"
@@ -918,7 +1017,7 @@ pub Namespace: Namespace = {
 // Type Alias (standalone rule)
 // ============================================================================
 
-pub TypeAlias: TypeAlias = {
+TypeAlias: TypeAlias = {
     <h: DeclHead> "type" <path: Path> <gp: GenericParameterList?> "=" <ty: TopLevelType>
         => { let (v, a) = h; TypeAlias { visibility: v.unwrap_or_default(), annotations: a, name: path, generic_params: gp.unwrap_or_default(), aliased_type: ty } },
     <h: DeclHead> "type" <path: Path> <gp: GenericParameterList?> "NEWLINE" "INDENT" <wc: WhereClause> "=" <ty: TopLevelType> "DEDENT"
@@ -1058,3 +1157,4 @@ extern {
         "#" => Token::Hash,
     }
 }
+

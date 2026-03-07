@@ -4,7 +4,7 @@
 // NOTE: Function bodies require a trailing newline after the last statement.
 
 use crate::ast::*;
-use crate::{Lexer, parser};
+use super::helpers;
 
 fn bound_name(ty: &Type) -> &str {
     if let Type::Path { path: p, .. } = ty { &p.segments[0] } else { panic!("Expected path type as bound") }
@@ -13,7 +13,7 @@ fn bound_name(ty: &Type) -> &str {
 #[test]
 fn test_simple_function() {
     let input = "func add(x: i32, y: i32) -> i32\n    pass\n";
-    let f = parser::FunctionParser::new().parse(Lexer::new(input)).unwrap();
+    let f = helpers::parse_function(input).unwrap();
     let sig = f.signature;
     assert_eq!(sig.name, "add");
     assert_eq!(sig.params.len(), 2);
@@ -29,7 +29,7 @@ fn test_simple_function() {
 #[test]
 fn test_most_basic_function() {
     let input = "func main()\n    pass\n";
-    let f = parser::FunctionParser::new().parse(Lexer::new(input)).unwrap();
+    let f = helpers::parse_function(input).unwrap();
     let sig = f.signature;
     assert_eq!(sig.name, "main");
     assert_eq!(sig.params.len(), 0);
@@ -39,7 +39,7 @@ fn test_most_basic_function() {
 #[test]
 fn test_function_no_params() {
     let input = "func main() -> i32\n    pass\n";
-    let f = parser::FunctionParser::new().parse(Lexer::new(input)).unwrap();
+    let f = helpers::parse_function(input).unwrap();
     let sig = f.signature;
     assert_eq!(sig.name, "main");
     assert_eq!(sig.params.len(), 0);
@@ -49,7 +49,7 @@ fn test_function_no_params() {
 #[test]
 fn test_function_no_return_type() {
     let input = "func print(x: i32)\n    pass\n";
-    let f = parser::FunctionParser::new().parse(Lexer::new(input)).unwrap();
+    let f = helpers::parse_function(input).unwrap();
     let sig = f.signature;
     assert_eq!(sig.name, "print");
     assert_eq!(sig.params.len(), 1);
@@ -60,7 +60,7 @@ fn test_function_no_return_type() {
 fn test_function_with_generic_params() {
     // Generic params come BEFORE the function name: func[T] identity(x: T) -> T
     let input = "func[T] identity(x: T) -> T\n    pass\n";
-    let f = parser::FunctionParser::new().parse(Lexer::new(input)).unwrap();
+    let f = helpers::parse_function(input).unwrap();
     let sig = f.signature;
     assert_eq!(sig.name, "identity");
     assert_eq!(sig.outer_generic_params.len(), 1);
@@ -77,7 +77,7 @@ fn test_function_with_generic_params() {
 #[test]
 fn test_function_with_bounded_generic() {
     let input = "func[T: Clone] clone(x: T) -> T\n    pass\n";
-    let f = parser::FunctionParser::new().parse(Lexer::new(input)).unwrap();
+    let f = helpers::parse_function(input).unwrap();
     let sig = f.signature;
     assert_eq!(sig.outer_generic_params.len(), 1);
 
@@ -93,7 +93,7 @@ fn test_function_with_bounded_generic() {
 #[test]
 fn test_function_with_multiple_generics() {
     let input = "func[T, U] pair(x: T, y: U) -> T\n    pass\n";
-    let f = parser::FunctionParser::new().parse(Lexer::new(input)).unwrap();
+    let f = helpers::parse_function(input).unwrap();
     let sig = f.signature;
     assert_eq!(sig.outer_generic_params.len(), 2);
     assert_eq!(sig.params.len(), 2);
@@ -103,7 +103,7 @@ fn test_function_with_multiple_generics() {
 fn test_function_with_where_clause() {
     // Where-clause constraints are merged into generic_params bounds.
     let input = "func[T, U] process(x: T, y: U) -> T\n    where\n        T: Clone\n        U: Copy\n    pass\n";
-    let f = parser::FunctionParser::new().parse(Lexer::new(input)).unwrap();
+    let f = helpers::parse_function(input).unwrap();
     let sig = f.signature;
     // T and U appear in generic_params with bounds merged in from the where clause
     assert_eq!(sig.outer_generic_params.len(), 2);
@@ -128,7 +128,7 @@ fn test_function_with_where_clause() {
 #[test]
 fn test_function_with_complex_types() {
     let input = "func[T] process(ptr: *i32, arr: [u8], ref_val: *mut T) -> *u32\n    pass\n";
-    let f = parser::FunctionParser::new().parse(Lexer::new(input)).unwrap();
+    let f = helpers::parse_function(input).unwrap();
     let sig = f.signature;
     assert_eq!(sig.params.len(), 3);
 
@@ -172,7 +172,7 @@ fn test_function_with_complex_types() {
 #[test]
 fn test_function_with_array_return() {
     let input = "func get_array() -> [i32]\n    pass\n";
-    let f = parser::FunctionParser::new().parse(Lexer::new(input)).unwrap();
+    let f = helpers::parse_function(input).unwrap();
     let sig = f.signature;
 
     if let Some(Type::Array { element_type, size }) = sig.return_types.first() {
@@ -186,7 +186,7 @@ fn test_function_with_array_return() {
 #[test]
 fn test_function_with_const_param() {
     let input = "func[const N: usize] array_func(x: i32) -> i32\n    pass\n";
-    let f = parser::FunctionParser::new().parse(Lexer::new(input)).unwrap();
+    let f = helpers::parse_function(input).unwrap();
     let sig = f.signature;
     assert_eq!(sig.outer_generic_params.len(), 1);
 
@@ -201,7 +201,7 @@ fn test_function_with_const_param() {
 #[test]
 fn test_function_with_mixed_generics() {
     let input = "func[T: Clone, const N: usize, U] complex(x: T, y: U) -> T\n    pass\n";
-    let f = parser::FunctionParser::new().parse(Lexer::new(input)).unwrap();
+    let f = helpers::parse_function(input).unwrap();
     let sig = f.signature;
     assert_eq!(sig.outer_generic_params.len(), 3);
 
@@ -222,7 +222,7 @@ fn test_function_with_mixed_generics() {
 #[test]
 fn test_function_with_multiple_bounds() {
     let input = "func[T: Clone + Copy + Send] multi_bound(x: T) -> T\n    pass\n";
-    let f = parser::FunctionParser::new().parse(Lexer::new(input)).unwrap();
+    let f = helpers::parse_function(input).unwrap();
     let sig = f.signature;
 
     if let GenericParameter::Type { name, bounds, .. } = &sig.outer_generic_params[0] {
@@ -239,13 +239,13 @@ fn test_function_with_multiple_bounds() {
 #[test]
 fn test_function_with_single_param() {
     let input = "func square(x: i32) -> i32\n    pass\n";
-    let f = parser::FunctionParser::new().parse(Lexer::new(input)).unwrap();
+    let f = helpers::parse_function(input).unwrap();
     assert_eq!(f.signature.params.len(), 1);
 }
 
 #[test]
 fn test_function_with_trailing_comma() {
     let input = "func add(x: i32, y: i32,) -> i32\n    pass\n";
-    let f = parser::FunctionParser::new().parse(Lexer::new(input)).unwrap();
+    let f = helpers::parse_function(input).unwrap();
     assert_eq!(f.signature.params.len(), 2);
 }

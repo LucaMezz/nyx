@@ -1,4 +1,7 @@
 #[cfg(test)]
+pub mod helpers;
+
+#[cfg(test)]
 mod function_tests;
 
 #[cfg(test)]
@@ -26,27 +29,21 @@ fn test_lexer_integration() {
 
 #[test]
 fn test_simple_integer() {
-    let input = "42";
-    let lexer = Lexer::new(input);
-    let result = parser::ExpressionParser::new().parse(lexer);
-    assert!(result.is_ok());
+    let result = helpers::parse_expression("42");
+    assert!(result.is_ok(), "parse_expression failed: {:?}", result);
     assert!(matches!(result.unwrap(), Expression::IntegerLiteral(_)));
 }
 
 #[test]
 fn test_simple_boolean() {
-    let input = "true";
-    let lexer = Lexer::new(input);
-    let result = parser::ExpressionParser::new().parse(lexer);
+    let result = helpers::parse_expression("true");
     assert!(result.is_ok());
     assert_eq!(result.unwrap(), Expression::BooleanLiteral(true));
 }
 
 #[test]
 fn test_binary_add() {
-    let input = "1 + 2";
-    let lexer = Lexer::new(input);
-    let result = parser::ExpressionParser::new().parse(lexer);
+    let result = helpers::parse_expression("1 + 2");
     assert!(result.is_ok());
     if let Expression::BinaryOp(op) = result.unwrap() {
         assert_eq!(op.op, BinaryOperator::Add);
@@ -60,9 +57,7 @@ fn test_precedence_mul_add() {
     // In LALRPOP, lower level number = tighter binding.
     // + is level 9, * is level 10, so + binds tighter than *.
     // Thus: 2 + 3 * 4 parses as (2 + 3) * 4 = Multiply(Add(2,3), 4)
-    let input = "2 + 3 * 4";
-    let lexer = Lexer::new(input);
-    let result = parser::ExpressionParser::new().parse(lexer);
+    let result = helpers::parse_expression("2 + 3 * 4");
     assert!(result.is_ok());
     if let Expression::BinaryOp(mul_op) = result.unwrap() {
         assert_eq!(mul_op.op, BinaryOperator::Multiply);
@@ -78,9 +73,7 @@ fn test_precedence_mul_add() {
 
 #[test]
 fn test_unary_negation() {
-    let input = "-5";
-    let lexer = Lexer::new(input);
-    let result = parser::ExpressionParser::new().parse(lexer);
+    let result = helpers::parse_expression("-5");
     assert!(result.is_ok());
     if let Expression::UnaryOp(op) = result.unwrap() {
         assert_eq!(op.op, UnaryOperator::Negate);
@@ -91,17 +84,13 @@ fn test_unary_negation() {
 
 #[test]
 fn test_logical_or() {
-    let input = "true || false";
-    let lexer = Lexer::new(input);
-    let result = parser::ExpressionParser::new().parse(lexer);
+    let result = helpers::parse_expression("true || false");
     assert!(result.is_ok());
 }
 
 #[test]
 fn test_comparison() {
-    let input = "5 < 10";
-    let lexer = Lexer::new(input);
-    let result = parser::ExpressionParser::new().parse(lexer);
+    let result = helpers::parse_expression("5 < 10");
     assert!(result.is_ok());
     if let Expression::BinaryOp(op) = result.unwrap() {
         assert_eq!(op.op, BinaryOperator::LessThan);
@@ -113,9 +102,7 @@ fn test_comparison() {
 #[test]
 fn test_parenthesized() {
     // (2 + 3) * 4 — mul is at root, lhs is parenthesized
-    let input = "(2 + 3) * 4";
-    let lexer = Lexer::new(input);
-    let result = parser::ExpressionParser::new().parse(lexer);
+    let result = helpers::parse_expression("(2 + 3) * 4");
     assert!(result.is_ok());
     if let Expression::BinaryOp(mul_op) = result.unwrap() {
         assert_eq!(mul_op.op, BinaryOperator::Multiply);
@@ -127,9 +114,7 @@ fn test_parenthesized() {
 
 #[test]
 fn test_array_literal_empty() {
-    let input = "[]";
-    let lexer = Lexer::new(input);
-    let result = parser::ExpressionParser::new().parse(lexer);
+    let result = helpers::parse_expression("[]");
     assert!(result.is_ok());
     if let Expression::ArrayLiteral(arr) = result.unwrap() {
         assert_eq!(arr.elements.len(), 0);
@@ -140,9 +125,7 @@ fn test_array_literal_empty() {
 
 #[test]
 fn test_array_literal_with_elements() {
-    let input = "[1, 2, 3]";
-    let lexer = Lexer::new(input);
-    let result = parser::ExpressionParser::new().parse(lexer);
+    let result = helpers::parse_expression("[1, 2, 3]");
     assert!(result.is_ok());
     if let Expression::ArrayLiteral(arr) = result.unwrap() {
         assert_eq!(arr.elements.len(), 3);
@@ -153,17 +136,13 @@ fn test_array_literal_with_elements() {
 
 #[test]
 fn test_bitwise_operations() {
-    let input = "5 & 3 | 1";
-    let lexer = Lexer::new(input);
-    let result = parser::ExpressionParser::new().parse(lexer);
+    let result = helpers::parse_expression("5 & 3 | 1");
     assert!(result.is_ok());
 }
 
 #[test]
 fn test_address_of_expression() {
-    let input = "&x";
-    let lexer = Lexer::new(input);
-    let result = parser::ExpressionParser::new().parse(lexer);
+    let result = helpers::parse_expression("&x");
     assert!(result.is_ok());
     if let Expression::UnaryOp(op) = result.unwrap() {
         assert_eq!(op.op, UnaryOperator::AddressOf);
@@ -175,9 +154,7 @@ fn test_address_of_expression() {
 
 #[test]
 fn test_dereference_expression() {
-    let input = "*y";
-    let lexer = Lexer::new(input);
-    let result = parser::ExpressionParser::new().parse(lexer);
+    let result = helpers::parse_expression("*y");
     assert!(result.is_ok());
     if let Expression::UnaryOp(op) = result.unwrap() {
         assert_eq!(op.op, UnaryOperator::Dereference);
@@ -189,9 +166,7 @@ fn test_dereference_expression() {
 
 #[test]
 fn test_nested_address_of_dereference() {
-    let input = "&*z";
-    let lexer = Lexer::new(input);
-    let result = parser::ExpressionParser::new().parse(lexer);
+    let result = helpers::parse_expression("&*z");
     assert!(result.is_ok());
     if let Expression::UnaryOp(outer_op) = result.unwrap() {
         assert_eq!(outer_op.op, UnaryOperator::AddressOf);
@@ -208,9 +183,7 @@ fn test_nested_address_of_dereference() {
 
 #[test]
 fn test_dereference_address_of_expression() {
-    let input = "*&z";
-    let lexer = Lexer::new(input);
-    let result = parser::ExpressionParser::new().parse(lexer);
+    let result = helpers::parse_expression("*&z");
     assert!(result.is_ok());
     if let Expression::UnaryOp(outer_op) = result.unwrap() {
         assert_eq!(outer_op.op, UnaryOperator::Dereference);
@@ -227,9 +200,7 @@ fn test_dereference_address_of_expression() {
 
 #[test]
 fn test_unary_with_binary_precedence() {
-    let input = "&x + 5";
-    let lexer = Lexer::new(input);
-    let result = parser::ExpressionParser::new().parse(lexer);
+    let result = helpers::parse_expression("&x + 5");
     assert!(result.is_ok());
     if let Expression::BinaryOp(binary_op) = result.unwrap() {
         assert_eq!(binary_op.op, BinaryOperator::Add);
@@ -247,9 +218,7 @@ fn test_unary_with_binary_precedence() {
 
 #[test]
 fn test_unary_with_parenthesized() {
-    let input = "&(x + 5)";
-    let lexer = Lexer::new(input);
-    let result = parser::ExpressionParser::new().parse(lexer);
+    let result = helpers::parse_expression("&(x + 5)");
     assert!(result.is_ok());
     if let Expression::UnaryOp(unary_op) = result.unwrap() {
         assert_eq!(unary_op.op, UnaryOperator::AddressOf);
@@ -267,35 +236,35 @@ fn test_unary_with_parenthesized() {
 
 #[test]
 fn test_parse_primitive_type_u8() {
-    let result = parser::TypeParser::new().parse(Lexer::new("u8"));
+    let result = helpers::parse_type("u8");
     assert!(result.is_ok());
     assert_eq!(result.unwrap(), Type::U8);
 }
 
 #[test]
 fn test_parse_primitive_type_i32() {
-    let result = parser::TypeParser::new().parse(Lexer::new("i32"));
+    let result = helpers::parse_type("i32");
     assert!(result.is_ok());
     assert_eq!(result.unwrap(), Type::I32);
 }
 
 #[test]
 fn test_parse_primitive_type_f64() {
-    let result = parser::TypeParser::new().parse(Lexer::new("f64"));
+    let result = helpers::parse_type("f64");
     assert!(result.is_ok());
     assert_eq!(result.unwrap(), Type::F64);
 }
 
 #[test]
 fn test_parse_primitive_type_bool() {
-    let result = parser::TypeParser::new().parse(Lexer::new("bool"));
+    let result = helpers::parse_type("bool");
     assert!(result.is_ok());
     assert_eq!(result.unwrap(), Type::Bool);
 }
 
 #[test]
 fn test_parse_raw_pointer() {
-    let result = parser::TypeParser::new().parse(Lexer::new("*u8"));
+    let result = helpers::parse_type("*u8");
     assert!(result.is_ok());
     assert_eq!(
         result.unwrap(),
@@ -305,7 +274,7 @@ fn test_parse_raw_pointer() {
 
 #[test]
 fn test_parse_typed_pointer_u32() {
-    let result = parser::TypeParser::new().parse(Lexer::new("*u32"));
+    let result = helpers::parse_type("*u32");
     assert!(result.is_ok());
     if let Type::Pointer { element_type, nullable, mutable } = result.unwrap() {
         assert!(!nullable);
@@ -318,7 +287,7 @@ fn test_parse_typed_pointer_u32() {
 
 #[test]
 fn test_parse_mutable_pointer() {
-    let result = parser::TypeParser::new().parse(Lexer::new("*mut bool"));
+    let result = helpers::parse_type("*mut bool");
     assert!(result.is_ok());
     if let Type::Pointer { element_type, nullable, mutable } = result.unwrap() {
         assert!(!nullable);
@@ -332,7 +301,7 @@ fn test_parse_mutable_pointer() {
 #[test]
 fn test_parse_nullable_pointer() {
     // With the new grammar `?*i32` → Nullable(Pointer { nullable: false, .. })
-    let result = parser::TypeParser::new().parse(Lexer::new("?*i32"));
+    let result = helpers::parse_type("?*i32");
     assert!(result.is_ok());
     if let Type::Nullable(inner) = result.unwrap() {
         if let Type::Pointer { element_type, nullable, mutable } = *inner {
@@ -349,7 +318,7 @@ fn test_parse_nullable_pointer() {
 
 #[test]
 fn test_parse_nested_pointer_i64() {
-    let result = parser::TypeParser::new().parse(Lexer::new("**i64"));
+    let result = helpers::parse_type("**i64");
     assert!(result.is_ok());
     if let Type::Pointer { element_type: outer, .. } = result.unwrap() {
         if let Type::Pointer { element_type: inner, .. } = *outer {
@@ -364,7 +333,7 @@ fn test_parse_nested_pointer_i64() {
 
 #[test]
 fn test_parse_slice_type() {
-    let result = parser::TypeParser::new().parse(Lexer::new("[u8]"));
+    let result = helpers::parse_type("[u8]");
     assert!(result.is_ok());
     if let Type::Array { element_type, size } = result.unwrap() {
         assert!(size.is_none());
@@ -376,8 +345,8 @@ fn test_parse_slice_type() {
 
 #[test]
 fn test_parse_fixed_array_type() {
-    // [u8; 4] is a fixed-size array
-    let result = parser::TypeParser::new().parse(Lexer::new("[u8; 4]"));
+    // [u8; 4] is a fixed-size array - parse via type alias
+    let result = helpers::parse_type("[u8; 4]");
     assert!(result.is_ok());
     if let Type::Array { element_type, size } = result.unwrap() {
         assert!(size.is_some());
@@ -389,12 +358,16 @@ fn test_parse_fixed_array_type() {
 
 #[test]
 fn test_parse_error_union_type() {
-    // T ! E  is the "ok-or-error" type union; use TopLevelTypeParser
-    let result = parser::TopLevelTypeParser::new().parse(Lexer::new("i32 ! IoError"));
+    // T ! E  is the "ok-or-error" type union; parsed via type alias (uses TopLevelType)
+    let result = helpers::parse_type("i32 ! IoError");
     assert!(result.is_ok());
     if let Type::ErrorUnion { ok_type, err_type } = result.unwrap() {
         assert_eq!(*ok_type, Type::I32);
-        if let Type::Path { path, .. } = *err_type { assert_eq!(path.segments, vec!["IoError".to_string()]); } else { panic!("Expected Path type for err_type"); }
+        if let Type::Path { path, .. } = *err_type {
+            assert_eq!(path.segments, vec!["IoError".to_string()]);
+        } else {
+            panic!("Expected Path type for err_type");
+        }
     } else {
         panic!("Expected ErrorUnion type");
     }
@@ -402,12 +375,15 @@ fn test_parse_error_union_type() {
 
 #[test]
 fn test_parse_pointer_error_union() {
-    // *T ! E  should be  (*T) ! E; use TopLevelTypeParser
-    let result = parser::TopLevelTypeParser::new().parse(Lexer::new("*i32 ! IoError"));
+    let result = helpers::parse_type("*i32 ! IoError");
     assert!(result.is_ok());
     if let Type::ErrorUnion { ok_type, err_type } = result.unwrap() {
         assert!(matches!(*ok_type, Type::Pointer { .. }));
-        if let Type::Path { path, .. } = *err_type { assert_eq!(path.segments[0], "IoError"); } else { panic!("Expected Path type for err_type"); }
+        if let Type::Path { path, .. } = *err_type {
+            assert_eq!(path.segments[0], "IoError");
+        } else {
+            panic!("Expected Path type for err_type");
+        }
     } else {
         panic!("Expected ErrorUnion wrapping pointer");
     }
@@ -415,8 +391,7 @@ fn test_parse_pointer_error_union() {
 
 #[test]
 fn test_parse_nullable_pointer_error_union() {
-    // ?*T ! E  should be  (?*T) ! E = Nullable(Pointer{..}) ! E; use TopLevelTypeParser
-    let result = parser::TopLevelTypeParser::new().parse(Lexer::new("?*u8 ! IoError"));
+    let result = helpers::parse_type("?*u8 ! IoError");
     assert!(result.is_ok());
     if let Type::ErrorUnion { ok_type, .. } = result.unwrap() {
         if let Type::Nullable(inner) = *ok_type {
@@ -432,9 +407,7 @@ fn test_parse_nullable_pointer_error_union() {
 #[test]
 fn test_parse_as_expression_with_error_union() {
     // x as i32 ! E  should be  x as (i32 ! E)
-    let input = "x as i32 ! IoError";
-    let lexer = Lexer::new(input);
-    let result = parser::ExpressionParser::new().parse(lexer);
+    let result = helpers::parse_expression("x as i32 ! IoError");
     assert!(result.is_ok(), "Failed: {:?}", result);
     if let Expression::Cast(cast) = result.unwrap() {
         assert!(matches!(*cast.target_type, Type::ErrorUnion { .. }));
@@ -445,9 +418,7 @@ fn test_parse_as_expression_with_error_union() {
 
 #[test]
 fn test_parse_generics_list() {
-    let input = "[T: Mappable, U: Copy, const N: usize]";
-    let lexer = Lexer::new(input);
-    let result = parser::GenericParameterListParser::new().parse(lexer);
+    let result = helpers::parse_generic_params("[T: Mappable, U: Copy, const N: usize]");
     assert!(result.is_ok());
     let params = result.unwrap();
     assert_eq!(params.len(), 3);

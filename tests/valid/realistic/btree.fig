@@ -32,7 +32,9 @@ func! BTree[K, V]::new() -> BTree[K, V]
     )
 
 func! BTree[K, V]::insert(*mut self, key: K, value: V) -> ok
-    where K: Ord + Clone, V: Clone
+    where 
+        K: Ord + Clone
+        V: Clone
     if self.root == null
         let node = BTreeNode[K, V]::new_leaf()
         node.keys.push(key)
@@ -60,7 +62,9 @@ func! BTree[K, V]::insert(*mut self, key: K, value: V) -> ok
     pass
 
 func! BTree[K, V]::insert_non_full(*mut self, node: *mut BTreeNode[K, V], key: K, value: V) -> ok
-    where K: Ord + Clone, V: Clone
+    where 
+        K: Ord + Clone
+        V: Clone
     mut i = node.num_keys
     
     if node.is_leaf()
@@ -96,7 +100,9 @@ func! BTree[K, V]::insert_non_full(*mut self, node: *mut BTreeNode[K, V], key: K
     pass
 
 func! BTree[K, V]::split_child(*mut self, parent: *mut BTreeNode[K, V], index: usize) -> ok
-    where K: Clone, V: Clone
+    where 
+        K: Clone
+        V: Clone
     let full_child = parent.children[index]
     let new_child = if full_child.is_leaf() then BTreeNode[K, V]::new_leaf() else BTreeNode[K, V]::new_internal()
     
@@ -124,14 +130,16 @@ func! BTree[K, V]::split_child(*mut self, parent: *mut BTreeNode[K, V], index: u
     pass
 
 func BTree[K, V]::search(*self, key: K) -> ?*V
-    where K: Ord
+    where
+        K: Ord
     if self.root == null
         return null
     
     return self.search_node(self.root, key)
 
 func BTree[K, V]::search_node(*self, node: *BTreeNode[K, V], key: K) -> ?*V
-    where K: Ord
+    where
+        K: Ord
     mut i: usize = 0
     
     for idx in range(0, node.num_keys)
@@ -151,11 +159,14 @@ func BTree[K, V]::search_node(*self, node: *BTreeNode[K, V], key: K) -> ?*V
     return self.search_node(node.children[i], key)
 
 func BTree[K, V]::contains(*self, key: K) -> bool
-    where K: Ord
+    where 
+        K: Ord
     return self.search(key) != null
 
 func! BTree[K, V]::remove(*mut self, key: K) -> ?V
-    where K: Ord + Clone, V: Clone
+    where 
+        K: Ord + Clone
+        V: Clone
     if self.root == null
         return null
     
@@ -172,7 +183,9 @@ func! BTree[K, V]::remove(*mut self, key: K) -> ?V
     return value
 
 func! BTree[K, V]::remove_from_node(*mut self, node: *mut BTreeNode[K, V], key: K) -> ?V
-    where K: Ord + Clone, V: Clone
+    where 
+        K: Ord + Clone
+        V: Clone
     mut i: usize = 0
     
     for idx in range(0, node.num_keys)
@@ -196,7 +209,9 @@ func! BTree[K, V]::remove_from_node(*mut self, node: *mut BTreeNode[K, V], key: 
     return self.remove_from_node(node.children[i], key)
 
 func! BTree[K, V]::remove_from_internal(*mut self, node: *mut BTreeNode[K, V], index: usize) -> ?V
-    where K: Clone, V: Clone
+    where 
+        K: Clone
+        V: Clone
     let value = node.values[index]
     
     let left_child = node.children[index]
@@ -220,21 +235,27 @@ func! BTree[K, V]::remove_from_internal(*mut self, node: *mut BTreeNode[K, V], i
     return value
 
 func BTree[K, V]::get_predecessor(*self, node: *BTreeNode[K, V]) -> (K, V)
-    where K: Clone, V: Clone
+    where 
+        K: Clone
+        V: Clone
     if node.is_leaf()
         return (node.keys[node.num_keys - 1], node.values[node.num_keys - 1])
     
     return self.get_predecessor(node.children[node.num_keys])
 
 func BTree[K, V]::get_successor(*self, node: *BTreeNode[K, V]) -> (K, V)
-    where K: Clone, V: Clone
+    where 
+        K: Clone
+        V: Clone
     if node.is_leaf()
         return (node.keys[0], node.values[0])
     
     return self.get_successor(node.children[0])
 
 func! BTree[K, V]::merge_nodes(*mut self, parent: *mut BTreeNode[K, V], index: usize) -> ok
-    where K: Clone, V: Clone
+    where 
+        K: Clone
+        V: Clone
     let left = parent.children[index]
     let right = parent.children[index + 1]
     

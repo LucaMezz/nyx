@@ -176,13 +176,13 @@ func Utf8String::contains(*self, needle: *Utf8String) -> bool
     let max_pos = self.byte_length - needle.byte_length
     
     for pos in range(0, max_pos + 1)
-        mut match = true
+        mut matches = true
         for i in range(0, needle.byte_length)
             if self.bytes[pos + i] != needle.bytes[i]
-                match = false
+                matches = false
                 break
         
-        if match
+        if matches
             return true
     
     return false

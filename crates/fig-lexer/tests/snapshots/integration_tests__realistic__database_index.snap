@@ -262,16 +262,19 @@ expression: tokens
 - Newline
 - Indent
 - Where
+- Newline
+- Indent
 - Ident: K
 - Colon
 - Ident: Ord
 - Plus
 - Ident: Clone
-- Comma
+- Newline
 - Ident: V
 - Colon
 - Ident: Clone
 - Newline
+- Dedent
 - If
 - SelfLower
 - Dot
@@ -435,16 +438,19 @@ expression: tokens
 - Newline
 - Indent
 - Where
+- Newline
+- Indent
 - Ident: K
 - Colon
 - Ident: Ord
 - Plus
 - Ident: Clone
-- Comma
+- Newline
 - Ident: V
 - Colon
 - Ident: Clone
 - Newline
+- Dedent
 - Mut
 - Ident: insert_pos
 - Colon
@@ -589,14 +595,17 @@ expression: tokens
 - Newline
 - Indent
 - Where
+- Newline
+- Indent
 - Ident: K
 - Colon
 - Ident: Clone
-- Comma
+- Newline
 - Ident: V
 - Colon
 - Ident: Clone
 - Newline
+- Dedent
 - Let
 - Ident: new_leaf
 - Eq
@@ -862,12 +871,15 @@ expression: tokens
 - Newline
 - Indent
 - Where
+- Newline
+- Indent
 - Ident: K
 - Colon
 - Ident: Ord
 - Plus
 - Ident: Clone
 - Newline
+- Dedent
 - Mut
 - Ident: insert_pos
 - Colon
@@ -1023,10 +1035,13 @@ expression: tokens
 - Newline
 - Indent
 - Where
+- Newline
+- Indent
 - Ident: K
 - Colon
 - Ident: Clone
 - Newline
+- Dedent
 - Pass
 - Newline
 - Dedent
@@ -1070,10 +1085,13 @@ expression: tokens
 - Newline
 - Indent
 - Where
+- Newline
+- Indent
 - Ident: K
 - Colon
 - Ident: Ord
 - Newline
+- Dedent
 - If
 - Ident: node
 - Dot
@@ -1185,10 +1203,13 @@ expression: tokens
 - Newline
 - Indent
 - Where
+- Newline
+- Indent
 - Ident: K
 - Colon
 - Ident: Ord
 - Newline
+- Dedent
 - If
 - SelfLower
 - Dot
@@ -1298,16 +1319,19 @@ expression: tokens
 - Newline
 - Indent
 - Where
+- Newline
+- Indent
 - Ident: K
 - Colon
 - Ident: Ord
 - Plus
 - Ident: Clone
-- Comma
+- Newline
 - Ident: V
 - Colon
 - Ident: Clone
 - Newline
+- Dedent
 - Mut
 - Ident: result
 - Eq
@@ -1544,14 +1568,17 @@ expression: tokens
 - Newline
 - Indent
 - Where
+- Newline
+- Indent
 - Ident: K
 - Colon
 - Ident: Clone
-- Comma
+- Newline
 - Ident: V
 - Colon
 - Ident: Clone
 - Newline
+- Dedent
 - Mut
 - Ident: result
 - Eq

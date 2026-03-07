@@ -34,6 +34,10 @@ use crate::LexicalError;
 /// The concrete parse-error type produced by the Fig LALRPOP parser.
 pub type FigParseError = lalrpop_util::ParseError<usize, Token, LexicalError>;
 
+/// A recovered (non-fatal) parse error together with the tokens that were
+/// discarded while the parser was resynchronising.
+pub type FigRecoveredError = lalrpop_util::ErrorRecovery<usize, Token, LexicalError>;
+
 // ============================================================================
 // Primary entry points
 // ============================================================================
@@ -73,6 +77,37 @@ pub fn emit_parse_error<W: WriteColor>(
     let config = term::Config::default();
     // If emission fails (e.g. broken pipe) there is nothing useful we can do.
     let _ = term::emit(writer, &config, &file, &diag);
+}
+
+/// Render all recovered parse errors **and** an optional fatal parse error as
+/// a single plain-text string with no ANSI colour codes.
+///
+/// Recovered errors are those accumulated by the grammar's `!` error-recovery
+/// alternatives; the fatal error (if any) is the `Err(…)` returned by the
+/// parser after recovery exhausted all alternatives.
+///
+/// The string contains every diagnostic separated by a blank line, which
+/// makes it suitable for embedding in test failure messages or log files.
+pub fn format_parse_errors(
+    filename: &str,
+    source: &str,
+    recovered: &[FigRecoveredError],
+    fatal: Option<&FigParseError>,
+) -> String {
+    let mut buf = Buffer::no_color();
+    let file = SimpleFile::new(filename, source);
+    let config = term::Config::default();
+
+    for rec in recovered {
+        let diag = build_diagnostic(&rec.error);
+        let _ = term::emit(&mut buf, &config, &file, &diag);
+    }
+    if let Some(err) = fatal {
+        let diag = build_diagnostic(err);
+        let _ = term::emit(&mut buf, &config, &file, &diag);
+    }
+
+    String::from_utf8_lossy(buf.as_slice()).into_owned()
 }
 
 /// Build a raw [`Diagnostic`] from a parse error.

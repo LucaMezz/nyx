@@ -283,9 +283,9 @@ func! TcpServer::handle_connections(*mut self) -> ok
     mut i: usize = 0
     
     for idx in range(0, self.connections.len)
-        let conn = &mut self.connections[i]
+        let conn = &self.connections[i]
         
-        let bytes_result = conn.stream.read(&mut conn.buffer[conn.bytes_read], BUFFER_SIZE - conn.bytes_read)
+        let bytes_result = conn.stream.read(&conn.buffer[conn.bytes_read], BUFFER_SIZE - conn.bytes_read)
         
         if bytes_result.ok > 0
             conn.bytes_read = conn.bytes_read + bytes_result.ok
@@ -313,7 +313,7 @@ func! TcpServer::shutdown(*mut self) -> ok
     self.running = false
     
     for i in range(0, self.connections.len)
-        let conn = &mut self.connections[i]
+        let conn = &self.connections[i]
         conn.stream.shutdown()
     
     self.listener.socket.close()

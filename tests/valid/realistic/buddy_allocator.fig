@@ -69,15 +69,15 @@ func! BuddyAllocator::allocate(*mut self, size: usize) -> ?*mut u8
     let aligned_size = self.align_size(size + sizeof(BlockHeader))
     let list_index = self.size_to_list_index(aligned_size)
     
-    let block = self.find_free_block(list_index)
-    if block == null
+    let blok = self.find_free_block(list_index)
+    if blok == null
         return null
     
-    self.split_block(block, aligned_size)
-    block.status = BlockStatus::ALLOCATED
+    self.split_block(blok, aligned_size)
+    blok.status = BlockStatus::ALLOCATED
     self.allocations = self.allocations + 1
     
-    return (block as *mut u8) + sizeof(BlockHeader)
+    return (blok as *mut u8) + sizeof(BlockHeader)
 
 func BuddyAllocator::align_size(*self, size: usize) -> usize
     mut aligned = MIN_BLOCK_SIZE
@@ -95,15 +95,15 @@ func! BuddyAllocator::find_free_block(*mut self, min_index: usize) -> ?*mut Bloc
             return head
     return null
 
-func! BuddyAllocator::split_block(*mut self, block: *mut BlockHeader, size: usize) -> ok
+func! BuddyAllocator::split_block(*mut self, blok: *mut BlockHeader, size: usize) -> ok
     for i in range(0, 16)
-        if block.size <= size * 2
+        if blok.size <= size * 2
             return ok
         
-        let half = block.size / 2
-        block.size = half
+        let half = blok.size / 2
+        blok.size = half
         
-        let buddy = (block as *mut u8 + half) as *mut BlockHeader
+        let buddy = (blok as *mut u8 + half) as *mut BlockHeader
         buddy.size = half
         buddy.status = BlockStatus::FREE
         buddy.next = null
@@ -127,23 +127,23 @@ func! BuddyAllocator::deallocate(*mut self, ptr: *mut u8) -> ok
     self.add_to_free_list(header, list_index)
     pass
 
-func! BuddyAllocator::coalesce(*mut self, block: *mut BlockHeader) -> ok
-    let buddy_addr = self.get_buddy_address(block)
+func! BuddyAllocator::coalesce(*mut self, blok: *mut BlockHeader) -> ok
+    let buddy_addr = self.get_buddy_address(blok)
     let buddy = buddy_addr as *mut BlockHeader
     
-    if self.is_valid_buddy(buddy, block.size) && buddy.status == BlockStatus::FREE
+    if self.is_valid_buddy(buddy, blok.size) && buddy.status == BlockStatus::FREE
         let list_index = self.size_to_list_index(buddy.size)
         self.remove_from_free_list(buddy, list_index)
         
-        let merged = if (block as usize) < (buddy as usize) block else buddy
-        merged.size = block.size * 2
+        let merged = if (blok as usize) < (buddy as usize) blok else buddy
+        merged.size = blok.size * 2
         
         self.coalesce(merged)
     pass
 
-func BuddyAllocator::get_buddy_address(*self, block: *mut BlockHeader) -> usize
-    let offset = (block as usize) - (self.arena as usize)
-    return (self.arena as usize) + (offset ^ block.size)
+func BuddyAllocator::get_buddy_address(*self, blok: *mut BlockHeader) -> usize
+    let offset = (blok as usize) - (self.arena as usize)
+    return (self.arena as usize) + (offset ^ blok.size)
 
 func BuddyAllocator::is_valid_buddy(*self, buddy: *mut BlockHeader, size: usize) -> bool
     let buddy_addr = buddy as usize
@@ -152,27 +152,27 @@ func BuddyAllocator::is_valid_buddy(*self, buddy: *mut BlockHeader, size: usize)
     
     return buddy_addr >= arena_start && buddy_addr < arena_end && buddy.size == size
 
-func! BuddyAllocator::add_to_free_list(*mut self, block: *mut BlockHeader, index: usize) -> ok
-    block.next = self.free_lists[index].head
-    block.prev = null
+func! BuddyAllocator::add_to_free_list(*mut self, blok: *mut BlockHeader, index: usize) -> ok
+    blok.next = self.free_lists[index].head
+    blok.prev = null
     
     if self.free_lists[index].head != null
-        self.free_lists[index].head.prev = block
+        self.free_lists[index].head.prev = blok
     
-    self.free_lists[index].head = block
+    self.free_lists[index].head = blok
     pass
 
-func! BuddyAllocator::remove_from_free_list(*mut self, block: *mut BlockHeader, index: usize) -> ok
-    if block.prev != null
-        block.prev.next = block.next
+func! BuddyAllocator::remove_from_free_list(*mut self, blok: *mut BlockHeader, index: usize) -> ok
+    if blok.prev != null
+        blok.prev.next = blok.next
     else
-        self.free_lists[index].head = block.next
+        self.free_lists[index].head = blok.next
     
-    if block.next != null
-        block.next.prev = block.prev
+    if blok.next != null
+        blok.next.prev = blok.prev
     
-    block.next = null
-    block.prev = null
+    blok.next = null
+    blok.prev = null
     pass
 
 func BuddyAllocator::stats(*self) -> AllocatorStats

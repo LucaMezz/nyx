@@ -41,7 +41,8 @@ func! HashMap[K, V]::with_capacity(capacity: usize) -> HashMap[K, V]
     )
 
 func! HashMap[K, V]::insert(*mut self, key: K, value: V) -> ?V
-    where K: Hash + Eq
+    where
+        K: Hash + Eq
     if self.should_grow()
         self.grow()
     
@@ -68,7 +69,8 @@ func! HashMap[K, V]::insert(*mut self, key: K, value: V) -> ?V
     return null
 
 func HashMap[K, V]::get(*self, key: K) -> ?*V
-    where K: Hash + Eq
+    where
+        K: Hash + Eq
     if self.size == 0
         return null
     
@@ -83,7 +85,8 @@ func HashMap[K, V]::get(*self, key: K) -> ?*V
     return null
 
 func HashMap[K, V]::get_mut(*mut self, key: K) -> ?*mut V
-    where K: Hash + Eq
+    where
+        K: Hash + Eq
     if self.size == 0
         return null
     
@@ -93,16 +96,18 @@ func HashMap[K, V]::get_mut(*mut self, key: K) -> ?*mut V
     let entry = &self.entries[mut_index]
     
     if entry.state == EntryState::OCCUPIED
-        return &mut entry.value
+        return &entry.value
     
     return null
 
 func HashMap[K, V]::contains(*self, key: K) -> bool
-    where K: Hash + Eq
+    where
+        K: Hash + Eq
     return self.get(key) != null
 
 func! HashMap[K, V]::remove(*mut self, key: K) -> ?V
-    where K: Hash + Eq
+    where
+        K: Hash + Eq
     if self.size == 0
         return null
     
@@ -147,7 +152,8 @@ func! HashMap[K, V]::iter(*self) -> HashMapIter[K, V]
     )
 
 func HashMap[K, V]::find_slot(*self, key: K, hash: u64) -> usize
-    where K: Hash + Eq
+    where 
+        K: Hash + Eq
     mut index = (hash % (self.capacity as u64)) as usize
     mut first_tombstone: ?usize = null
     
@@ -178,7 +184,8 @@ func HashMap[K, V]::should_grow(*self) -> bool
     return load_factor > LOAD_FACTOR_THRESHOLD
 
 func! HashMap[K, V]::grow(*mut self) -> ok
-    where K: Hash + Eq
+    where 
+        K: Hash + Eq
     let new_capacity = self.capacity * 2
     let new_entries = allocate_entries[K, V](new_capacity)
     
@@ -237,14 +244,16 @@ interface Hash
     func hash(*self) -> u64
 
 func hash_value[T](value: *T) -> u64
-    where T: Hash
+    where
+        T: Hash
     return value.hash()
 
 interface Eq
     func equals(*self, other: *Self) -> bool
 
 func equals[T](a: *T, b: *T) -> bool
-    where T: Eq
+    where 
+        T: Eq
     return a.equals(b)
 
 // Hash implementations for common types

@@ -1,11 +1,8 @@
 // Tests for type alias parsing
 // NOTE: where-clause constraints are merged into generic_params by the parser.
 
-use crate::{
-    Lexer,
-    ast::{GenericParameter, Type},
-    parser,
-};
+use crate::ast::{GenericParameter, Type};
+use super::helpers;
 
 fn bound_name(ty: &Type) -> &str {
     if let Type::Path { path: p, .. } = ty { &p.segments[0] } else { panic!("Expected path type as bound") }
@@ -13,8 +10,8 @@ fn bound_name(ty: &Type) -> &str {
 
 #[test]
 fn test_simple_type_alias() {
-    let input = "type MyInt = i32";
-    let ta = parser::TypeAliasParser::new().parse(Lexer::new(input)).unwrap();
+    let input = "type MyInt = i32\n";
+    let ta = helpers::parse_type_alias(input).unwrap();
     assert_eq!(ta.name.segments[0], "MyInt");
     assert_eq!(ta.generic_params.len(), 0);
     assert_eq!(ta.aliased_type, Type::I32);
@@ -22,8 +19,8 @@ fn test_simple_type_alias() {
 
 #[test]
 fn test_type_alias_with_generic_params() {
-    let input = "type MyVec[T] = [T]";
-    let ta = parser::TypeAliasParser::new().parse(Lexer::new(input)).unwrap();
+    let input = "type MyVec[T] = [T]\n";
+    let ta = helpers::parse_type_alias(input).unwrap();
     assert_eq!(ta.name.segments[0], "MyVec");
     assert_eq!(ta.generic_params.len(), 1);
 
@@ -45,8 +42,8 @@ fn test_type_alias_with_generic_params() {
 
 #[test]
 fn test_type_alias_with_bounded_generic() {
-    let input = "type MyPtr[T: Copy] = *T";
-    let ta = parser::TypeAliasParser::new().parse(Lexer::new(input)).unwrap();
+    let input = "type MyPtr[T: Copy] = *T\n";
+    let ta = helpers::parse_type_alias(input).unwrap();
     assert_eq!(ta.name.segments[0], "MyPtr");
     assert_eq!(ta.generic_params.len(), 1);
 
@@ -61,8 +58,8 @@ fn test_type_alias_with_bounded_generic() {
 
 #[test]
 fn test_type_alias_with_multiple_bounds() {
-    let input = "type MyType[T: Clone + Copy] = *T";
-    let ta = parser::TypeAliasParser::new().parse(Lexer::new(input)).unwrap();
+    let input = "type MyType[T: Clone + Copy] = *T\n";
+    let ta = helpers::parse_type_alias(input).unwrap();
 
     if let GenericParameter::Type { name, bounds, .. } = &ta.generic_params[0] {
         assert_eq!(name, "T");
@@ -76,8 +73,8 @@ fn test_type_alias_with_multiple_bounds() {
 
 #[test]
 fn test_type_alias_with_const_param() {
-    let input = "type MyArray[const N: usize] = i32";
-    let ta = parser::TypeAliasParser::new().parse(Lexer::new(input)).unwrap();
+    let input = "type MyArray[const N: usize] = i32\n";
+    let ta = helpers::parse_type_alias(input).unwrap();
     assert_eq!(ta.generic_params.len(), 1);
 
     if let GenericParameter::Const { name, ty } = &ta.generic_params[0] {
@@ -92,7 +89,7 @@ fn test_type_alias_with_const_param() {
 fn test_type_alias_with_where_clause() {
     // where-clause is merged into generic_params
     let input = "type MyResult[T, E]\n    where\n        T: Clone\n        E: Copy\n    = i32";
-    let ta = parser::TypeAliasParser::new().parse(Lexer::new(input)).unwrap();
+    let ta = helpers::parse_type_alias(input).unwrap();
     assert_eq!(ta.name.segments[0], "MyResult");
     // T and E appear in generic_params with bounds merged in
     assert_eq!(ta.generic_params.len(), 2);
@@ -113,7 +110,7 @@ fn test_type_alias_with_where_clause() {
 #[test]
 fn test_type_alias_with_complex_where_clause() {
     let input = "type ComplexType[T, U, V]\n    where\n        T: Clone + Send\n        U: Copy\n        V: Debug + Display\n    = *T";
-    let ta = parser::TypeAliasParser::new().parse(Lexer::new(input)).unwrap();
+    let ta = helpers::parse_type_alias(input).unwrap();
     assert_eq!(ta.generic_params.len(), 3);
 
     if let GenericParameter::Type { name, bounds, .. } = &ta.generic_params[0] {
@@ -133,7 +130,7 @@ fn test_type_alias_with_complex_where_clause() {
 fn test_type_alias_with_mixed_params_and_where_clause() {
     // T: Clone in param list, where clause adds Send → merged: T has [Clone, Send]
     let input = "type MixedType[T: Clone, const N: usize]\n    where\n        T: Send\n    = *T";
-    let ta = parser::TypeAliasParser::new().parse(Lexer::new(input)).unwrap();
+    let ta = helpers::parse_type_alias(input).unwrap();
     assert_eq!(ta.generic_params.len(), 2);
 
     if let GenericParameter::Type { name, bounds, .. } = &ta.generic_params[0] {
@@ -148,8 +145,8 @@ fn test_type_alias_with_mixed_params_and_where_clause() {
 
 #[test]
 fn test_type_alias_pointer_type() {
-    let input = "type RawPtr = *Something";
-    let ta = parser::TypeAliasParser::new().parse(Lexer::new(input)).unwrap();
+    let input = "type RawPtr = *Something\n";
+    let ta = helpers::parse_type_alias(input).unwrap();
     if let Type::Pointer { nullable, mutable, element_type } = ta.aliased_type {
         assert!(!nullable);
         assert!(!mutable);
@@ -161,8 +158,8 @@ fn test_type_alias_pointer_type() {
 
 #[test]
 fn test_type_alias_slice_type() {
-    let input = "type Bytes = [u8]";
-    let ta = parser::TypeAliasParser::new().parse(Lexer::new(input)).unwrap();
+    let input = "type Bytes = [u8]\n";
+    let ta = helpers::parse_type_alias(input).unwrap();
     if let Type::Array { element_type, size } = ta.aliased_type {
         assert!(size.is_none());
         assert_eq!(*element_type, Type::U8);
@@ -173,8 +170,8 @@ fn test_type_alias_slice_type() {
 
 #[test]
 fn test_type_alias_fixed_array_type() {
-    let input = "type SmallBuf = [i32; 10]";
-    let ta = parser::TypeAliasParser::new().parse(Lexer::new(input)).unwrap();
+    let input = "type SmallBuf = [i32; 10]\n";
+    let ta = helpers::parse_type_alias(input).unwrap();
     if let Type::Array { element_type, size } = ta.aliased_type {
         assert!(size.is_some());
         assert_eq!(*element_type, Type::I32);
@@ -185,8 +182,8 @@ fn test_type_alias_fixed_array_type() {
 
 #[test]
 fn test_type_alias_error_union() {
-    let input = "type Result[T] = T ! IoError";
-    let ta = parser::TypeAliasParser::new().parse(Lexer::new(input)).unwrap();
+    let input = "type Result[T] = T ! IoError\n";
+    let ta = helpers::parse_type_alias(input).unwrap();
     if let Type::ErrorUnion { ok_type, err_type } = ta.aliased_type {
         // ok_type is the path T
         assert!(matches!(*ok_type, Type::Path { .. }));

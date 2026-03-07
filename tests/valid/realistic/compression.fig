@@ -33,18 +33,18 @@ func! LZ77Compressor::compress(*mut self, input: [u8]) -> [u8]
         if pos >= input.len
             break
         
-        let match = self.find_longest_match(&input[pos], input.len - pos)
+        let matc = self.find_longest_match(&input[pos], input.len - pos)
         
-        if match.length >= MIN_MATCH_LENGTH
+        if matc.length >= MIN_MATCH_LENGTH
             compressed.push(1)
-            compressed.push((match.distance >> 8) as u8)
-            compressed.push((match.distance & 255) as u8)
-            compressed.push(match.length as u8)
+            compressed.push((matc.distance >> 8) as u8)
+            compressed.push((matc.distance & 255) as u8)
+            compressed.push(matc.length as u8)
             
-            for j in range(0, match.length)
+            for j in range(0, matc.length)
                 self.add_to_window(input[pos + j])
             
-            pos = pos + match.length
+            pos = pos + matc.length
         else
             compressed.push(0)
             compressed.push(input[pos])

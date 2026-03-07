@@ -1211,7 +1211,7 @@ expression: tokens
 - Newline
 - Indent
 - Mut
-- Match
+- Ident: matches
 - Eq
 - "True"
 - Newline
@@ -1249,7 +1249,7 @@ expression: tokens
 - RBracket
 - Newline
 - Indent
-- Match
+- Ident: matches
 - Eq
 - "False"
 - Newline
@@ -1258,7 +1258,7 @@ expression: tokens
 - Dedent
 - Dedent
 - If
-- Match
+- Ident: matches
 - Newline
 - Indent
 - Return

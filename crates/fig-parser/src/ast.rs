@@ -99,6 +99,10 @@ pub enum Expression {
     TypeAccess(TypeAccessExpr),
     Call(CallExpr),
     Index(IndexExpr),
+    /// Generic type instantiation in expression position, e.g. `Vec[i32]` or `HashMap[K, V]`.
+    /// Carries the base expression and the resolved type arguments.
+    /// Commonly followed by `::method(…)` or `(…)` in the same expression.
+    GenericInstantiation(Box<Expression>, Vec<Type>),
 
     // ── Casts and intrinsics ──
     Cast(CastExpr),
@@ -111,6 +115,11 @@ pub enum Expression {
 
     // ── Assignment ──
     Assign(AssignExpr),
+
+    // ── Error recovery ──
+    /// Placeholder inserted when the parser recovers from a syntax error
+    /// inside an expression position.
+    Error,
 }
 
 // ============================================================================
@@ -558,6 +567,10 @@ pub enum NamespaceItem {
     Interface(Interface),
     Using(UsingStatement),
     Const(ConstStatement),
+
+    /// Placeholder inserted when the parser recovers from a syntax error
+    /// at top-level (namespace-item) scope.
+    Error,
 }
 
 // ============================================================================
@@ -576,8 +589,12 @@ pub enum Statement {
     Expression(Box<Expression>),
     /// `let name: Type = value`
     Let(LetStatement),
+    /// `let name: Type`  (declaration without initialiser)
+    LetDecl(LetDeclStatement),
     /// `mut name: Type = value`
     Mut(MutStatement),
+    /// `mut name: Type`  (declaration without initialiser)
+    MutDecl(MutDeclStatement),
     /// `const name: Type = value`
     Const(ConstStatement),
     /// `return expr`
@@ -601,6 +618,10 @@ pub enum Statement {
     Union(Union),
     Interface(Interface),
     Namespace(Namespace),
+
+    /// Placeholder inserted when the parser recovers from a syntax error
+    /// inside a statement position.
+    Error,
 }
 
 // ── Statement structs ────────────────────────────────────────────────────────
@@ -613,12 +634,28 @@ pub struct LetStatement {
     pub value: Box<Expression>,
 }
 
+/// `let name: Type` — declaration without an initialiser.
+#[derive(Debug, Clone, PartialEq, Serialize)]
+pub struct LetDeclStatement {
+    pub annotations: Vec<Annotation>,
+    pub name: String,
+    pub ty: Type,
+}
+
 #[derive(Debug, Clone, PartialEq, Serialize)]
 pub struct MutStatement {
     pub annotations: Vec<Annotation>,
     pub name: String,
     pub ty: Option<Type>,
     pub value: Box<Expression>,
+}
+
+/// `mut name: Type` — declaration without an initialiser.
+#[derive(Debug, Clone, PartialEq, Serialize)]
+pub struct MutDeclStatement {
+    pub annotations: Vec<Annotation>,
+    pub name: String,
+    pub ty: Type,
 }
 
 /// One segment of a const's qualified name, e.g. `namespacea` (no args) or `Option[T]` (with args).
@@ -722,3 +759,4 @@ pub fn merge_where_clause(
     }
     params
 }
+

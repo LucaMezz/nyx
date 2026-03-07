@@ -239,7 +239,7 @@ func! Reactor::poll(*mut self) -> ok
 
 func! Reactor::poll_io(*mut self) -> ok
     for i in range(0, self.io_completions.len)
-        let completion = &mut self.io_completions[i]
+        let completion = &self.io_completions[i]
         if completion.ready
             wake_task(completion.task_id)
             completion.ready = false
@@ -250,7 +250,7 @@ func! Reactor::poll_timers(*mut self) -> ok
     let now = get_current_time()
     
     for i in range(0, self.timers.len)
-        let timer = &mut self.timers[i]
+        let timer = &self.timers[i]
         if !timer.fired && now >= timer.deadline
             wake_task(timer.task_id)
             timer.fired = true

@@ -191,7 +191,7 @@ expression: tokens
 - Newline
 - Dedent
 - Let
-- Match
+- Ident: matc
 - Eq
 - SelfLower
 - Dot
@@ -211,7 +211,7 @@ expression: tokens
 - RParen
 - Newline
 - If
-- Match
+- Ident: matc
 - Dot
 - Ident: length
 - Ge
@@ -233,7 +233,7 @@ expression: tokens
 - Ident: push
 - LParen
 - LParen
-- Match
+- Ident: matc
 - Dot
 - Ident: distance
 - Shr
@@ -251,7 +251,7 @@ expression: tokens
 - Ident: push
 - LParen
 - LParen
-- Match
+- Ident: matc
 - Dot
 - Ident: distance
 - And
@@ -268,7 +268,7 @@ expression: tokens
 - Dot
 - Ident: push
 - LParen
-- Match
+- Ident: matc
 - Dot
 - Ident: length
 - As
@@ -285,7 +285,7 @@ expression: tokens
     digits: "0"
     suffix: ~
 - Comma
-- Match
+- Ident: matc
 - Dot
 - Ident: length
 - RParen
@@ -308,7 +308,7 @@ expression: tokens
 - Eq
 - Ident: pos
 - Plus
-- Match
+- Ident: matc
 - Dot
 - Ident: length
 - Newline

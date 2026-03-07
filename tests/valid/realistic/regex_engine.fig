@@ -73,16 +73,16 @@ func! Regex::find_all(*self, text: [u8]) -> [RegexMatch]
             break
         
         let slice = slice_from(text, pos)
-        let match = self.find(slice)
+        let matc = self.find(slice)
         
-        if match != null
+        if matc != null
             let adjusted = RegexMatch(
-                start: pos + match.start,
-                end: pos + match.end,
-                text: match.text
+                start: pos + matc.start,
+                end: pos + matc.end,
+                text: matc.text
             )
             matches.push(adjusted)
-            pos = pos + match.end
+            pos = pos + matc.end
         else
             pos = pos + 1
     

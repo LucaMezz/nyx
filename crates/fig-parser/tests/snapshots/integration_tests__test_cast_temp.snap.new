@@ -1,0 +1,64 @@
+---
+source: crates/fig-parser/tests/integration_tests.rs
+assertion_line: 49
+expression: ast
+---
+items:
+  - Function:
+      signature:
+        visibility: Default
+        annotations: []
+        is_extern: false
+        is_effect: false
+        receiver: ~
+        name: test_cast
+        outer_generic_params: []
+        func_generic_params: []
+        self_param: ~
+        params: []
+        return_types:
+          - Path:
+              path:
+                segments:
+                  - ok
+              generic_args: []
+      body:
+        statements:
+          - Let:
+              annotations: []
+              name: x
+              ty: USize
+              value:
+                IntegerLiteral:
+                  base: Decimal
+                  digits: "0"
+                  suffix: ~
+          - Let:
+              annotations: []
+              name: y
+              ty: USize
+              value:
+                IntegerLiteral:
+                  base: Decimal
+                  digits: "1"
+                  suffix: ~
+          - Let:
+              annotations: []
+              name: z
+              ty: USize
+              value:
+                BinaryOp:
+                  lhs:
+                    Parenthesized:
+                      Cast:
+                        expr:
+                          Path:
+                            segments:
+                              - x
+                        target_type: USize
+                  op: Add
+                  rhs:
+                    Path:
+                      segments:
+                        - y
+          - Pass

@@ -38,7 +38,9 @@ func! BPlusTree[K, V]::new() -> BPlusTree[K, V]
     )
 
 func! BPlusTree[K, V]::insert(*mut self, key: K, value: V) -> ok
-    where K: Ord + Clone, V: Clone
+    where 
+        K: Ord + Clone
+        V: Clone
     if self.root == null
         let leaf = BPlusTreeNode[K, V]::new_leaf()
         leaf.keys.push(key)
@@ -60,7 +62,9 @@ func! BPlusTree[K, V]::insert(*mut self, key: K, value: V) -> ok
     pass
 
 func! BPlusTree[K, V]::insert_into_leaf(*mut self, leaf: *mut BPlusTreeNode[K, V], key: K, value: V) -> ok
-    where K: Ord + Clone, V: Clone
+    where 
+        K: Ord + Clone
+        V: Clone
     mut insert_pos: usize = 0
     
     for i in range(0, leaf.num_keys)
@@ -78,7 +82,9 @@ func! BPlusTree[K, V]::insert_into_leaf(*mut self, leaf: *mut BPlusTreeNode[K, V
     pass
 
 func! BPlusTree[K, V]::split_leaf(*mut self, leaf: *mut BPlusTreeNode[K, V]) -> ok
-    where K: Clone, V: Clone
+    where 
+        K: Clone
+        V: Clone
     let new_leaf = BPlusTreeNode[K, V]::new_leaf()
     
     let mid = ORDER / 2
@@ -113,7 +119,8 @@ func! BPlusTree[K, V]::split_leaf(*mut self, leaf: *mut BPlusTreeNode[K, V]) -> 
     pass
 
 func! BPlusTree[K, V]::insert_into_parent(*mut self, parent: *mut BPlusTreeNode[K, V], key: K, child: *mut BPlusTreeNode[K, V]) -> ok
-    where K: Ord + Clone
+    where 
+        K: Ord + Clone
     mut insert_pos: usize = 0
     
     for i in range(0, parent.num_keys)
@@ -133,11 +140,13 @@ func! BPlusTree[K, V]::insert_into_parent(*mut self, parent: *mut BPlusTreeNode[
     pass
 
 func! BPlusTree[K, V]::split_internal(*mut self, node: *mut BPlusTreeNode[K, V]) -> ok
-    where K: Clone
+    where 
+        K: Clone
     pass
 
 func BPlusTree[K, V]::find_leaf(*self, node: *mut BPlusTreeNode[K, V], key: K) -> *mut BPlusTreeNode[K, V]
-    where K: Ord
+    where 
+        K: Ord
     if node.is_leaf()
         return node
     
@@ -151,7 +160,8 @@ func BPlusTree[K, V]::find_leaf(*self, node: *mut BPlusTreeNode[K, V], key: K) -
     return self.find_leaf(node.children[child_index], key)
 
 func BPlusTree[K, V]::search(*self, key: K) -> ?*V
-    where K: Ord
+    where 
+        K: Ord
     if self.root == null
         return null
     
@@ -164,7 +174,9 @@ func BPlusTree[K, V]::search(*self, key: K) -> ?*V
     return null
 
 func! BPlusTree[K, V]::range_query(*self, start: K, end: K) -> RangeQueryResult[K, V]
-    where K: Ord + Clone, V: Clone
+    where 
+        K: Ord + Clone
+        V: Clone
     mut result = RangeQueryResult[K, V](keys: [], values: [], count: 0)
     
     if self.root == null
@@ -194,7 +206,9 @@ func! BPlusTree[K, V]::range_query(*self, start: K, end: K) -> RangeQueryResult[
     return result
 
 func! BPlusTree[K, V]::scan_all(*self) -> RangeQueryResult[K, V]
-    where K: Clone, V: Clone
+    where 
+        K: Clone
+        V: Clone
     mut result = RangeQueryResult[K, V](keys: [], values: [], count: 0)
     
     mut current = self.first_leaf

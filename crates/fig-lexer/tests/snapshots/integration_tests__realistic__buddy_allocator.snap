@@ -442,7 +442,7 @@ expression: tokens
 - RParen
 - Newline
 - Let
-- Block
+- Ident: blok
 - Eq
 - SelfLower
 - Dot
@@ -452,7 +452,7 @@ expression: tokens
 - RParen
 - Newline
 - If
-- Block
+- Ident: blok
 - EqEq
 - "Null"
 - Newline
@@ -465,12 +465,12 @@ expression: tokens
 - Dot
 - Ident: split_block
 - LParen
-- Block
+- Ident: blok
 - Comma
 - Ident: aligned_size
 - RParen
 - Newline
-- Block
+- Ident: blok
 - Dot
 - Ident: status
 - Eq
@@ -493,7 +493,7 @@ expression: tokens
 - Newline
 - Return
 - LParen
-- Block
+- Ident: blok
 - As
 - Star
 - Mut
@@ -643,7 +643,7 @@ expression: tokens
 - Mut
 - SelfLower
 - Comma
-- Block
+- Ident: blok
 - Colon
 - Star
 - Mut
@@ -675,7 +675,7 @@ expression: tokens
 - Newline
 - Indent
 - If
-- Block
+- Ident: blok
 - Dot
 - Ident: size
 - Le
@@ -694,7 +694,7 @@ expression: tokens
 - Let
 - Ident: half
 - Eq
-- Block
+- Ident: blok
 - Dot
 - Ident: size
 - Slash
@@ -703,7 +703,7 @@ expression: tokens
     digits: "2"
     suffix: ~
 - Newline
-- Block
+- Ident: blok
 - Dot
 - Ident: size
 - Eq
@@ -713,7 +713,7 @@ expression: tokens
 - Ident: buddy
 - Eq
 - LParen
-- Block
+- Ident: blok
 - As
 - Star
 - Mut
@@ -883,7 +883,7 @@ expression: tokens
 - Mut
 - SelfLower
 - Comma
-- Block
+- Ident: blok
 - Colon
 - Star
 - Mut
@@ -900,7 +900,7 @@ expression: tokens
 - Dot
 - Ident: get_buddy_address
 - LParen
-- Block
+- Ident: blok
 - RParen
 - Newline
 - Let
@@ -919,7 +919,7 @@ expression: tokens
 - LParen
 - Ident: buddy
 - Comma
-- Block
+- Ident: blok
 - Dot
 - Ident: size
 - RParen
@@ -959,7 +959,7 @@ expression: tokens
 - Eq
 - If
 - LParen
-- Block
+- Ident: blok
 - As
 - USize
 - RParen
@@ -969,7 +969,7 @@ expression: tokens
 - As
 - USize
 - RParen
-- Block
+- Ident: blok
 - Else
 - Ident: buddy
 - Newline
@@ -977,7 +977,7 @@ expression: tokens
 - Dot
 - Ident: size
 - Eq
-- Block
+- Ident: blok
 - Dot
 - Ident: size
 - Star
@@ -1005,7 +1005,7 @@ expression: tokens
 - Star
 - SelfLower
 - Comma
-- Block
+- Ident: blok
 - Colon
 - Star
 - Mut
@@ -1019,7 +1019,7 @@ expression: tokens
 - Ident: offset
 - Eq
 - LParen
-- Block
+- Ident: blok
 - As
 - USize
 - RParen
@@ -1044,7 +1044,7 @@ expression: tokens
 - LParen
 - Ident: offset
 - Caret
-- Block
+- Ident: blok
 - Dot
 - Ident: size
 - RParen
@@ -1123,7 +1123,7 @@ expression: tokens
 - Mut
 - SelfLower
 - Comma
-- Block
+- Ident: blok
 - Colon
 - Star
 - Mut
@@ -1137,7 +1137,7 @@ expression: tokens
 - Ident: ok
 - Newline
 - Indent
-- Block
+- Ident: blok
 - Dot
 - Ident: next
 - Eq
@@ -1150,7 +1150,7 @@ expression: tokens
 - Dot
 - Ident: head
 - Newline
-- Block
+- Ident: blok
 - Dot
 - Ident: prev
 - Eq
@@ -1180,7 +1180,7 @@ expression: tokens
 - Dot
 - Ident: prev
 - Eq
-- Block
+- Ident: blok
 - Newline
 - Dedent
 - SelfLower
@@ -1192,7 +1192,7 @@ expression: tokens
 - Dot
 - Ident: head
 - Eq
-- Block
+- Ident: blok
 - Newline
 - Pass
 - Newline
@@ -1207,7 +1207,7 @@ expression: tokens
 - Mut
 - SelfLower
 - Comma
-- Block
+- Ident: blok
 - Colon
 - Star
 - Mut
@@ -1222,20 +1222,20 @@ expression: tokens
 - Newline
 - Indent
 - If
-- Block
+- Ident: blok
 - Dot
 - Ident: prev
 - Ne
 - "Null"
 - Newline
 - Indent
-- Block
+- Ident: blok
 - Dot
 - Ident: prev
 - Dot
 - Ident: next
 - Eq
-- Block
+- Ident: blok
 - Dot
 - Ident: next
 - Newline
@@ -1252,37 +1252,37 @@ expression: tokens
 - Dot
 - Ident: head
 - Eq
-- Block
+- Ident: blok
 - Dot
 - Ident: next
 - Newline
 - Dedent
 - If
-- Block
+- Ident: blok
 - Dot
 - Ident: next
 - Ne
 - "Null"
 - Newline
 - Indent
-- Block
+- Ident: blok
 - Dot
 - Ident: next
 - Dot
 - Ident: prev
 - Eq
-- Block
+- Ident: blok
 - Dot
 - Ident: prev
 - Newline
 - Dedent
-- Block
+- Ident: blok
 - Dot
 - Ident: next
 - Eq
 - "Null"
 - Newline
-- Block
+- Ident: blok
 - Dot
 - Ident: prev
 - Eq

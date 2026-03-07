@@ -274,12 +274,15 @@ expression: tokens
 - Newline
 - Indent
 - Where
+- Newline
+- Indent
 - Ident: K
 - Colon
 - Ident: Hash
 - Plus
 - Ident: Eq
 - Newline
+- Dedent
 - If
 - SelfLower
 - Dot
@@ -445,12 +448,15 @@ expression: tokens
 - Newline
 - Indent
 - Where
+- Newline
+- Indent
 - Ident: K
 - Colon
 - Ident: Hash
 - Plus
 - Ident: Eq
 - Newline
+- Dedent
 - If
 - SelfLower
 - Dot
@@ -545,12 +551,15 @@ expression: tokens
 - Newline
 - Indent
 - Where
+- Newline
+- Indent
 - Ident: K
 - Colon
 - Ident: Hash
 - Plus
 - Ident: Eq
 - Newline
+- Dedent
 - If
 - SelfLower
 - Dot
@@ -610,7 +619,6 @@ expression: tokens
 - Indent
 - Return
 - And
-- Mut
 - Ident: entry
 - Dot
 - Ident: value
@@ -642,12 +650,15 @@ expression: tokens
 - Newline
 - Indent
 - Where
+- Newline
+- Indent
 - Ident: K
 - Colon
 - Ident: Hash
 - Plus
 - Ident: Eq
 - Newline
+- Dedent
 - Return
 - SelfLower
 - Dot
@@ -684,12 +695,15 @@ expression: tokens
 - Newline
 - Indent
 - Where
+- Newline
+- Indent
 - Ident: K
 - Colon
 - Ident: Hash
 - Plus
 - Ident: Eq
 - Newline
+- Dedent
 - If
 - SelfLower
 - Dot
@@ -1024,12 +1038,15 @@ expression: tokens
 - Newline
 - Indent
 - Where
+- Newline
+- Indent
 - Ident: K
 - Colon
 - Ident: Hash
 - Plus
 - Ident: Eq
 - Newline
+- Dedent
 - Mut
 - Ident: index
 - Eq
@@ -1255,12 +1272,15 @@ expression: tokens
 - Newline
 - Indent
 - Where
+- Newline
+- Indent
 - Ident: K
 - Colon
 - Ident: Hash
 - Plus
 - Ident: Eq
 - Newline
+- Dedent
 - Let
 - Ident: new_capacity
 - Eq
@@ -1639,10 +1659,13 @@ expression: tokens
 - Newline
 - Indent
 - Where
+- Newline
+- Indent
 - Ident: T
 - Colon
 - Ident: Hash
 - Newline
+- Dedent
 - Return
 - Ident: value
 - Dot
@@ -1691,10 +1714,13 @@ expression: tokens
 - Newline
 - Indent
 - Where
+- Newline
+- Indent
 - Ident: T
 - Colon
 - Ident: Eq
 - Newline
+- Dedent
 - Return
 - Ident: a
 - Dot

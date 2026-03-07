@@ -11,10 +11,12 @@ pub use diagnostics::{
     build_diagnostic,
     emit_parse_error,
     format_parse_error,
+    format_parse_errors,
     simple_diagnostic,
     token_name,
     DiagnosticError,
     FigParseError,
+    FigRecoveredError,
 };
 
 /// Split the raw content of an interpolated-string literal into text and

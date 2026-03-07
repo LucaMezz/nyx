@@ -2,14 +2,15 @@
 // NOTE: Fig uses "func" (not "fn") for function declarations.
 // NOTE: Namespace.name is a Path; Namespace.items is Vec<Statement>.
 
-use crate::{Lexer, ast::{Statement, Type}, parser};
+use crate::ast::{Statement, Type};
+use super::helpers;
 
 #[test]
 fn test_simple_namespace() {
     let input = "namespace MyModule
     type Alias = i32
 ";
-    let namespace = parser::NamespaceParser::new().parse(Lexer::new(input)).unwrap();
+    let namespace = helpers::parse_namespace(input).unwrap();
 
     assert_eq!(namespace.name.segments[0], "MyModule");
     assert_eq!(namespace.items.len(), 1);
@@ -29,7 +30,7 @@ fn test_namespace_with_struct() {
         x: f64
         y: f64
 ";
-    let namespace = parser::NamespaceParser::new().parse(Lexer::new(input)).unwrap();
+    let namespace = helpers::parse_namespace(input).unwrap();
 
     assert_eq!(namespace.name.segments[0], "Geometry");
     assert_eq!(namespace.items.len(), 1);
@@ -50,7 +51,7 @@ fn test_namespace_with_enum() {
         Green
         Blue
 ";
-    let namespace = parser::NamespaceParser::new().parse(Lexer::new(input)).unwrap();
+    let namespace = helpers::parse_namespace(input).unwrap();
 
     assert_eq!(namespace.name.segments[0], "Colors");
     assert_eq!(namespace.items.len(), 1);
@@ -70,7 +71,7 @@ fn test_namespace_with_union() {
         int_val: i32
         float_val: f64
 ";
-    let namespace = parser::NamespaceParser::new().parse(Lexer::new(input)).unwrap();
+    let namespace = helpers::parse_namespace(input).unwrap();
 
     assert_eq!(namespace.name.segments[0], "Data");
     assert_eq!(namespace.items.len(), 1);
@@ -89,7 +90,7 @@ fn test_namespace_with_interface() {
     interface Printable
         func print()
 ";
-    let namespace = parser::NamespaceParser::new().parse(Lexer::new(input)).unwrap();
+    let namespace = helpers::parse_namespace(input).unwrap();
 
     assert_eq!(namespace.name.segments[0], "Interfaces");
     assert_eq!(namespace.items.len(), 1);
@@ -108,7 +109,7 @@ fn test_namespace_with_function() {
     func add(a: i32, b: i32) -> i32
         pass
 ";
-    let namespace = parser::NamespaceParser::new().parse(Lexer::new(input)).unwrap();
+    let namespace = helpers::parse_namespace(input).unwrap();
 
     assert_eq!(namespace.name.segments[0], "Utils");
     assert_eq!(namespace.items.len(), 1);
@@ -134,7 +135,7 @@ fn test_namespace_with_multiple_items() {
         East
         West
 ";
-    let namespace = parser::NamespaceParser::new().parse(Lexer::new(input)).unwrap();
+    let namespace = helpers::parse_namespace(input).unwrap();
 
     assert_eq!(namespace.name.segments[0], "MyLib");
     assert_eq!(namespace.items.len(), 3);
@@ -150,7 +151,7 @@ fn test_nested_namespace() {
     namespace Inner
         type Alias = i32
 ";
-    let namespace = parser::NamespaceParser::new().parse(Lexer::new(input)).unwrap();
+    let namespace = helpers::parse_namespace(input).unwrap();
 
     assert_eq!(namespace.name.segments[0], "Outer");
     assert_eq!(namespace.items.len(), 1);
@@ -174,7 +175,7 @@ fn test_namespace_with_complex_items() {
     interface Iterable[T]
         func next() -> T
 ";
-    let namespace = parser::NamespaceParser::new().parse(Lexer::new(input)).unwrap();
+    let namespace = helpers::parse_namespace(input).unwrap();
 
     assert_eq!(namespace.name.segments[0], "Collections");
     assert_eq!(namespace.items.len(), 2);
@@ -204,7 +205,7 @@ fn test_empty_namespace() {
     let input = "namespace Empty
     pass
 ";
-    let result = parser::NamespaceParser::new().parse(Lexer::new(input));
+    let result = helpers::parse_namespace(input);
     if let Ok(ns) = result {
         assert_eq!(ns.name.segments[0], "Empty");
         // pass is Statement::Pass
